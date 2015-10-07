@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
-	String path = "http://" + "localhost" + ":" + request.getLocalPort() + "/" + request.getContextPath();
+	String path = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+ "/" + request.getContextPath();
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,9 +12,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<link rel="stylesheet" href="<%=path %>resources/login/bootstrap.min.css" />
+<link rel="stylesheet" href="<%=path %>resources/css/bootstrap.min.css" />
 <link rel="stylesheet" href="<%=path %>resources/login/css/camera.css" />
-<link rel="stylesheet" href="<%=path %>resources/login/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="<%=path %>resources/css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="<%=path %>resources/login/matrix-login.css" />
 <link href="<%=path %>resources/login/font-awesome.css" rel="stylesheet" />
 <script type="text/javascript" src="<%=path %>resources/js/jquery-1.5.1.min.js"></script>
@@ -110,17 +110,17 @@
 				
 				var loginname = $("#loginname").val();
 				var password = $("#password").val();
-				var code = "qq313596790fh"+loginname+",fh,"+password+"QQ978336446fh"+",fh,"+$("#code").val();
+				var code = $("#code").val();
 				$.ajax({
 					type: "POST",
-					url: 'login_login',
-			    	data: {KEYDATA:code,tm:new Date().getTime()},
+					url: 'dologin',
+			    	data: {code:code,username:loginname,password:password,tm:new Date().getTime()},
 					dataType:'json',
 					cache: false,
 					success: function(data){
-						if("success" == data.result){
+						if("200" == data.statusCode){
 							saveCookie();
-							window.location.href="main/index";
+							window.location.href="index";
 						}else if("usererror" == data.result){
 							$("#loginname").tips({
 								side : 1,

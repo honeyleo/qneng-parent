@@ -149,11 +149,6 @@
 				<version>3.1</version>
 			</dependency>
 		
-			<dependency>
-				<groupId>mybatis</groupId>
-				<artifactId>mybatis-paging</artifactId>
-				<version>1.0</version>
-			</dependency>
 			<!--  
 			<dependency>
 				<groupId>org.codehaus.jackson</groupId>

@@ -8,10 +8,28 @@
 		<setting name="useGeneratedKeys" value="true" />
 		<setting name="defaultExecutorType" value="REUSE" />
 	</settings>
+	<typeAliases>
+		<typeAlias type="com.manager.common.util.PageData" alias="pd"/>
+		<!-- 分页 -->
+		<typeAlias type="com.manager.common.util.Page" alias="Page"/>
+	</typeAliases>
+	
+	<plugins>
+		<plugin interceptor="com.manager.common.plugin.PagePlugin">
+			<property name="dialect" value="mysql"/>
+			<property name="pageSqlId" value=".*listPage.*"/>
+		</plugin>
+	</plugins>
 	
 	<!--这里添加的是执行CRUD操作的接口对应的配置文件-->
 	<mappers>
+		<mapper resource="com/manager/dao/mybatis/common_SqlMap.xml" />
 		
+		<mapper resource="com/manager/dao/mybatis/AdminDAO.xml" />
+		<mapper resource="com/manager/dao/mybatis/AdminMenuDAO.xml" />
+		<mapper resource="com/manager/dao/mybatis/MenuDAO.xml" />
+		<mapper resource="com/manager/dao/mybatis/RoleDAO.xml" />
+		<mapper resource="com/manager/dao/mybatis/RoleDefaultMenuDAO.xml" />
 	</mappers>
 	  
 	  

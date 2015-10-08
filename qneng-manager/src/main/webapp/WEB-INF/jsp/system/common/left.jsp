@@ -48,7 +48,7 @@
 						<span>${menu.name }</span>
 						<b class="arrow icon-angle-down"></b>
 					  </a>
-					  <ul class="submenu">
+					  <ul class="submenu" style="display: block;">
 							<c:forEach items="${menu.childList}" var="sub">
 								<c:if test="${sub.onMenu == 1}">
 								<c:choose>

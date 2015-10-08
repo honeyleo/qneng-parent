@@ -148,6 +148,7 @@
 </head>
 
 <body>
+	<br>
 	<table id="table_report" class="table table-striped table-bordered table-hover">
 		<thead>
 		<tr>

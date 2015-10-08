@@ -11,6 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.manager.common.Constants;
 import com.manager.common.exception.AdminException;
 import com.manager.common.util.DwzJsonUtil;
+import com.manager.common.util.Page;
+import com.manager.common.util.PageData;
 import com.manager.common.util.RequestUtil;
 import com.manager.model.Criteria;
 import com.manager.model.PageInfo;
@@ -19,7 +21,7 @@ import com.manager.model.type.StateType;
 import com.manager.service.RoleService;
 
 @Controller
-@RequestMapping("/manager/system/role")
+@RequestMapping("/manager/role")
 public class RoleController implements Constants {
 
     public static final int listPageSize = 20;
@@ -28,17 +30,23 @@ public class RoleController implements Constants {
     private RoleService roleService;
 
     @RequestMapping("/list")
-    public String list(HttpServletRequest request) throws AdminException {
+    public String list(HttpServletRequest request, Page page) throws AdminException {
+    	PageData pd = new PageData(request);
         Integer typeId = RequestUtil.getInteger(request, "type");
-        Integer pageNum = RequestUtil.getInteger(request, "pageNum");
+//        Integer pageNum = RequestUtil.getInteger(request, "pageNum");
+        Integer pageNum = RequestUtil.getInteger(request, "currentPage");
         if (pageNum == null || pageNum <= 0) {// 判断页码是否为空
             pageNum = 1;
         }
         Criteria criteria = new Criteria();
-        PageInfo<Role> result = roleService.getByCriteria(criteria, pageNum, listPageSize);
+        PageInfo<Role> result = roleService.getByCriteria(criteria, pageNum, page.getShowCount());
         request.setAttribute("result", result);
         request.setAttribute("type", typeId);
-        return "/manager/system/role/role_list";
+        page.setTotalResult(result.getTotal());
+        page.setEntityOrField(true);
+        page.getCurrentResult();
+        request.setAttribute("pd", pd);
+        return "/system/role/list";
     }
 
     @RequestMapping("/del")

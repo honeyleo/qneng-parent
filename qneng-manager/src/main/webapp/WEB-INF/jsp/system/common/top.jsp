@@ -19,7 +19,7 @@
 	<script type="text/javascript" src="<%=path2 %>resources/js/jquery-1.7.2.js"></script>
 	<link rel="stylesheet" href="<%=path2 %>resources/css/datepicker.css" /><!-- 日期框 -->
 	<!--引入弹窗组件start-->
-	<script type="text/javascript" src="<%=path2 %>plugins/attention/zDialog/zDrag.js"></script>
-	<script type="text/javascript" src="<%=path2 %>plugins/attention/zDialog/zDialog.js"></script>
+	<script type="text/javascript" src="<%=path2 %>resources/plugins/attention/zDialog/zDrag.js"></script>
+	<script type="text/javascript" src="<%=path2 %>resources/plugins/attention/zDialog/zDialog.js"></script>
 	<!--引入弹窗组件end-->
 	<script type="text/javascript" src="<%=path2 %>resources/js/jquery.tips.js"></script>

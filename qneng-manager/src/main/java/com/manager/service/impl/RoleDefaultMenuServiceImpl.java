@@ -1,10 +1,12 @@
 package com.manager.service.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Sets;
 import com.manager.dao.RoleDefaultMenuDAO;
 import com.manager.model.Menu;
 import com.manager.model.Role;
@@ -46,6 +48,26 @@ public class RoleDefaultMenuServiceImpl implements RoleDefaultMenuService {
             record.setMenuId(mid);
             this.add(record);
         }
+    }
+    
+    public void saveMenus(Long roleId, Set<Long> nowMenu) {
+    	List<Menu> roleMenus = getMenuListByRoleId(roleId);
+		Set<Long> roleSet = Sets.newHashSet();
+		for(Menu m : roleMenus) {
+			roleSet.add(m.getId());
+		}
+		Set<Long> delSet = Sets.difference(roleSet, nowMenu);
+		Set<Long> newSet = Sets.difference(nowMenu, roleSet);
+		for(Long menuId : delSet) {
+			roleDefaultMenuDAO.delete(roleId, menuId);
+		}
+		for(Long menuId : newSet) {
+			RoleDefaultMenu record = new RoleDefaultMenu();
+			record.setRoleId(roleId);
+			record.setMenuId(menuId);
+			roleDefaultMenuDAO.insert(record);
+		}
+		
     }
 
 }

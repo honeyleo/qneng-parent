@@ -2,6 +2,8 @@ package com.manager.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.manager.model.Menu;
 import com.manager.model.RoleDefaultMenu;
 
@@ -30,4 +32,6 @@ public interface RoleDefaultMenuDAO {
      * @param operatorId
      */
     void deleteByMenuId(Long menuId);
+    
+    void delete(@Param("roleId")Long roleId, @Param("menuId")Long menuId);
 }

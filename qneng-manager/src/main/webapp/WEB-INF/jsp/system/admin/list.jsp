@@ -1,6 +1,7 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="funcs" uri="funcs" %>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -53,9 +54,9 @@
 						<th>编号</th>
 						<th>用户名</th>
 						<th>姓名</th>
-						<th>职位</th>
-						<th><i class="icon-envelope"></i>邮箱</th>
-						<th><i class="icon-time hidden-phone"></i>最近登录</th>
+						<th>角色名</th>
+						<th><i class="icon-time hidden-phone"></i>创建时间</th>
+						<th>状态</th>
 						<th class="center">操作</th>
 					</tr>
 				</thead>
@@ -73,8 +74,8 @@
 						<td>${user.id }</td>
 						<td><a>${user.username }</a></td>
 						<td>${user.realName }</td>
-						<td>${user.username }</td>
-						<td>${user.createTime}</td>
+						<td>${funcs:getRoleName(user.roleId)}</td>
+						<td>${funcs:formatDateTime(user.createTime,'yyyy-MM-dd HH:mm:ss')}</td>
 						<td>${user.state}</td>
 						<td style="width: 60px;">
 							<div class='hidden-phone visible-desktop btn-group'>

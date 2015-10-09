@@ -1,6 +1,7 @@
 package com.manager.service;
 
 import java.util.List;
+import java.util.Set;
 
 import com.manager.model.Menu;
 import com.manager.model.Role;
@@ -38,4 +39,6 @@ public interface RoleDefaultMenuService {
      * @param menus
      */
     void saveDefaultMenus(Role role, List<Long> menuIds);
+    
+    void saveMenus(Long roleId, Set<Long> nowMenu);
 }

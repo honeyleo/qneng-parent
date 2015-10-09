@@ -30,6 +30,7 @@ import com.manager.model.type.StateType;
 import com.manager.service.AdminMenuService;
 import com.manager.service.AdminService;
 import com.manager.service.MenuService;
+import com.manager.service.RoleDefaultMenuService;
 
 @Controller
 @RequestMapping("/manager")
@@ -49,12 +50,15 @@ public class AdminLoginController implements Constants {
     @Autowired
     private MenuService menuService;
 
+    @Autowired
+	private RoleDefaultMenuService roleDefaultMenuService;
+    
     private long ROOT = 1;
     
     @RequestMapping("/index")
     public String index(HttpServletRequest request) throws AdminException {
         LoginAccount account = Funcs.getSessionLoginAccount(request.getSession());
-        List<Menu> menus = adminMenuService.getMeneListByAdminId(account.getUser().getId());
+        List<Menu> menus = roleDefaultMenuService.getMenuListByRoleId(account.getUser().getRoleId());
         account.setMenus(menus);
         Map<Long, Menu> map = Maps.newConcurrentMap();
         for(Menu menu : menus) {

@@ -62,4 +62,22 @@
   <function-signature>java.lang.String getMenuName(java.lang.Long)</function-signature>
  </function> 
 
+	<tag>  
+    	<description>权限校验标签，有权限就显示标签体的内容，否则不显示</description>  
+        <name>permission</name><!-- 里面的内容是JSP文件中标签里面的<p2p:permission module="admin" privilege="delete">permission -->  
+        <tag-class>com.manager.common.web.PermissionTag</tag-class><!-- JSP文件中的自定义标签里面的值会传到PermissionTag类接受，PermissionTag类接受到的值决定是否要显示JSP文件中自定义标签的内容。 -->  
+        <body-content>JSP</body-content><!-- 里面的值代表<p2p:permission module="admin" privilege="delete">只不能用在JSP中。 -->  
+        <attribute>  
+            <description></description>  
+            <name>module</name><!-- 里面的值代表JSP文件中自定义标签 <p2p:permission module="admin" privilege="delete">中的module。-->  
+            <required>true</required><!-- 里面的值代表在JSP文件中敲入自定义标签(<p2p:permission)的时候，自定义标签里面属性名称(module)不用手工去写会自动显示出来。 -->  
+            <rtexprvalue>false</rtexprvalue><!-- 里面的值代表JSP文件中自定义标签的属性的值不能用EL表达式(${})来表示，如果为true自定义标签的属性的值能用EL表达式(${})来表示。 -->  
+        </attribute>  
+        <attribute>  
+            <description></description>  
+            <name>privilege</name>  
+            <required>true</required>  
+            <rtexprvalue>false</rtexprvalue>  
+        </attribute>  
+    </tag>
 </taglib>

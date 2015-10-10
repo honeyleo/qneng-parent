@@ -93,7 +93,9 @@
 		<table style="width:100%;">
 			<tr>
 				<td style="vertical-align:top;">
-					<a class="btn btn-small btn-success" onclick="add();">新增</a>
+					<funcs:permission privilege="1" module="用戶管理_新增">
+						<a class="btn btn-small btn-success" onclick="add();">新增</a>
+					</funcs:permission>
 					<a title="批量删除" class="btn btn-small btn-danger" onclick="makeAll('确定要删除选中的数据吗?');" ><i class='icon-trash'></i></a>
 				</td>
 				<td style="vertical-align:top;"><div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${page.pageStr}</div></td>

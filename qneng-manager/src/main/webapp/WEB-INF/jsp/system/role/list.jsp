@@ -29,14 +29,10 @@
 				
 				<thead>
 					<tr>
-						<th class="center">
-						<label><input type="checkbox" id="zcheckbox" /><span class="lbl"></span></label>
-						</th>
 						<th>序号</th>
 						<th>编号</th>
 						<th>角色名</th>
 						<th>角色描述</th>
-						<th>状态</th>
 						<th class="center">操作</th>
 					</tr>
 				</thead>
@@ -47,18 +43,14 @@
 				<c:forEach items="${requestScope.result.data}" var="role" varStatus="var">
 									
 					<tr>
-						<td class='center' style="width: 30px;">
-							<input type='checkbox' name='ids' value="${user.id }" id="${user.email }" alt="${user.phone }"/><span class="lbl"></span></label>
-						</td>
 						<td class='center' style="width: 30px;">${var.index+1}</td>
 						<td>${role.id }</td>
 						<td><a>${role.name }</a></td>
-						<td>${user.desc }</td>
-						<td>${user.state}</td>
+						<td>${role.desc }</td>
 						<td style="width: 60px;">
 							<div class='hidden-phone visible-desktop btn-group'>
-								<a class='btn btn-mini btn-info' title="编辑" onclick="editUser('${role.id }');"><i class='icon-edit'></i></a>
-								<a class='btn btn-mini btn-danger' title="删除" onclick="delUser('${role.id }','${user.username }');"><i class='icon-trash'></i></a>
+								<a class='btn btn-mini btn-info' title="编辑" onclick="editRole('${role.id }');"><i class='icon-edit'></i></a>
+								<a class='btn btn-mini btn-danger' title="删除" onclick="delRole('${role.id }','${role.name }');"><i class='icon-trash'></i></a>
 								<a onclick="roleButton('${role.id }','add_qx');" class="btn btn-warning btn-mini" title="分配权限"><i class="icon-wrench icon-2x icon-only"></i></a>
 							</div>
 						</td>
@@ -72,8 +64,7 @@
 		<table style="width:100%;">
 			<tr>
 				<td style="vertical-align:top;">
-					<a class="btn btn-small btn-success" onclick="add();">新增</a>
-					<a title="批量删除" class="btn btn-small btn-danger" onclick="makeAll('确定要删除选中的数据吗?');" ><i class='icon-trash'></i></a>
+					<a class="btn btn-small btn-success" onclick="addRole();">新增</a>
 				</td>
 				<td style="vertical-align:top;"><div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${page.pageStr}</div></td>
 			</tr>
@@ -125,6 +116,58 @@
 				diag.close();
 			};
 			diag.show();
+		}
+		//新增角色
+		function addRole(){
+			 top.jzts();
+			 var diag = new top.Dialog();
+			 diag.Drag=true;
+			 diag.Title ="新增角色";
+			 diag.URL = '<%=basePath%>manager/role/goadd';
+			 diag.Width = 270;
+			 diag.Height = 300;
+			 diag.CancelEvent = function(){ //关闭事件
+				if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
+					top.jzts();
+					setTimeout("self.location.reload()",100);
+				}
+				diag.close();
+			 };
+			 diag.show();
+		}
+		//修改
+		function editRole(ROLE_ID){
+			 top.jzts();
+			 var diag = new top.Dialog();
+			 diag.Drag=true;
+			 diag.Title ="编辑";
+			 diag.URL = '<%=basePath%>manager/role/detail?id='+ROLE_ID;
+			 diag.Width = 270;
+			 diag.Height = 300;
+			 diag.CancelEvent = function(){ //关闭事件
+				 if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
+					top.jzts();
+					setTimeout("self.location.reload()",100);
+				}
+				diag.close();
+			 };
+			 diag.show();
+		}
+		
+		//删除
+		function delRole(ROLE_ID,msg,ROLE_NAME){
+			bootbox.confirm("确定要删除["+ROLE_NAME+"]吗?", function(result) {
+				if(result) {
+					var url = "<%=basePath%>manager/role/del?id="+ROLE_ID+"&guid="+new Date().getTime();
+					top.jzts();
+					$.get(url,function(data){
+						if("success" == data.result){
+							top.jzts();
+							document.location.reload();
+						}
+					});
+				}
+			});
 		}
 		
 		</script>

@@ -40,7 +40,8 @@
   	<trim prefix="order by" prefixOverrides="," >
   		<if test="orderMap.id != null">
   			,id #{orderMap.id}
-  		</if>  		
+  		</if>
+  		parentIdPath,orderNo
   	</trim>
   </sql>
   

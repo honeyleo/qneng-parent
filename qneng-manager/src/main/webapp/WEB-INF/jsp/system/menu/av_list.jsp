@@ -117,7 +117,7 @@
 					$.each(data,function(i){
 						html = "<tr style='height:24px;line-height:24px;' name='subTr"+menuId+"'>";
 						html += "<td></td>";
-						html += "<td style='width:300px;'><span style='width:100px;display:inline;padding-left:35%;'></span>";
+						html += "<td style='width:300px;'><span style='width:100px;display:inline;padding-left:30%;'></span>";
 						if(i==data.length-1)
 							html += "<img src='<%=basePath%>resources/images/joinbottom.gif' style='vertical-align: middle;'/>";
 						else
@@ -127,7 +127,7 @@
 						html += "<td>"+this.url+"</td>";
 						html += "<td class='center'>"+this.id+"</td>";
 						html += "<td class='center'>"+this.orderNo+"</td>";
-						html += "<td><a class='btn btn-mini btn-info' title='编辑' onclick='editmenu(\""+this.id+"\")'><i class='icon-edit'></i></a> <a class='btn btn-mini btn-danger' title='删除' onclick='delmenu(\""+this.id+"\",false)'><i class='icon-trash'></i></a></td>";
+						html += "<td><a class='btn btn-mini btn-warning' onclick='openClose(\""+this.id+"\",this,\""+i+"\")' >展开</a> <a class='btn btn-mini btn-success' onclick='addmenu(\""+this.id+"\");'>新增</a> <a class='btn btn-mini btn-info' title='编辑' onclick='editmenu(\""+this.id+"\")'><i class='icon-edit'></i></a> <a class='btn btn-mini btn-danger' title='删除' onclick='delmenu(\""+this.id+"\",false)'><i class='icon-trash'></i></a></td>";
 						html += "</tr>";
 						$("#tempTr"+menuId).before(html);
 					});
@@ -178,37 +178,12 @@
 				<td class="center">${menu.id}</td>
 				<td class='center'>${menu.orderNo }</td>
 				<td style="width:25%;">
+				<a class='btn btn-mini btn-warning' onclick="openClose('${menu.id }',this,${vs.index })" >展开</a>
 				<a class="btn btn-mini btn-success" onclick="addmenu('${menu.id}');">新增</a>
 				<a class='btn btn-mini btn-purple' title="图标" onclick="editTb('${menu.id }')" ><i class='icon-picture'></i></a>
 				<a class='btn btn-mini btn-info' title="编辑" onclick="editmenu('${menu.id }')" ><i class='icon-edit'></i></a>
 				<a class='btn btn-mini btn-danger' title="删除"  onclick="delmenu('${menu.id }',true)"><i class='icon-trash'></i></a>
 				</tr>
-				<c:forEach items="${menu.childList}" var="sub" varStatus="subVs">
-				<tr id="tr${sub.id }" style='height:24px;line-height:24px;'>
-					<td></td>
-					<td style='width:300px;'>
-						<span style='width:100px;display:inline;padding-left:30%;'></span>
-						<c:choose>
-							<c:when test="${subVs.last}">
-								<img src='<%=basePath%>resources/images/joinbottom.gif' style='vertical-align: middle;'/>
-							</c:when>
-							<c:otherwise>
-								<img src='<%=basePath%>resources/images/join.gif' style='vertical-align: middle;'/>
-							</c:otherwise>
-						</c:choose>
-						<span style='width:100px;display:inline;'>${sub.name }</span>
-					</td>
-					<td>${sub.url}</td>
-					<td class='center'>${sub.id}</td>
-					<td class='center'>${sub.orderNo}</td>
-					<td>
-						<a class='btn btn-mini btn-warning' onclick="openClose('${sub.id }',this,${subVs.index })" >展开</a> 
-						<a class='btn btn-mini btn-success' onclick="addmenu('${sub.id}');">新增</a> 
-						<a class='btn btn-mini btn-info' title='编辑' onclick="editmenu('${sub.id}')"><i class='icon-edit'></i></a> 
-						<a class='btn btn-mini btn-danger' title='删除' onclick="delmenu('${sub.id}',false)"><i class='icon-trash'></i></a>
-					</td>
-					</tr>
-				</c:forEach>
 				</c:forEach>
 			</c:when>
 			<c:otherwise>

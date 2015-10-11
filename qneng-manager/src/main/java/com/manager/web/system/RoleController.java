@@ -6,11 +6,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.manager.common.Constants;
 import com.manager.common.exception.AdminException;
-import com.manager.common.util.DwzJsonUtil;
 import com.manager.common.util.Page;
 import com.manager.common.util.PageData;
 import com.manager.common.util.RequestUtil;
@@ -50,18 +51,22 @@ public class RoleController implements Constants {
     }
 
     @RequestMapping("/del")
-    public ModelAndView del(HttpServletRequest request) throws AdminException {
+    @ResponseBody
+    public Object del(HttpServletRequest request) throws AdminException {
         Long id = RequestUtil.getLong(request, "id");
         Role record = new Role();
         record.setId(id);
         record.setState(StateType.INACTIVE.getId());
         roleService.updateByIdSelective(record);
-        return new ModelAndView(JSON_VIEW, JSON_ROOT, DwzJsonUtil.getOkStatusMsg("删除成功"));
+        JSONObject json = new JSONObject();
+        json.put("result", "success");
+        return json;
     }
 
     @RequestMapping("/goadd")
     public String goAdd(HttpServletRequest request) throws AdminException {
-        return "/manager/system/role/role_add";
+    	request.setAttribute("uri", "add");
+        return "/system/role/edit";
     }
 
     @RequestMapping("/detail")
@@ -69,21 +74,21 @@ public class RoleController implements Constants {
         Long id = RequestUtil.getLong(request, "id");
         Role role = roleService.getById(id);
         request.setAttribute("role", role);
-        return "/manager/system/role/role_detail";
+        request.setAttribute("uri", "update");
+        return "/system/role/edit";
     }
 
     @RequestMapping("/add")
     public ModelAndView add(HttpServletRequest request) throws AdminException {
         String name=RequestUtil.getString(request, "name");
-        Integer type=RequestUtil.getInteger(request, "type");
         String desc=RequestUtil.getString(request, "desc");
         Role record=new Role();
         record.setName(name);
-        record.setType(type);
+        record.setType(1);
         record.setDesc(desc);
         record.setState(1);
         roleService.insert(record);
-        return new ModelAndView(JSON_VIEW, JSON_ROOT, DwzJsonUtil.getOkStatusMsg("添加成功"));
+        return new ModelAndView("/common/save_result", "msg", "success");
     }
 
     @RequestMapping("/update")
@@ -102,7 +107,7 @@ public class RoleController implements Constants {
             record.setState(state);
             roleService.updateByIdSelective(record);
         }
-        return new ModelAndView(JSON_VIEW, JSON_ROOT, DwzJsonUtil.getOkStatusMsg("更新成功"));
+        return new ModelAndView("/common/save_result", "msg", "success");
     }
 
 }

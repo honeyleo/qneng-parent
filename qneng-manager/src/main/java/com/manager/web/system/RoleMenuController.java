@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +18,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.manager.common.Constants;
 import com.manager.common.exception.AdminException;
@@ -45,8 +43,6 @@ public class RoleMenuController implements Constants
     @Autowired
 	private RoleDefaultMenuService roleDefaultMenuService;
 
-    private long ROOT = 1;
-    
 	@RequestMapping("/list")
 	public String listSystemMenus(HttpServletRequest request, HttpServletResponse response) throws AdminException
 	{
@@ -107,58 +103,63 @@ public class RoleMenuController implements Constants
 		for(Menu m : roleMenus) {
 			roleMenuIdSet.add(m.getId());
 		}
-		Map<Long, Menu> map = Maps.newConcurrentMap();
-	        for(Menu menu : menus) {
-	        	if(menu.getParentId() == -1) {
-	        		continue;
-	        	}
-	        	else if(menu.getParentId() == ROOT) {
-	        		map.put(menu.getId(), menu);
-	        	} else if(menu.getOnMenu() == 1) {
-	        		Menu m = map.get(menu.getParentId());
-	        		if(m.getChildList() == null) {
-	        			 List<Menu> childList = new ArrayList<Menu>();
-	        			 m.setChildList(childList);
-	        		}
-	        		m.getChildList().add(menu);
-	        	}
-	        }
-	        List<Menu> menuList = Lists.newArrayList(map.values());
-	        JSONArray jsonTree = new JSONArray();
-	        for(Menu m : menuList) {
-	        	JSONObject node = new JSONObject();
-	        	node.put("id", m.getId());
-	        	node.put("name", m.getName());
-	        	if(roleMenuIdSet.contains(m.getId())) {
-	        		node.put("checked", true);
-	        	}
-	        	if(m.getChildList() != null) {
-	        		JSONArray subNodeArray = new JSONArray();
-	        		for(Menu sub : m.getChildList()) {
-	        			JSONObject subNode = new JSONObject();
-	        			subNode.put("id", sub.getId());
-	        			subNode.put("name", sub.getName());
-	        			if(roleMenuIdSet.contains(sub.getId())) {
-	        				subNode.put("checked", true);
-	    	        	}
-	        			subNodeArray.add(subNode);
-	        		}
-	        		node.put("nodes", subNodeArray);
-	        	}
-	        	jsonTree.add(node);
-	        }
-	        JSONArray rootArr = new JSONArray();
-	        JSONObject root = new JSONObject();
-	        Menu rootMenu = menus.get(0);
-	        root.put("id", rootMenu.getId());
-	        root.put("name", rootMenu.getName());
-	        root.put("nodes", jsonTree);
-	        if(roleMenuIdSet.contains(rootMenu.getId())) {
-	        	root.put("checked", true);
-	        }
-	        rootArr.add(root);
-	        mv.addObject("zTreeNodes", rootArr.toJSONString());
-	        mv.addObject("roleId", roleId);
+		List<Menu> menuList = Lists.newArrayList();
+        for(Menu menu : menus) {
+        	if(menu.getParentId() == -1) {
+        		continue;
+        	}
+        	else if(menu.getParentId() == 1) {
+        		menuList.add(menu);
+        	} else if(menu.getOnMenu() == 1) {
+        		Menu parent = null;
+        		for(Menu m : menuList) {
+        			if(m.getId() == menu.getParentId()) {
+        				parent = m;
+        				break;
+        			}
+        		}
+        		if(parent.getChildList() == null) {
+        			 List<Menu> childList = new ArrayList<Menu>();
+        			 parent.setChildList(childList);
+        		}
+        		parent.getChildList().add(menu);
+        	}
+        }
+        JSONArray jsonTree = new JSONArray();
+        for(Menu m : menuList) {
+        	JSONObject node = new JSONObject();
+        	node.put("id", m.getId());
+        	node.put("name", m.getName());
+        	if(roleMenuIdSet.contains(m.getId())) {
+        		node.put("checked", true);
+        	}
+        	if(m.getChildList() != null) {
+        		JSONArray subNodeArray = new JSONArray();
+        		for(Menu sub : m.getChildList()) {
+        			JSONObject subNode = new JSONObject();
+        			subNode.put("id", sub.getId());
+        			subNode.put("name", sub.getName());
+        			if(roleMenuIdSet.contains(sub.getId())) {
+        				subNode.put("checked", true);
+    	        	}
+        			subNodeArray.add(subNode);
+        		}
+        		node.put("nodes", subNodeArray);
+        	}
+        	jsonTree.add(node);
+        }
+        JSONArray rootArr = new JSONArray();
+        JSONObject root = new JSONObject();
+        Menu rootMenu = menus.get(0);
+        root.put("id", rootMenu.getId());
+        root.put("name", rootMenu.getName());
+        root.put("nodes", jsonTree);
+        if(roleMenuIdSet.contains(rootMenu.getId())) {
+        	root.put("checked", true);
+        }
+        rootArr.add(root);
+        mv.addObject("zTreeNodes", rootArr.toJSONString());
+        mv.addObject("roleId", roleId);
 		return mv;
 	}
 	/**

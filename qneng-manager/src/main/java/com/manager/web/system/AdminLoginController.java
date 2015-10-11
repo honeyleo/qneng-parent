@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.manager.common.Constants;
 import com.manager.common.exception.AdminException;
 import com.manager.common.util.DwzJsonUtil;
@@ -53,30 +52,33 @@ public class AdminLoginController implements Constants {
     @Autowired
 	private RoleDefaultMenuService roleDefaultMenuService;
     
-    private long ROOT = 1;
-    
     @RequestMapping("/index")
     public String index(HttpServletRequest request) throws AdminException {
         LoginAccount account = Funcs.getSessionLoginAccount(request.getSession());
         List<Menu> menus = roleDefaultMenuService.getMenuListByRoleId(account.getUser().getRoleId());
         account.setMenus(menus);
-        Map<Long, Menu> map = Maps.newConcurrentMap();
+        List<Menu> menuList = Lists.newArrayList();
         for(Menu menu : menus) {
         	if(menu.getParentId() == -1) {
         		continue;
         	}
-        	else if(menu.getParentId() == ROOT) {
-        		map.put(menu.getId(), menu);
+        	else if(menu.getParentId() == 1) {
+        		menuList.add(menu);
         	} else if(menu.getOnMenu() == 1) {
-        		Menu m = map.get(menu.getParentId());
-        		if(m.getChildList() == null) {
-        			 List<Menu> childList = new ArrayList<Menu>();
-        			 m.setChildList(childList);
+        		Menu parent = null;
+        		for(Menu m : menuList) {
+        			if(m.getId() == menu.getParentId()) {
+        				parent = m;
+        				break;
+        			}
         		}
-        		m.getChildList().add(menu);
+        		if(parent.getChildList() == null) {
+        			 List<Menu> childList = new ArrayList<Menu>();
+        			 parent.setChildList(childList);
+        		}
+        		parent.getChildList().add(menu);
         	}
         }
-        List<Menu> menuList = Lists.newArrayList(map.values());
         request.setAttribute("menuList", menuList);
         return INDEX;
     }

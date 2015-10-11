@@ -1,5 +1,6 @@
 package com.manager.web.system;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,11 +10,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Splitter;
 import com.manager.common.Constants;
 import com.manager.common.exception.AdminException;
-import com.manager.common.util.DwzJsonUtil;
 import com.manager.common.util.MessageDigestUtil;
 import com.manager.common.util.Page;
 import com.manager.common.util.PageData;
@@ -36,7 +39,7 @@ public class AdminController implements Constants {
 
     public static final String ADD_ADMIN = "/system/admin/edit";
 
-    public static final String UPDATE_ADMIN = "/system/admin/detail";
+    public static final String UPDATE_ADMIN = "/system/admin/edit";
 
     public static final int listPageSize = 20;
 
@@ -103,8 +106,33 @@ public class AdminController implements Constants {
         record.setId(id);
         record.setState(StateType.INACTIVE.getId());
         adminService.updateByIdSelective(record);
-        return new ModelAndView(JSON_VIEW, JSON_ROOT,
-                DwzJsonUtil.getOkStatusMsg("删除成功"));
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("msg","success");
+		mv.setViewName("common/save_result");
+        return mv;
+    }
+    
+    /**
+     * 删除用户
+     * 
+     * @param request
+     * @return ModelAndView
+     * @throws AdminException
+     */
+    @RequestMapping("/delAll")
+    @ResponseBody
+    public Object delAll(HttpServletRequest request) throws AdminException {
+        String userIds = RequestUtil.getString(request, "userIds");
+        Iterator<String> it = Splitter.on(",").trimResults().split(userIds).iterator();
+        while(it.hasNext()) {
+        	Admin record = new Admin();
+            record.setId(Long.parseLong(it.next()));
+            record.setState(StateType.INACTIVE.getId());
+            adminService.updateByIdSelective(record);
+        }
+        JSONObject json = new JSONObject();
+        json.put("code", 200);
+        return json;
     }
 
     /**
@@ -118,6 +146,7 @@ public class AdminController implements Constants {
     public ModelAndView goAdd(HttpServletRequest request) throws AdminException {
         List<Role> roles = roleService.getByCriteria(new Criteria());
         request.setAttribute("roles", roles);
+        request.setAttribute("uri", "add");
         return new ModelAndView(ADD_ADMIN);
     }
 
@@ -137,7 +166,7 @@ public class AdminController implements Constants {
 
         List<Role> roles = roleService.getByCriteria(new Criteria());
         request.setAttribute("roles", roles);
-        
+        request.setAttribute("uri", "update");
         return new ModelAndView(UPDATE_ADMIN);
     }
 
@@ -184,7 +213,10 @@ public class AdminController implements Constants {
         
         // 根据角色添加默认权限
         adminMenuService.addAdminDefaultMenu(adminId, roleId);
-        return new ModelAndView(JSON_VIEW, JSON_ROOT, DwzJsonUtil.getOkStatusMsg("添加成功"));
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("msg","success");
+		mv.setViewName("common/save_result");
+        return mv;
     }
 
     /**
@@ -225,7 +257,10 @@ public class AdminController implements Constants {
         record.setRoleId(roleId);
         record.setState(state);
         adminService.updateByIdSelective(record);
-        return new ModelAndView(JSON_VIEW, JSON_ROOT, DwzJsonUtil.getOkStatusMsg("更新成功"));
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("msg","success");
+		mv.setViewName("common/save_result");
+        return mv;
     }
     
     

@@ -59,8 +59,13 @@ public class MenuServiceImpl implements MenuService {
     
     @Override
     public void deleteById(Long id){
+    	List<Menu> list = listSubMenuByParentId(String.valueOf(id));
+    	if(list != null) {
+    		for(Menu menu : list) {
+    			roleDefaultMenuDAO.deleteByMenuId(menu.getId());
+    		}
+    	}
         menuDAO.deleteByPrimaryKey(id);
-        adminMenuDAO.deleteByMenuId(id);
         roleDefaultMenuDAO.deleteByMenuId(id);
     }
 
@@ -80,6 +85,13 @@ public class MenuServiceImpl implements MenuService {
 		Criteria c = new Criteria();
 		c.put("parentId", parentId);
 		return menuDAO.selectByExample(c);
+	}
+	
+	public boolean updateIcon(Long id, String icon) {
+		Menu menu = new Menu();
+		menu.setId(id);
+		menu.setIcon(icon);
+		return menuDAO.updateByPrimaryKeySelective(menu) > 0 ? true : false;
 	}
 
 }

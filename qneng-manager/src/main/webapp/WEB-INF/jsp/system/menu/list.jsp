@@ -68,7 +68,7 @@
 	   	 var diag = new top.Dialog();
 		 diag.Drag=true;
 		 diag.Title ="编辑图标";
-		 diag.URL = '<%=basePath%>menu/toEditicon.do?MENU_ID='+menuId;
+		 diag.URL = '<%=basePath%>manager/menu/toIcon?menuId='+menuId;
 		 diag.Width = 530;
 		 diag.Height = 150;
 		 diag.CancelEvent = function(){ //关闭事件
@@ -94,7 +94,7 @@
 		}
 		if(flag){
 			top.jzts();
-			var url = "<%=basePath%>menu/del.do?MENU_ID="+menuId+"&guid="+new Date().getTime();
+			var url = "<%=basePath%>manager/menu/del.do?menuId="+menuId+"&guid="+new Date().getTime();
 			$.get(url,function(data){
 				top.jzts();
 				document.location.reload();
@@ -205,7 +205,7 @@
 						<a class='btn btn-mini btn-warning' onclick="openClose('${sub.id }',this,${subVs.index })" >展开</a> 
 						<a class='btn btn-mini btn-success' onclick="addmenu('${sub.id}');">新增</a> 
 						<a class='btn btn-mini btn-info' title='编辑' onclick="editmenu('${sub.id}')"><i class='icon-edit'></i></a> 
-						<a class='btn btn-mini btn-danger' title='删除' onclick="delmenu('${sub.id}',false)"><i class='icon-trash'></i></a>
+						<a class='btn btn-mini btn-danger' title='删除' onclick="delmenu('${sub.id}',true)"><i class='icon-trash'></i></a>
 					</td>
 					</tr>
 				</c:forEach>

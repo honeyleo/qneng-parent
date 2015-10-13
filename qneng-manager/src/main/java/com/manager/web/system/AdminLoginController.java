@@ -135,6 +135,7 @@ public class AdminLoginController implements Constants {
         if (!password.equals(user.getPassword())) {
             throw new AdminException("密码不正确！");
         }
+        account.setId(user.getId());
         request.getSession().setAttribute(SESSION_LOGIN_USER, account);
     }
     

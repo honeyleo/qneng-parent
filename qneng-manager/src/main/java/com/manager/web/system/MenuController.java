@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.manager.common.Constants;
 import com.manager.common.exception.AdminException;
@@ -122,14 +123,44 @@ public class MenuController implements Constants {
     }
 
     @RequestMapping("/del")
-    public String deleteTreeNode(HttpServletRequest request) throws AdminException {
-        List<Long> menuIds=RequestUtil.getLongs(request, "treecheckbox");
-        if(null == menuIds || menuIds.isEmpty()) {
+    @ResponseBody
+    public Object deleteTreeNode(HttpServletRequest request) throws AdminException {
+        Long menuId =RequestUtil.getLong(request, "menuId");
+        if(null == menuId) {
             throw new AdminException("请选择要删除的节点！");
         }
-        for(Long menuId: menuIds) {
-            menuService.deleteById(menuId);
-        }
-        return list(request);
+        menuService.deleteById(menuId);
+        JSONObject json = new JSONObject();
+        json.put("code", 200);
+        return json;
     }
+    
+    /**
+	 * 请求编辑菜单图标页面
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping(value="/toIcon")
+	public ModelAndView toEditicon(String menuId)throws Exception{
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("menuId", menuId);
+		mv.setViewName("system/menu/icon");
+		return mv;
+	}
+	
+	/**
+	 * 保存菜单图标 (顶部菜单)
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping(value="/editIcon")
+	public ModelAndView editicon(HttpServletRequest request)throws Exception{
+		ModelAndView mv = new ModelAndView();
+		Long id = RequestUtil.getLong(request, "menuId");
+		String icon = RequestUtil.getString(request, "icon");
+		menuService.updateIcon(id, icon);
+		mv.addObject("msg","success");
+		mv.setViewName("common/save_result");
+		return mv;
+	}
 }

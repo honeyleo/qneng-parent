@@ -38,4 +38,5 @@ public interface MenuService {
     List<Menu> listAllParentMenu();
     
     List<Menu> listSubMenuByParentId(String parentId);
+    boolean updateIcon(Long id, String icon);
 }

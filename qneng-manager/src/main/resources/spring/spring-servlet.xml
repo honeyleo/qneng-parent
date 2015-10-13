@@ -51,4 +51,12 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 	
+	<!--  
+	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+		<mvc:interceptor>
+			<mvc:mapping path="/manager/**"/>
+			<bean class="com.manager.common.web.interceptors.PermissionInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors> -->
 </beans>

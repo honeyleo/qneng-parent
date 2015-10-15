@@ -1,8 +1,5 @@
 package com.manager.common.exception;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,27 +13,28 @@ public class ApplicationExceptionHandler implements HandlerExceptionResolver {
 
 	private MessageSource messageSource;
 
-	public void setMessageSource(MessageSource messageSource)
-	{
+	public void setMessageSource(MessageSource messageSource) {
 		this.messageSource = messageSource;
 	}
 
 	@Override
-	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handle, Exception e)
-	{
-		Map<String, Object> model = new HashMap<String, Object>();
+	public ModelAndView resolveException(HttpServletRequest request,
+			HttpServletResponse response, Object handle, Exception e) {
+		ModelAndView mv = new ModelAndView("/WEB-INF/jsp/error.jsp");
 		ErrorCode errorCode = ErrorCode.ERROR;
-		String errorMessage = messageSource.getMessage(errorCode.getMsg(), null, request.getLocale());
-		String view = "error";
-		if (e instanceof ApplicationException)
-		{
+		String errorMessage = "";
+		if (e instanceof ApplicationException) {
 			ApplicationException ae = (ApplicationException) e;
 			errorCode = ae.getErrorCode();
-			errorMessage = messageSource.getMessage(errorCode.getMsg(), ae.getMessageParams(), request.getLocale());
+			errorMessage = messageSource.getMessage(errorCode.getMsg(),
+					ae.getMessageParams(), request.getLocale());
+		} else {
+			errorMessage = messageSource.getMessage(errorCode.getMsg(), null,
+					request.getLocale());
 		}
-		model.put("code", errorCode.getCode());
-		model.put("message", errorMessage);
-		return new ModelAndView("/WEB-INF/jsp/" + view + ".jsp", model);
+		mv.addObject("code", errorCode.getCode());
+		mv.addObject("msg", errorMessage);
+		return mv;
 	}
 
 }

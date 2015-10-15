@@ -12,6 +12,7 @@
 	</context:component-scan> 
 	
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="defaultEncoding" value="UTF-8"/>
 		<property name="basenames">
 			<list>
 				<value>i18n/ErrorResource</value>
@@ -22,7 +23,6 @@
 		class="com.manager.common.exception.ApplicationExceptionHandler">
 		<property name="messageSource" ref="messageSource"></property>
 	</bean>
-	<bean class="cn.lfy.common.framework.exception.handler.ExceptionHandler"> </bean>  
 	
 	<!-- CommonsMultipartResolver -->
 	<bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -62,12 +62,11 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 	
-	<!--  
 	<mvc:interceptors>
 		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
 		<mvc:interceptor>
 			<mvc:mapping path="/manager/**"/>
 			<bean class="com.manager.common.web.interceptors.PermissionInterceptor"></bean>
 		</mvc:interceptor>
-	</mvc:interceptors> -->
+	</mvc:interceptors> 
 </beans>

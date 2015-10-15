@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.common.collect.Maps;
+import com.manager.common.ErrorCode;
+import com.manager.common.exception.ApplicationException;
 
 @Controller
 @RequestMapping("/manager")
@@ -38,7 +40,10 @@ public class LoginController {
 	}
 	@RequestMapping("/getJson")
 	@ResponseBody
-	public Object getJson() {
+	public Object getJson(int id) throws ApplicationException {
+		if(id == 0 ) {
+			throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "id");
+		}
 		Map<String, Object> json = Maps.newHashMap();
 		json.put("name", "廖鹏");
 		return json;

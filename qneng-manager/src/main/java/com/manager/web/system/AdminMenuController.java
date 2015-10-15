@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.manager.common.Constants;
-import com.manager.common.exception.AdminException;
+import com.manager.common.ErrorCode;
+import com.manager.common.exception.ApplicationException;
 import com.manager.common.util.DwzJsonUtil;
 import com.manager.common.util.RequestUtil;
 import com.manager.model.Admin;
@@ -36,13 +37,13 @@ public class AdminMenuController implements Constants
 	private AdminMenuService adminMenuService;
 
 	@RequestMapping("/list")
-	public String listSystemMenus(HttpServletRequest request, HttpServletResponse response) throws AdminException
+	public String listSystemMenus(HttpServletRequest request, HttpServletResponse response) throws ApplicationException
 	{
 		Long adminId = RequestUtil.getLong(request, "adminId");
 		Admin admin=adminService.findById(adminId);
 		if (null == admin)
 		{
-			throw new AdminException("用户不存在！");
+			throw ApplicationException.newInstance(ErrorCode.NOT_EXIST, "用户");
 		}
 		List<Menu> menus = menuService.findMenuList();
 		List<Menu> adminMenus = adminMenuService.getMeneListByAdminId(admin.getId());
@@ -57,22 +58,22 @@ public class AdminMenuController implements Constants
 	}
 
 	@RequestMapping("/save")
-	public ModelAndView save(HttpServletRequest request) throws AdminException
+	public ModelAndView save(HttpServletRequest request) throws ApplicationException
 	{
 		Long adminId = RequestUtil.getLong(request, "adminId");
 		List<Long> menuIds = RequestUtil.getLongs(request, "treecheckbox");
 		if (null == adminId || adminId <= 0)
 		{
-			throw new AdminException("非法操作！");
+			throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "adminId");
 		}
 		if (null == menuIds || menuIds.isEmpty())
         {
-            throw new AdminException("请选择要保存的节点！");
+			throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "menuIds");
         }
 		Admin admin = adminService.findById(adminId);
 		if (null == admin)
 		{
-			throw new AdminException("用户不存在！");
+			throw ApplicationException.newInstance(ErrorCode.NOT_EXIST, "用户");
 		}
 		adminMenuService.saveAdminMenus(admin, menuIds); // 更新权限菜单
 		return new ModelAndView(JSON_VIEW, JSON_ROOT, DwzJsonUtil.getOkStatusMsg(null));

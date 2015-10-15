@@ -2,8 +2,12 @@ package com.manager.common;
 
 public enum ErrorCode {
 
-	OK(200, "success"),
-	ERROR(1, "error")
+	OK(0, "success"),
+	ERROR(1000, "error"),
+	EXIST(1001, "value.exist"),
+	NOT_EXIST(1002, "value.not.exist"),
+	PARAM_ILLEGAL(2000, "param.illegal"),
+	PERMISSION_DENIED(1003, "permission.denied"),
 	;
 	
 	private int code;

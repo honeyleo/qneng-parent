@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.manager.common.Constants;
-import com.manager.common.exception.AdminException;
+import com.manager.common.exception.ApplicationException;
 import com.manager.common.util.Page;
 import com.manager.common.util.PageData;
 import com.manager.common.util.RequestUtil;
@@ -31,7 +31,7 @@ public class RoleController implements Constants {
     private RoleService roleService;
 
     @RequestMapping("/list")
-    public String list(HttpServletRequest request, Page page) throws AdminException {
+    public String list(HttpServletRequest request, Page page) throws ApplicationException {
     	PageData pd = new PageData(request);
         Integer typeId = RequestUtil.getInteger(request, "type");
 //        Integer pageNum = RequestUtil.getInteger(request, "pageNum");
@@ -52,7 +52,7 @@ public class RoleController implements Constants {
 
     @RequestMapping("/del")
     @ResponseBody
-    public Object del(HttpServletRequest request) throws AdminException {
+    public Object del(HttpServletRequest request) throws ApplicationException {
         Long id = RequestUtil.getLong(request, "id");
         Role record = new Role();
         record.setId(id);
@@ -64,13 +64,13 @@ public class RoleController implements Constants {
     }
 
     @RequestMapping("/goadd")
-    public String goAdd(HttpServletRequest request) throws AdminException {
+    public String goAdd(HttpServletRequest request) throws ApplicationException {
     	request.setAttribute("uri", "add");
         return "/system/role/edit";
     }
 
     @RequestMapping("/detail")
-    public String detail(HttpServletRequest request) throws AdminException {
+    public String detail(HttpServletRequest request) throws ApplicationException {
         Long id = RequestUtil.getLong(request, "id");
         Role role = roleService.getById(id);
         request.setAttribute("role", role);
@@ -79,7 +79,7 @@ public class RoleController implements Constants {
     }
 
     @RequestMapping("/add")
-    public ModelAndView add(HttpServletRequest request) throws AdminException {
+    public ModelAndView add(HttpServletRequest request) throws ApplicationException {
         String name=RequestUtil.getString(request, "name");
         String desc=RequestUtil.getString(request, "desc");
         Role record=new Role();
@@ -92,7 +92,7 @@ public class RoleController implements Constants {
     }
 
     @RequestMapping("/update")
-    public ModelAndView update(HttpServletRequest request, HttpServletResponse response) throws AdminException {
+    public ModelAndView update(HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
         Long id = RequestUtil.getLong(request, "id");
         String name=RequestUtil.getString(request, "name");
         Integer type=RequestUtil.getInteger(request, "type");

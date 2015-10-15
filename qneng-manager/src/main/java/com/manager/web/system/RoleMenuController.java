@@ -14,17 +14,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSON;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.manager.common.Constants;
-import com.manager.common.exception.AdminException;
+import com.manager.common.ErrorCode;
+import com.manager.common.exception.ApplicationException;
 import com.manager.common.util.DwzJsonUtil;
 import com.manager.common.util.RequestUtil;
 import com.manager.model.Menu;
 import com.manager.model.Role;
+import com.manager.model.TreeNode;
 import com.manager.service.MenuService;
 import com.manager.service.RoleDefaultMenuService;
 import com.manager.service.RoleService;
@@ -44,13 +45,13 @@ public class RoleMenuController implements Constants
 	private RoleDefaultMenuService roleDefaultMenuService;
 
 	@RequestMapping("/list")
-	public String listSystemMenus(HttpServletRequest request, HttpServletResponse response) throws AdminException
+	public String listSystemMenus(HttpServletRequest request, HttpServletResponse response) throws ApplicationException
 	{
 		Long roleId = RequestUtil.getLong(request, "roleId");
 		Role role=roleService.getById(roleId);
 		if (null == role)
 		{
-			throw new AdminException("角色不存在！");
+			throw ApplicationException.newInstance(ErrorCode.NOT_EXIST, "角色");
 		}
 		
 		List<Menu> menus = menuService.findMenuList();
@@ -65,28 +66,6 @@ public class RoleMenuController implements Constants
 		return "/manager/system/role/role_menu_list";
 	}
 
-	@RequestMapping("/save")
-	public ModelAndView save(HttpServletRequest request) throws AdminException
-	{
-		Long roleId = RequestUtil.getLong(request, "roleId");
-		List<Long> menuIds = RequestUtil.getLongs(request, "treecheckbox");
-		if (null == roleId || roleId <= 0)
-		{
-			throw new AdminException("非法操作！");
-		}
-		if (null == menuIds || menuIds.isEmpty())
-        {
-            throw new AdminException("请选择要保存的节点！");
-        }
-		Role role = roleService.getById(roleId);
-		if (null == role)
-		{
-			throw new AdminException("用户不存在！");
-		}
-		roleDefaultMenuService.saveDefaultMenus(role, menuIds); // 更新权限菜单
-		return new ModelAndView(JSON_VIEW, JSON_ROOT, DwzJsonUtil.getOkStatusMsg(null));
-	}
-	
 	/**
 	 * 角色权限列表：角色拥有的权限默认选上
 	 * @date 2015-10-09
@@ -103,62 +82,28 @@ public class RoleMenuController implements Constants
 		for(Menu m : roleMenus) {
 			roleMenuIdSet.add(m.getId());
 		}
-		List<Menu> menuList = Lists.newArrayList();
-        for(Menu menu : menus) {
-        	if(menu.getParentId() == -1) {
-        		continue;
-        	}
-        	else if(menu.getParentId() == 1) {
-        		menuList.add(menu);
-        	} else if(menu.getOnMenu() == 1) {
-        		Menu parent = null;
-        		for(Menu m : menuList) {
-        			if(m.getId() == menu.getParentId()) {
-        				parent = m;
-        				break;
-        			}
-        		}
-        		if(parent.getChildList() == null) {
-        			 List<Menu> childList = new ArrayList<Menu>();
-        			 parent.setChildList(childList);
-        		}
-        		parent.getChildList().add(menu);
-        	}
-        }
-        JSONArray jsonTree = new JSONArray();
-        for(Menu m : menuList) {
-        	JSONObject node = new JSONObject();
-        	node.put("id", m.getId());
-        	node.put("name", m.getName());
-        	if(roleMenuIdSet.contains(m.getId())) {
-        		node.put("checked", true);
-        	}
-        	if(m.getChildList() != null) {
-        		JSONArray subNodeArray = new JSONArray();
-        		for(Menu sub : m.getChildList()) {
-        			JSONObject subNode = new JSONObject();
-        			subNode.put("id", sub.getId());
-        			subNode.put("name", sub.getName());
-        			if(roleMenuIdSet.contains(sub.getId())) {
-        				subNode.put("checked", true);
-    	        	}
-        			subNodeArray.add(subNode);
-        		}
-        		node.put("nodes", subNodeArray);
-        	}
-        	jsonTree.add(node);
-        }
-        JSONArray rootArr = new JSONArray();
-        JSONObject root = new JSONObject();
-        Menu rootMenu = menus.get(0);
-        root.put("id", rootMenu.getId());
-        root.put("name", rootMenu.getName());
-        root.put("nodes", jsonTree);
-        if(roleMenuIdSet.contains(rootMenu.getId())) {
-        	root.put("checked", true);
-        }
-        rootArr.add(root);
-        mv.addObject("zTreeNodes", rootArr.toJSONString());
+		List<TreeNode> treeList = Lists.newArrayList();
+		for(Menu menu : menus) {
+			boolean checked = roleMenuIdSet.contains(menu.getId());
+			treeList.add(new TreeNode(menu.getId(), menu.getName(), menu.getParentId(), checked));
+		}
+		List<TreeNode> tree = Lists.newArrayList();
+		for(TreeNode node1 : treeList){  
+		    boolean mark = false;  
+		    for(TreeNode node2 : treeList) {  
+		        if(node1.getParentId() == node2.getId()) {  
+		            mark = true;  
+		            if(node2.getNodes() == null)  
+		                node2.setNodes(new ArrayList<TreeNode>());  
+		            node2.getNodes().add(node1);   
+		            break;  
+		        }  
+		    }  
+		    if(!mark) {  
+		        tree.add(node1);   
+		    }  
+		}
+        mv.addObject("zTreeNodes", JSON.toJSONString(tree));
         mv.addObject("roleId", roleId);
 		return mv;
 	}
@@ -171,22 +116,22 @@ public class RoleMenuController implements Constants
 	 * @throws AdminException
 	 */
 	@RequestMapping("/saveMenu")
-	public ModelAndView saveMenu(HttpServletRequest request) throws AdminException
+	public ModelAndView saveMenu(HttpServletRequest request) throws ApplicationException
 	{
 		Long roleId = RequestUtil.getLong(request, "roleId");
 		String menuIds = RequestUtil.getString(request, "menuIds");
 		if (null == roleId || roleId <= 0)
 		{
-			throw new AdminException("非法操作！");
+			throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "roleId");
 		}
 		if (null == menuIds || "".equals(menuIds))
         {
-            throw new AdminException("请选择要保存的节点！");
+			throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "menuIds");
         }
 		Role role = roleService.getById(roleId);
 		if (null == role)
 		{
-			throw new AdminException("用户不存在！");
+			throw ApplicationException.newInstance(ErrorCode.NOT_EXIST, "角色");
 		}
 		Iterator<String> it = Splitter.on(",").trimResults().split(menuIds).iterator();
 		Set<Long> nowSet = Sets.newHashSet();

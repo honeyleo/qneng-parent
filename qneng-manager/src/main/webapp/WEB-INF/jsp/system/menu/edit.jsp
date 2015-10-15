@@ -99,8 +99,8 @@
 				<tr>
 					<td>
 						<select name="onMenu" id="onMenu" data-placeholder="请选择是否为菜单">
-							<option value="1" <c:if test="${menu.onMenu == 1 }">checked</c:if>>是</option>
-							<option value="0" <c:if test="${menu.onMenu == 0 }">checked</c:if>>否</option>
+							<option value="1" <c:if test="${menu.onMenu == 1 }">selected</c:if>>是</option>
+							<option value="0" <c:if test="${menu.onMenu == 0 }">selected</c:if>>否</option>
 						</select>
 					</td>
 				</tr>

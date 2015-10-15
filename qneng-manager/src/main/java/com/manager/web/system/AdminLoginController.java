@@ -17,7 +17,8 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.google.common.collect.Lists;
 import com.manager.common.Constants;
-import com.manager.common.exception.AdminException;
+import com.manager.common.ErrorCode;
+import com.manager.common.exception.ApplicationException;
 import com.manager.common.util.DwzJsonUtil;
 import com.manager.common.util.MessageDigestUtil;
 import com.manager.common.util.RequestUtil;
@@ -53,7 +54,7 @@ public class AdminLoginController implements Constants {
 	private RoleDefaultMenuService roleDefaultMenuService;
     
     @RequestMapping("/index")
-    public String index(HttpServletRequest request) throws AdminException {
+    public String index(HttpServletRequest request) throws ApplicationException {
         LoginAccount account = Funcs.getSessionLoginAccount(request.getSession());
         List<Menu> menus = roleDefaultMenuService.getMenuListByRoleId(account.getUser().getRoleId());
         account.setMenus(menus);
@@ -84,15 +85,15 @@ public class AdminLoginController implements Constants {
     }
 
     @RequestMapping("/login")
-    public String login() throws AdminException {
+    public String login() throws ApplicationException {
         return ADMIN_LOGIN;
     }
 
     @RequestMapping("/dologin")
-    public ModelAndView login(HttpServletRequest request, HttpServletResponse response) throws AdminException {
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
         try {
             doLogin(request, response);
-        } catch (AdminException ex) {
+        } catch (ApplicationException ex) {
             String errorMsg = ex.getMessage();
             if (RequestUtil.isAjax(request)) {
                 return new ModelAndView(JSON_VIEW, JSON_ROOT,
@@ -111,7 +112,7 @@ public class AdminLoginController implements Constants {
         }
     }
 
-    private void doLogin(HttpServletRequest request, HttpServletResponse response) throws AdminException {
+    private void doLogin(HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
@@ -122,18 +123,18 @@ public class AdminLoginController implements Constants {
         }
         if (null == username || username.trim().length() == 0
                 || null == password || password.length() == 0) {
-            throw new AdminException("请填写用户名和密码！");
+            throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "用户名或密码");
         }
         LoginAccount account = getAdminLoginUser(username);
         Admin user = account.getUser();
         if (user == null) {
-            throw new AdminException("查无此用户！");
+            throw ApplicationException.newInstance(ErrorCode.ERROR);
         }
         if (user.getState().equals(StateType.INACTIVE)) {
-            throw new AdminException("该用户已停用！");
+        	throw ApplicationException.newInstance(ErrorCode.ERROR);
         }
         if (!password.equals(user.getPassword())) {
-            throw new AdminException("密码不正确！");
+        	throw ApplicationException.newInstance(ErrorCode.ERROR);
         }
         account.setId(user.getId());
         request.getSession().setAttribute(SESSION_LOGIN_USER, account);

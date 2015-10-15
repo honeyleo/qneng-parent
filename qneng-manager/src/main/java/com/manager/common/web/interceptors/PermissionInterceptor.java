@@ -12,9 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import cn.lfy.common.framework.exception.ServiceRuntimeException;
-import cn.lfy.common.utils.Constants;
-
+import com.manager.common.ErrorCode;
+import com.manager.common.exception.ApplicationException;
 import com.manager.model.LoginAccount;
 import com.manager.model.Menu;
 
@@ -49,7 +48,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 		if (!(ignoreUrl.contains(requestUrl))) {
 
 			if (!permissionVerify(request)) {
-				throw new ServiceRuntimeException(Constants.BADREQ_AUTHENTICATION_FAIL);
+				throw ApplicationException.newInstance(ErrorCode.PERMISSION_DENIED);
 			}
 		}
 		return super.preHandle(request, response, handler);

@@ -30,7 +30,7 @@
 		 var diag = new top.Dialog();
 		 diag.Drag=true;
 		 diag.Title ="新增菜单";
-		 diag.URL = '<%=basePath%>/manager/menu/goadd?parentId=' + parentId;
+		 diag.URL = '<%=basePath%>manager/menu/goadd?parentId=' + parentId;
 		 diag.Width = 223;
 		 diag.Height = 256;
 		 diag.CancelEvent = function(){ //关闭事件
@@ -94,7 +94,7 @@
 		}
 		if(flag){
 			top.jzts();
-			var url = "<%=basePath%>manager/menu/del.do?menuId="+menuId+"&guid="+new Date().getTime();
+			var url = "<%=basePath%>manager/menu/del?menuId="+menuId+"&guid="+new Date().getTime();
 			$.get(url,function(data){
 				top.jzts();
 				document.location.reload();

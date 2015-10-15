@@ -18,9 +18,9 @@ public class TreeTest {
 		    for(TreeNode node2 : menuList) {  
 		        if(node1.getParentId().equals(node2.getId())) {  
 		            mark = true;  
-		            if(node2.getChildren() == null)  
-		                node2.setChildren(new ArrayList<TreeNode>());  
-		            node2.getChildren().add(node1);   
+		            if(node2.getNodes() == null)  
+		                node2.setNodes(new ArrayList<TreeNode>());  
+		            node2.getNodes().add(node1);   
 		            break;  
 		        }  
 		    }  

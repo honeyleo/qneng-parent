@@ -16,12 +16,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Splitter;
 import com.manager.common.Constants;
-import com.manager.common.exception.AdminException;
+import com.manager.common.ErrorCode;
+import com.manager.common.exception.ApplicationException;
 import com.manager.common.util.MessageDigestUtil;
 import com.manager.common.util.Page;
 import com.manager.common.util.PageData;
 import com.manager.common.util.RequestUtil;
-import com.manager.common.web.Funcs;
 import com.manager.model.Admin;
 import com.manager.model.Criteria;
 import com.manager.model.PageInfo;
@@ -60,14 +60,8 @@ public class AdminController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/list")
-    public ModelAndView list(HttpServletRequest request, Page page) throws AdminException {
+    public ModelAndView list(HttpServletRequest request, Page page) throws ApplicationException {
     	PageData pd = new PageData(request);
-        Admin user = Funcs.getSessionLoginUser(request.getSession());
-        if (!DEV_ADMIN_ROLE_ID.equals(user.getRoleId())
-                && !SUPER_ADMIN_ROLE_ID.equals(user.getRoleId())) {
-            throw new AdminException("您的角色身份不能使用该功能！");
-        }
-
         String realName = RequestUtil.getString(request, "realName");
         String username = RequestUtil.getString(request, "username");
 //        Integer pageNum = RequestUtil.getInteger(request, "pageNum");
@@ -100,7 +94,7 @@ public class AdminController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/del")
-    public ModelAndView del(HttpServletRequest request) throws AdminException {
+    public ModelAndView del(HttpServletRequest request) throws ApplicationException {
         Long id = RequestUtil.getLong(request, "id");
         Admin record = new Admin();
         record.setId(id);
@@ -121,7 +115,7 @@ public class AdminController implements Constants {
      */
     @RequestMapping("/delAll")
     @ResponseBody
-    public Object delAll(HttpServletRequest request) throws AdminException {
+    public Object delAll(HttpServletRequest request) throws ApplicationException {
         String userIds = RequestUtil.getString(request, "userIds");
         Iterator<String> it = Splitter.on(",").trimResults().split(userIds).iterator();
         while(it.hasNext()) {
@@ -143,7 +137,7 @@ public class AdminController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/goadd")
-    public ModelAndView goAdd(HttpServletRequest request) throws AdminException {
+    public ModelAndView goAdd(HttpServletRequest request) throws ApplicationException {
         List<Role> roles = roleService.getByCriteria(new Criteria());
         request.setAttribute("roles", roles);
         request.setAttribute("uri", "add");
@@ -158,7 +152,7 @@ public class AdminController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/detail")
-    public ModelAndView detail(HttpServletRequest request) throws AdminException {
+    public ModelAndView detail(HttpServletRequest request) throws ApplicationException {
         Long id = RequestUtil.getLong(request, "id");
         Admin admin = adminService.findById(id);
         request.setAttribute("admin", admin);
@@ -178,11 +172,11 @@ public class AdminController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/add")
-    public ModelAndView add(HttpServletRequest request) throws AdminException {
+    public ModelAndView add(HttpServletRequest request) throws ApplicationException {
         String username = RequestUtil.getString(request, "username");
         Admin extAdmin = adminService.findByUsername(username);
         if (extAdmin != null) {
-            throw new AdminException("该用户名已被注册！");
+            throw ApplicationException.newInstance(ErrorCode.EXIST, "用户名");
         }
         String password = RequestUtil.getString(request, "passward");
         try {
@@ -228,7 +222,7 @@ public class AdminController implements Constants {
      */
     @RequestMapping("/update")
     public ModelAndView update(HttpServletRequest request,
-            HttpServletResponse response) throws AdminException {
+            HttpServletResponse response) throws ApplicationException {
         Long id = RequestUtil.getLong(request, "id");
         String password = RequestUtil.getString(request, "password");
         String realName = RequestUtil.getString(request, "realName");

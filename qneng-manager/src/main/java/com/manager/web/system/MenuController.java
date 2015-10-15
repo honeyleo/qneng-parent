@@ -15,7 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.manager.common.Constants;
-import com.manager.common.exception.AdminException;
+import com.manager.common.ErrorCode;
+import com.manager.common.exception.ApplicationException;
 import com.manager.common.util.RequestUtil;
 import com.manager.model.Menu;
 import com.manager.service.MenuService;
@@ -29,7 +30,7 @@ public class MenuController implements Constants {
     private MenuService menuService;
 
     @RequestMapping("/list")
-    public String list(HttpServletRequest request) throws AdminException {
+    public String list(HttpServletRequest request) throws ApplicationException {
     	List<Menu> menus = menuService.findMenuList();
     	List<Menu> menuList = Lists.newArrayList();
         for(Menu menu : menus) {
@@ -59,14 +60,14 @@ public class MenuController implements Constants {
     
     @RequestMapping("/sub")
     @ResponseBody
-    public Object sub(HttpServletRequest request) throws AdminException {
+    public Object sub(HttpServletRequest request) throws ApplicationException {
         Integer parentId=RequestUtil.getInteger(request, "parentId");
         List<Menu> menus=menuService.listSubMenuByParentId(String.valueOf(parentId));
         return menus;
     }
 
     @RequestMapping("/goadd")
-    public String goAdd(HttpServletRequest request, HttpServletResponse response) throws AdminException {
+    public String goAdd(HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
         Long parentId=RequestUtil.getLong(request, "parentId");
         Menu menu=menuService.getById(parentId);
         request.setAttribute("parentId", parentId);
@@ -75,7 +76,7 @@ public class MenuController implements Constants {
     }
     
     @RequestMapping("/goedit")
-    public String goEditor(HttpServletRequest request, HttpServletResponse response) throws AdminException {
+    public String goEditor(HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
         Long id=RequestUtil.getLong(request, "id");
         if(null != id) {
             Menu menu=menuService.getById(id);
@@ -85,16 +86,8 @@ public class MenuController implements Constants {
         return "/system/menu/edit";
     }
 
-    @RequestMapping("/goselect")
-    public String goSelect(HttpServletRequest request, HttpServletResponse response) throws AdminException {
-//        Integer typeId=RequestUtil.getInteger(request, "type");
-        List<Menu> menus=menuService.findMenuList();
-        request.setAttribute("menus", menus);
-        return "/manager/system/menu/menu_select";
-    }
-
     @RequestMapping("/save")
-    public ModelAndView save(HttpServletRequest request) throws AdminException {
+    public ModelAndView save(HttpServletRequest request) throws ApplicationException {
         Long id=RequestUtil.getLong(request, "id");
         String name=RequestUtil.getString(request, "name");
         Integer type=RequestUtil.getInteger(request, "type");
@@ -124,10 +117,10 @@ public class MenuController implements Constants {
 
     @RequestMapping("/del")
     @ResponseBody
-    public Object deleteTreeNode(HttpServletRequest request) throws AdminException {
+    public Object deleteTreeNode(HttpServletRequest request) throws ApplicationException {
         Long menuId =RequestUtil.getLong(request, "menuId");
         if(null == menuId) {
-            throw new AdminException("请选择要删除的节点！");
+            throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "menuId");
         }
         menuService.deleteById(menuId);
         JSONObject json = new JSONObject();

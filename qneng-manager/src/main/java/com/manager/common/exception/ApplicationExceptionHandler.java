@@ -20,20 +20,23 @@ public class ApplicationExceptionHandler implements HandlerExceptionResolver {
 	@Override
 	public ModelAndView resolveException(HttpServletRequest request,
 			HttpServletResponse response, Object handle, Exception e) {
-		ModelAndView mv = new ModelAndView("/WEB-INF/jsp/error.jsp");
+		ModelAndView mv = new ModelAndView("error");
 		ErrorCode errorCode = ErrorCode.ERROR;
 		String errorMessage = "";
+		String redirectUrl = null;
 		if (e instanceof ApplicationException) {
 			ApplicationException ae = (ApplicationException) e;
 			errorCode = ae.getErrorCode();
 			errorMessage = messageSource.getMessage(errorCode.getMsg(),
 					ae.getMessageParams(), request.getLocale());
+			redirectUrl = ((ApplicationException) e).getRedirectUrl();
 		} else {
 			errorMessage = messageSource.getMessage(errorCode.getMsg(), null,
 					request.getLocale());
 		}
 		mv.addObject("code", errorCode.getCode());
 		mv.addObject("msg", errorMessage);
+		mv.addObject("redirectUrl", redirectUrl);
 		return mv;
 	}
 

@@ -109,7 +109,7 @@
 			var diag = new top.Dialog();
 			diag.Drag = true;
 			diag.Title = "权限分配";
-			diag.URL = '<%=basePath%>manager/role_menu/button.do?roleId='+roleId;
+			diag.URL = '<%=basePath%>manager/role_menu/button?roleId='+roleId;
 			diag.Width = 400;
 			diag.Height = 470;
 			diag.CancelEvent = function(){ //关闭事件

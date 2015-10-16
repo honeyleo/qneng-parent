@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @version
  */
 @Controller
-@RequestMapping("/manager")
 public class SecCodeController {
 
 	@RequestMapping("/code")

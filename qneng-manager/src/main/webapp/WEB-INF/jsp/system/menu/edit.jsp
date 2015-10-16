@@ -85,6 +85,7 @@
 			<input type="hidden" name="parentId" id="parentId" value="${parentId}"/>
 			<input type="hidden" name="parentIdPath" id="parentIdPath" value="${parentIdPath}"/>
 			<input type="hidden" name="type" id="type" value="1"/>
+			<input type="hidden" name="onMenu" id="onMenu" value="${onMenu}"/>
 			<div id="zhongxin">
 			<table>
 				<tr>
@@ -95,14 +96,6 @@
 				</tr>
 				<tr>
 					<td><input type="number" name="orderNo" id="orderNo" placeholder="这里输入序号" value="${menu.orderNo}" title="序号"/></td>
-				</tr>
-				<tr>
-					<td>
-						<select name="onMenu" id="onMenu" data-placeholder="请选择是否为菜单">
-							<option value="1" <c:if test="${menu.onMenu == 1 }">selected</c:if>>是</option>
-							<option value="0" <c:if test="${menu.onMenu == 0 }">selected</c:if>>否</option>
-						</select>
-					</td>
 				</tr>
 				<tr>
 				<td style="text-align: center; padding-top: 10px;">

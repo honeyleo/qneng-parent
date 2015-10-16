@@ -33,7 +33,6 @@ import com.manager.service.MenuService;
 import com.manager.service.RoleDefaultMenuService;
 
 @Controller
-@RequestMapping("/manager")
 public class AdminLoginController implements Constants {
 
     private static final String ADMIN_LOGIN = "/system/login";
@@ -53,7 +52,7 @@ public class AdminLoginController implements Constants {
     @Autowired
 	private RoleDefaultMenuService roleDefaultMenuService;
     
-    @RequestMapping("/index")
+    @RequestMapping("/manager/index")
     public String index(HttpServletRequest request) throws ApplicationException {
         LoginAccount account = Funcs.getSessionLoginAccount(request.getSession());
         List<Menu> menus = roleDefaultMenuService.getMenuListByRoleId(account.getUser().getRoleId());
@@ -84,6 +83,11 @@ public class AdminLoginController implements Constants {
         return INDEX;
     }
 
+    @RequestMapping("/")
+    public String manager() throws ApplicationException {
+        return ADMIN_LOGIN;
+    }
+    
     @RequestMapping("/login")
     public String login() throws ApplicationException {
         return ADMIN_LOGIN;
@@ -160,7 +164,7 @@ public class AdminLoginController implements Constants {
         return account;
     }
 
-    @RequestMapping("/logout")
+    @RequestMapping("/manager/logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.removeAttribute(SESSION_LOGIN_USER);

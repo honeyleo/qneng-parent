@@ -113,14 +113,14 @@
 				var code = $("#code").val();
 				$.ajax({
 					type: "POST",
-					url: 'dologin',
+					url: '<%=path%>dologin',
 			    	data: {code:code,username:loginname,password:password,tm:new Date().getTime()},
 					dataType:'json',
 					cache: false,
 					success: function(data){
 						if("200" == data.statusCode){
 							saveCookie();
-							window.location.href="index";
+							window.location.href="manager/index";
 						}else if("usererror" == data.result){
 							$("#loginname").tips({
 								side : 1,
@@ -168,7 +168,7 @@
 		}
 
 		function changeCode() {
-			$("#codeImg").attr("src", "code?t=" + genTimestamp());
+			$("#codeImg").attr("src", "<%=path%>code?t=" + genTimestamp());
 		}
 
 		//客户端校验

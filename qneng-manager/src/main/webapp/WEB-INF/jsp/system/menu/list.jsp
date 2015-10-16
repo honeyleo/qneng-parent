@@ -25,12 +25,12 @@
 	$(top.hangge());	
 	
 	//新增
-	function addmenu(parentId){
+	function addmenu(parentId,onMenu){
 		 top.jzts();
 		 var diag = new top.Dialog();
 		 diag.Drag=true;
 		 diag.Title ="新增菜单";
-		 diag.URL = '<%=basePath%>manager/menu/goadd?parentId=' + parentId;
+		 diag.URL = '<%=basePath%>manager/menu/goadd?parentId=' + parentId + '&onMenu=' + onMenu;
 		 diag.Width = 223;
 		 diag.Height = 256;
 		 diag.CancelEvent = function(){ //关闭事件
@@ -150,6 +150,12 @@
 
 <body>
 	<br>
+	<div class="page_and_btn">
+		<div>
+			&nbsp;&nbsp;<a class="btn btn-small btn-success" onclick="addmenu(1, 1);">新增模块</a>
+		</div>
+	</div>
+	<br>
 	<table id="table_report" class="table table-striped table-bordered table-hover">
 		<thead>
 		<tr>
@@ -178,7 +184,7 @@
 				<td class="center">${menu.id}</td>
 				<td class='center'>${menu.orderNo }</td>
 				<td style="width:25%;">
-				<a class="btn btn-mini btn-success" onclick="addmenu('${menu.id}');">新增</a>
+				<a class="btn btn-mini btn-success" onclick="addmenu('${menu.id}', 1);">新增</a>
 				<a class='btn btn-mini btn-purple' title="图标" onclick="editTb('${menu.id }')" ><i class='icon-picture'></i></a>
 				<a class='btn btn-mini btn-info' title="编辑" onclick="editmenu('${menu.id }')" ><i class='icon-edit'></i></a>
 				<a class='btn btn-mini btn-danger' title="删除"  onclick="delmenu('${menu.id }',true)"><i class='icon-trash'></i></a>
@@ -203,7 +209,7 @@
 					<td class='center'>${sub.orderNo}</td>
 					<td>
 						<a class='btn btn-mini btn-warning' onclick="openClose('${sub.id }',this,${subVs.index })" >展开</a> 
-						<a class='btn btn-mini btn-success' onclick="addmenu('${sub.id}');">新增</a> 
+						<a class='btn btn-mini btn-success' onclick="addmenu('${sub.id}', 0);">新增</a> 
 						<a class='btn btn-mini btn-info' title='编辑' onclick="editmenu('${sub.id}')"><i class='icon-edit'></i></a> 
 						<a class='btn btn-mini btn-danger' title='删除' onclick="delmenu('${sub.id}',true)"><i class='icon-trash'></i></a>
 					</td>
@@ -218,12 +224,5 @@
 			</c:otherwise>
 		</c:choose>
 	</table>
-	
-	<div class="page_and_btn">
-		<div>
-			&nbsp;&nbsp;<a class="btn btn-small btn-success" onclick="addmenu(1);">新增一级菜单</a>
-		</div>
-	</div>
-	
 </body>
 </html>

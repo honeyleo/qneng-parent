@@ -71,6 +71,8 @@ public class MenuController implements Constants {
         Long parentId=RequestUtil.getLong(request, "parentId");
         Menu menu=menuService.getById(parentId);
         request.setAttribute("parentId", parentId);
+        int onMenu=RequestUtil.getInteger(request, "onMenu");
+        request.setAttribute("onMenu", onMenu);
         request.setAttribute("parentIdPath", menu.getParentIdPath() + menu.getId() + "$");
         return "/system/menu/edit";
     }
@@ -82,6 +84,7 @@ public class MenuController implements Constants {
             Menu menu=menuService.getById(id);
             request.setAttribute("menu", menu);
             request.setAttribute("parentId", menu.getParentId());
+            request.setAttribute("onMenu", menu.getOnMenu());
         }
         return "/system/menu/edit";
     }

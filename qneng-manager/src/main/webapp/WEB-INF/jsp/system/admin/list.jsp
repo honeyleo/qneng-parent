@@ -81,8 +81,12 @@
 						<td>${user.state}</td>
 						<td style="width: 60px;">
 							<div class='hidden-phone visible-desktop btn-group'>
-								<a class='btn btn-mini btn-info' title="编辑" onclick="editUser('${user.id }');"><i class='icon-edit'></i></a>
-								<a class='btn btn-mini btn-danger' title="删除" onclick="delUser('${user.id }','${user.username }');"><i class='icon-trash'></i></a>
+								<funcs:permission privilege="20" module="用戶管理_编辑">
+									<a class='btn btn-mini btn-info' title="编辑" onclick="editUser('${user.id }');"><i class='icon-edit'></i></a>
+								</funcs:permission>
+								<funcs:permission privilege="22" module="用戶管理_删除">
+									<a class='btn btn-mini btn-danger' title="删除" onclick="delUser('${user.id }','${user.username }');"><i class='icon-trash'></i></a>
+								</funcs:permission>
 							</div>
 						</td>
 					</tr>
@@ -95,10 +99,12 @@
 		<table style="width:100%;">
 			<tr>
 				<td style="vertical-align:top;">
-					<funcs:permission privilege="1" module="用戶管理_新增">
+					<funcs:permission privilege="18" module="用戶管理_新增">
 						<a class="btn btn-small btn-success" onclick="add();">新增</a>
 					</funcs:permission>
-					<a title="批量删除" class="btn btn-small btn-danger" onclick="makeAll('确定要删除选中的数据吗?');" ><i class='icon-trash'></i></a>
+					<funcs:permission privilege="23" module="用戶管理_批量删除">
+						<a title="批量删除" class="btn btn-small btn-danger" onclick="makeAll('确定要删除选中的数据吗?');" ><i class='icon-trash'></i></a>
+					</funcs:permission>
 				</td>
 				<td style="vertical-align:top;"><div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${page.pageStr}</div></td>
 			</tr>

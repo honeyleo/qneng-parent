@@ -1,25 +1,76 @@
-﻿	<%
-	String path2 = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+ "/" + request.getContextPath();
-	%>
-	<meta charset="utf-8" />
-	<title>FH Admin</title>
-	<meta name="description" content="overview & stats" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<!-- basic styles -->
-	<link href="<%=path2 %>resources/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="<%=path2 %>resources/css/bootstrap-responsive.min.css" rel="stylesheet" />
-	<link rel="stylesheet" href="<%=path2 %>resources/css/font-awesome.min.css" />
-	<!-- page specific plugin styles -->
-	<!-- 下拉框-->
-	<link rel="stylesheet" href="<%=path2 %>resources/css/chosen.css" />
-	<!-- ace styles -->
-	<link rel="stylesheet" href="<%=path2 %>resources/css/ace.min.css" />
-	<link rel="stylesheet" href="<%=path2 %>resources/css/ace-responsive.min.css" />
-	<link rel="stylesheet" href="<%=path2 %>resources/css/ace-skins.min.css" />
-	<script type="text/javascript" src="<%=path2 %>resources/js/jquery-1.7.2.js"></script>
-	<link rel="stylesheet" href="<%=path2 %>resources/css/datepicker.css" /><!-- 日期框 -->
-	<!--引入弹窗组件start-->
-	<script type="text/javascript" src="<%=path2 %>resources/plugins/attention/zDialog/zDrag.js"></script>
-	<script type="text/javascript" src="<%=path2 %>resources/plugins/attention/zDialog/zDialog.js"></script>
-	<!--引入弹窗组件end-->
-	<script type="text/javascript" src="<%=path2 %>resources/js/jquery.tips.js"></script>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<input type="hidden" id="contextPath" value="<%=request.getContextPath()%>"/>
+<div id="navbar" class="navbar navbar-default">
+	<script type="text/javascript">
+		try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+	</script>
+
+	<div class="navbar-container" id="navbar-container">
+		<!-- #section:basics/sidebar.mobile.toggle -->
+		<button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+			<span class="sr-only">Toggle sidebar</span>
+
+			<span class="icon-bar"></span>
+
+			<span class="icon-bar"></span>
+
+			<span class="icon-bar"></span>
+		</button>
+
+		<!-- /section:basics/sidebar.mobile.toggle -->
+		<div class="navbar-header pull-left">
+			<!-- #section:basics/navbar.layout.brand -->
+			<a href="#" class="navbar-brand">
+				<small>
+					<i class="fa fa-globe"></i>
+					66 Internet
+				</small>
+			</a>
+
+			<!-- /section:basics/navbar.layout.brand -->
+
+			<!-- #section:basics/navbar.toggle -->
+
+			<!-- /section:basics/navbar.toggle -->
+		</div>
+
+		<!-- #section:basics/navbar.dropdown -->
+		<div class="navbar-buttons navbar-header pull-right" role="navigation">
+			<ul class="nav ace-nav">
+				<!-- #section:basics/navbar.user_menu -->
+				<li class="light-blue">
+					<a data-toggle="dropdown" href="#" class="dropdown-toggle">
+						<img class="nav-user-photo" src="<%=request.getContextPath() %>/resources/ace/assets/avatars/user.jpg" alt="Jason's Photo" />
+						<span class="user-info">
+							<small>Welcome,</small>
+							${loginUser.nickname }
+						</span>
+
+						<i class="ace-icon fa fa-caret-down"></i>
+					</a>
+
+					<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+						<li class="divider"></li>
+
+						<li>
+							<a href="javascript:exitSystem()">
+								<i class="ace-icon fa fa-power-off"></i>
+								Logout
+							</a>
+						</li>
+					</ul>
+				</li>
+
+				<!-- /section:basics/navbar.user_menu -->
+			</ul>
+		</div>
+
+		<!-- /section:basics/navbar.dropdown -->
+	</div><!-- /.navbar-container -->
+</div>
+<script type="text/javascript">
+function exitSystem() {
+	window.parent.location.href = $("#contextPath").val()+ "/admin/logout";
+}
+</script>
+<!-- /section:basics/navbar.layout -->

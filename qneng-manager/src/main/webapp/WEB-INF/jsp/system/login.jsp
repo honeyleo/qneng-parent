@@ -1,284 +1,289 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-	String path = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+ "/" + request.getContextPath();
-%>
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
-
 <head>
-<title>登录</title>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<link rel="stylesheet" href="<%=path %>resources/css/bootstrap.min.css" />
-<link rel="stylesheet" href="<%=path %>resources/login/css/camera.css" />
-<link rel="stylesheet" href="<%=path %>resources/css/bootstrap-responsive.min.css" />
-<link rel="stylesheet" href="<%=path %>resources/login/matrix-login.css" />
-<link href="<%=path %>resources/login/font-awesome.css" rel="stylesheet" />
-<script type="text/javascript" src="<%=path %>resources/js/jquery-1.5.1.min.js"></script>
+<jsp:include page="common/common_login.jsp"></jsp:include>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/admin/login.css"/>
 
 </head>
-<body>
 
-	<div
-		style="width:100%;text-align: center;margin: 0 auto;position: absolute;">
-		<div id="loginbox">
-			<form action="" method="post" name="loginForm"
-				id="loginForm">
-				<div class="control-group normal_text">
-					<h3>
-						<img src="<%=path %>resources/login/logo.png" alt="Logo" />
-					</h3>
-				</div>
-				<div class="control-group">
-					<div class="controls">
-						<div class="main_input_box">
-							<span class="add-on bg_lg">
-							<i><img height="37" src="<%=path %>resources/login/user.png" /></i>
-							</span><input type="text" name="loginname" id="loginname" value="" placeholder="请输入用户名" />
+<body class="login-layout">
+		<div class="main-container">
+			<div class="main-content">
+				<div class="row">
+					<div class="col-sm-10 col-sm-offset-1">
+						<div class="login-container">
+							<div class="center">
+								<h1>
+									<i class="ace-icon fa fa-leaf green"></i>
+									<span class="red">清能伏</span>
+									<span class="white" id="id-text2">Technology</span>
+								</h1>
+								<h4 class="blue" id="id-company-text">&copy; 清能伏科技</h4>
+							</div>
+
+							<div class="space-6"></div>
+
+							<div class="position-relative">
+								<form method="post" id="myForm" action="<%=request.getContextPath() %>/dologin">
+								<div id="login-box" class="login-box visible widget-box no-border">
+									<div class="widget-body">
+										<div class="widget-main">
+											<h4 class="header blue lighter bigger">
+												<i class="ace-icon fa fa-coffee green"></i>
+												请输入您的账号信息
+											</h4>
+
+											<div class="space-6"></div>
+
+											<form>
+												<fieldset>
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="text" class="form-control" placeholder="用户名" name="username" value="admin"/>
+															<i class="ace-icon fa fa-user"></i>
+														</span>
+													</label>
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="password" class="form-control" placeholder="密码" name="password" value="admin"/>
+															<i class="ace-icon fa fa-lock"></i>
+														</span>
+													</label>
+													
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="password" class="form-control" placeholder="验证码" name="checkcode"/>
+															<span style="cursor:pointer"> <img src="code" onclick="reCheckcode(this)" /></span>
+														</span>
+													</label>
+
+													<div class="space"></div>
+
+													<div class="clearfix">
+														<label class="inline">
+															<input type="checkbox" class="ace" />
+															<span class="lbl"> 记住我</span>
+														</label>
+
+														<button type="submit" class="width-35 pull-right btn btn-sm btn-primary">
+															<i class="ace-icon fa fa-key"></i>
+															<span class="bigger-110">登录</span>
+														</button>
+													</div>
+
+													<div class="space-4"></div>
+												</fieldset>
+											</form>
+
+
+											<div class="space-6"></div>
+
+										</div><!-- /.widget-main -->
+
+										<div class="toolbar clearfix">
+										</div>
+									</div><!-- /.widget-body -->
+								</div><!-- /.login-box -->
+								</from>
+								
+								<div id="forgot-box" class="forgot-box widget-box no-border">
+									<div class="widget-body">
+										<div class="widget-main">
+											<h4 class="header red lighter bigger">
+												<i class="ace-icon fa fa-key"></i>
+												Retrieve Password
+											</h4>
+
+											<div class="space-6"></div>
+											<p>
+												Enter your email and to receive instructions
+											</p>
+
+											<form>
+												<fieldset>
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="email" class="form-control" placeholder="Email" />
+															<i class="ace-icon fa fa-envelope"></i>
+														</span>
+													</label>
+
+													<div class="clearfix">
+														<button type="button" class="width-35 pull-right btn btn-sm btn-danger">
+															<i class="ace-icon fa fa-lightbulb-o"></i>
+															<span class="bigger-110">Send Me!</span>
+														</button>
+													</div>
+												</fieldset>
+											</form>
+										</div><!-- /.widget-main -->
+
+										<div class="toolbar center">
+											<a href="#" data-target="#login-box" class="back-to-login-link">
+												Back to login
+												<i class="ace-icon fa fa-arrow-right"></i>
+											</a>
+										</div>
+									</div><!-- /.widget-body -->
+								</div><!-- /.forgot-box -->
+
+								<div id="signup-box" class="signup-box widget-box no-border">
+									<div class="widget-body">
+										<div class="widget-main">
+											<h4 class="header green lighter bigger">
+												<i class="ace-icon fa fa-users blue"></i>
+												New User Registration
+											</h4>
+
+											<div class="space-6"></div>
+											<p> Enter your details to begin: </p>
+
+											<form>
+												<fieldset>
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="email" class="form-control" placeholder="Email" />
+															<i class="ace-icon fa fa-envelope"></i>
+														</span>
+													</label>
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="text" class="form-control" placeholder="Username" />
+															<i class="ace-icon fa fa-user"></i>
+														</span>
+													</label>
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="password" class="form-control" placeholder="Password" />
+															<i class="ace-icon fa fa-lock"></i>
+														</span>
+													</label>
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="password" class="form-control" placeholder="Repeat password" />
+															<i class="ace-icon fa fa-retweet"></i>
+														</span>
+													</label>
+
+													<label class="block">
+														<input type="checkbox" class="ace" />
+														<span class="lbl">
+															I accept the
+															<a href="#">User Agreement</a>
+														</span>
+													</label>
+
+													<div class="space-24"></div>
+
+													<div class="clearfix">
+														<button type="reset" class="width-30 pull-left btn btn-sm">
+															<i class="ace-icon fa fa-refresh"></i>
+															<span class="bigger-110">Reset</span>
+														</button>
+
+														<button type="button" class="width-65 pull-right btn btn-sm btn-success">
+															<span class="bigger-110">Register</span>
+
+															<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+														</button>
+													</div>
+												</fieldset>
+											</form>
+										</div>
+
+										<div class="toolbar center">
+											<a href="#" data-target="#login-box" class="back-to-login-link">
+												<i class="ace-icon fa fa-arrow-left"></i>
+												Back to login
+											</a>
+										</div>
+									</div><!-- /.widget-body -->
+								</div><!-- /.signup-box -->
+							</div><!-- /.position-relative -->
+
 						</div>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="controls">
-						<div class="main_input_box">
-							<span class="add-on bg_ly">
-							<i><img height="37" src="<%=path %>resources/login/suo.png" /></i>
-							</span><input type="password" name="password" id="password" placeholder="请输入密码" value="" />
-						</div>
-					</div>
-				</div>
-				<div style="float:right;padding-right:10%;">
-					<div style="float: left;margin-top:3px;margin-right:2px;">
-						<font color="white">记住密码</font>
-					</div>
-					<div style="float: left;">
-						<input name="form-field-checkbox" id="saveid" type="checkbox"
-							onclick="savePaw();" style="padding-top:0px;" />
-					</div>
-				</div>
-				<div class="form-actions">
-					<div style="width:86%;padding-left:8%;">
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+			</div><!-- /.main-content -->
+		</div><!-- /.main-container -->
 
-						<div style="float: left;">
-							<i><img src="<%=path %>resources/login/yan.png" /></i>
-						</div>
-						<div style="float: left;" class="codediv">
-							<input type="text" name="code" id="code" class="login_code"
-								style="height:16px; padding-top:0px;" />
-						</div>
-						<div style="float: left;">
-							<i><img style="height:22px;" id="codeImg" alt="点击更换"
-								title="点击更换" src="" /></i>
-						</div>
+		<!-- basic scripts -->
 
-						<span class="pull-right" style="padding-right:3%;"><a
-							href="javascript:quxiao();" class="btn btn-success">取消</a></span> <span
-							class="pull-right"><a onclick="severCheck();"
-							class="flip-link btn btn-info" id="to-recover">登录</a></span>
+		<!--[if !IE]> -->
+		<script type="text/javascript">
+			window.jQuery || document.write("<script src='<%=request.getContextPath() %>/resources/ace/assets/js/jquery.js'>"+"<"+"/script>");
+		</script>
 
-					</div>
-				</div>
+		<!-- <![endif]-->
 
-			</form>
+		<!--[if IE]>
+<script type="text/javascript">
+ window.jQuery || document.write("<script src='<%=request.getContextPath() %>/resources/ace/assets/js/jquery1x.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+		<script type="text/javascript">
+			if('ontouchstart' in document.documentElement) document.write("<script src='<%=request.getContextPath() %>/resources/assets/js/jquery.mobile.custom.js'>"+"<"+"/script>");
+		</script>
 
-
-			<div class="controls">
-				<div class="main_input_box">
-					<font color="white"><span id="nameerr">Copyright © FH
-							2100</span></font>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div id="templatemo_banner_slide" class="container_wapper">
-		<div class="camera_wrap camera_emboss" id="camera_slide">
-			<div data-src="<%=path %>resources/login/images/banner_slide_01.jpg"></div>
-			<div data-src="<%=path %>resources/login/images/banner_slide_02.jpg"></div>
-			<div data-src="<%=path %>resources/login/images/banner_slide_03.jpg"></div>
-		</div>
-		<!-- #camera_wrap_3 -->
-	</div>
-
-	<script type="text/javascript">
-	
-		//服务器校验
-		function severCheck(){
-			if(check()){
-				
-				var loginname = $("#loginname").val();
-				var password = $("#password").val();
-				var code = $("#code").val();
-				$.ajax({
-					type: "POST",
-					url: '<%=path%>dologin',
-			    	data: {code:code,username:loginname,password:password,tm:new Date().getTime()},
-					dataType:'json',
-					cache: false,
-					success: function(data){
-						if("200" == data.statusCode){
-							saveCookie();
-							window.location.href="manager/index";
-						}else if("usererror" == data.result){
-							$("#loginname").tips({
-								side : 1,
-								msg : "用户名或密码有误",
-								bg : '#FF5080',
-								time : 15
-							});
-							$("#loginname").focus();
-						}else if("codeerror" == data.result){
-							$("#code").tips({
-								side : 1,
-								msg : "验证码输入有误",
-								bg : '#FF5080',
-								time : 15
-							});
-							$("#code").focus();
-						}else{
-							$("#loginname").tips({
-								side : 1,
-								msg : "缺少参数",
-								bg : '#FF5080',
-								time : 15
-							});
-							$("#loginname").focus();
-						}
-					}
-				});
-			}
-		}
-	
-		$(document).ready(function() {
-			changeCode();
-			$("#codeImg").bind("click", changeCode);
-		});
-
-		$(document).keyup(function(event) {
-			if (event.keyCode == 13) {
-				$("#to-recover").trigger("click");
-			}
-		});
-
-		function genTimestamp() {
-			var time = new Date();
-			return time.getTime();
-		}
-
-		function changeCode() {
-			$("#codeImg").attr("src", "<%=path%>code?t=" + genTimestamp());
-		}
-
-		//客户端校验
-		function check() {
-
-			if ($("#loginname").val() == "") {
-
-				$("#loginname").tips({
-					side : 2,
-					msg : '用户名不得为空',
-					bg : '#AE81FF',
-					time : 3
-				});
-
-				$("#loginname").focus();
-				return false;
-			} else {
-				$("#loginname").val(jQuery.trim($('#loginname').val()));
-			}
-
-			if ($("#password").val() == "") {
-
-				$("#password").tips({
-					side : 2,
-					msg : '密码不得为空',
-					bg : '#AE81FF',
-					time : 3
-				});
-
-				$("#password").focus();
-				return false;
-			}
-			if ($("#code").val() == "") {
-
-				$("#code").tips({
-					side : 1,
-					msg : '验证码不得为空',
-					bg : '#AE81FF',
-					time : 3
-				});
-
-				$("#code").focus();
-				return false;
-			}
-
-			$("#loginbox").tips({
-				side : 1,
-				msg : '正在登录 , 请稍后 ...',
-				bg : '#68B500',
-				time : 10
+		<!-- inline scripts related to this page -->
+		<script type="text/javascript">
+			jQuery(function($) {
+			 $(document).on('click', '.toolbar a[data-target]', function(e) {
+				e.preventDefault();
+				var target = $(this).data('target');
+				$('.widget-box.visible').removeClass('visible');//hide others
+				$(target).addClass('visible');//show target
+			 });
 			});
-
-			return true;
-		}
-
-		function savePaw() {
-			if (!$("#saveid").attr("checked")) {
-				$.cookie('loginname', '', {
-					expires : -1
-				});
-				$.cookie('password', '', {
-					expires : -1
-				});
-				$("#loginname").val('');
-				$("#password").val('');
-			}
-		}
-
-		function saveCookie() {
-			if ($("#saveid").attr("checked")) {
-				$.cookie('loginname', $("#loginname").val(), {
-					expires : 7
-				});
-				$.cookie('password', $("#password").val(), {
-					expires : 7
-				});
-			}
-		}
-		function quxiao() {
-			$("#loginname").val('');
-			$("#password").val('');
-		}
+			
+			
+			
+			//you don't need this, just used for changing background
+			jQuery(function($) {
+			 $('#btn-login-dark').on('click', function(e) {
+				$('body').attr('class', 'login-layout');
+				$('#id-text2').attr('class', 'white');
+				$('#id-company-text').attr('class', 'blue');
+				
+				e.preventDefault();
+			 });
+			 $('#btn-login-light').on('click', function(e) {
+				$('body').attr('class', 'login-layout light-login');
+				$('#id-text2').attr('class', 'grey');
+				$('#id-company-text').attr('class', 'blue');
+				
+				e.preventDefault();
+			 });
+			 $('#btn-login-blur').on('click', function(e) {
+				$('body').attr('class', 'login-layout blur-login');
+				$('#id-text2').attr('class', 'white');
+				$('#id-company-text').attr('class', 'light-blue');
+				
+				e.preventDefault();
+			 });
+			 
+			});
+		</script>
 		
-		jQuery(function() {
-			var loginname = $.cookie('loginname');
-			var password = $.cookie('password');
-			if (typeof(loginname) != "undefined"
-					&& typeof(password) != "undefined") {
-				$("#loginname").val(loginname);
-				$("#password").val(password);
-				$("#saveid").attr("checked", true);
-				$("#code").focus();
+		<script type="text/javascript" src="<%=request.getContextPath() %>/resources/js/jquery.validate.js"></script>
+		<script type="text/javascript" src="<%=request.getContextPath() %>/resources/js/core/jquery.cms.validate.js"></script>
+		
+		
+		<script type="text/javascript">
+			$(function() {
+				$("#myForm").cmsvalidate();
+			});
+		</script>
+		<title>后台管理登录</title>
+		<script type="text/javascript">
+			function reCheckcode(img) {
+				img.src = "code?" + Math.random();
 			}
-		});
-	</script>
-	<script>
-		//TOCMAT重启之后 点击左侧列表跳转登录首页 
-		if (window != top) {
-			top.location.href = location.href;
-		}
-	</script>
-
-	<script src="<%=path %>resources/js/bootstrap.min.js"></script>
-	<script src="<%=path %>resources/js/jquery-1.7.2.js"></script>
-	<script src="<%=path %>resources/login/js/jquery.easing.1.3.js"></script>
-	<script src="<%=path %>resources/login/js/jquery.mobile.customized.min.js"></script>
-	<script src="<%=path %>resources/login/js/camera.min.js"></script>
-	<script src="<%=path %>resources/login/js/templatemo_script.js"></script>
-	<script type="text/javascript" src="<%=path %>resources/js/jquery.tips.js"></script>
-	<script type="text/javascript" src="<%=path %>resources/js/jquery.cookie.js"></script>
-</body>
-
+		</script>
+	</body>
 </html>

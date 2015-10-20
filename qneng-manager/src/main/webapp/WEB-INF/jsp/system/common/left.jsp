@@ -1,28 +1,40 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- #section:basics/sidebar -->
-			<div id="sidebar" class="sidebar                  responsive">
+			<div id="sidebar" class="sidebar responsive">
 				<script type="text/javascript">
 					try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 				</script>
 
 				<ul class="nav nav-list">
-					
+					<li class="active">
+						<a href="#">
+							<i class="menu-icon fa fa-desktop"></i>
+							<span class="menu-text"> 查看首页 </span>
+						</a>
+
+						<b class="arrow"></b>
+					</li>
 					<c:forEach items="${menuList}" var="menu">
 				<c:if test="${menu.onMenu == 1}">
-				<li id="lm${menu.id }">
-					  <a style="cursor:pointer;" class="dropdown-toggle" >
-						<i class="${menu.icon == null ? 'icon-desktop' : menu.icon}"></i>
-						<span>${menu.name }</span>
-						<b class="arrow icon-angle-down"></b>
+				<li class="">
+					  <a class="dropdown-toggle" >
+						<i class="menu-icon fa fa-desktop"></i>
+						<span class="menu-text">${menu.name }</span>
+						<b class="arrow fa fa-angle-down"></b>
 					  </a>
-					  <ul class="submenu" style="display: block;">
+					  <b class="arrow"></b>
+					  <ul class="submenu">
 							<c:forEach items="${menu.childList}" var="sub">
 								<c:if test="${sub.onMenu == 1}">
 								<c:choose>
 									<c:when test="${not empty sub.url}">
-									<li id="z${sub.id }">
-									<a style="cursor:pointer;" target="mainFrame"  href="${sub.url }" onclick="siMenu('z${sub.id }','lm${menu.id }','${sub.name }','${sub.url }')"><i class="icon-double-angle-right"></i>${sub.name }</a></li>
+									<li class="">
+										<a target="mainFrame"  href="${sub.url }" onclick="siMenu('z${sub.id }','lm${menu.id }','${sub.name }','${sub.url }')">
+											<i class="menu-icon fa fa-caret-right"></i>${sub.name }
+											<b class="fa-angle-down"></b>
+										</a>
+									</li>
 									</c:when>
 									<c:otherwise>
 									<li><a href="javascript:void(0);"><i class="icon-double-angle-right"></i>${sub.name }</a></li>

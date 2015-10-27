@@ -18,7 +18,7 @@
 					<c:forEach items="${menuList}" var="menu">
 				<c:if test="${menu.onMenu == 1}">
 				<li class="" id="lm${menu.id }">
-					  <a class="dropdown-toggle" >
+					  <a href="#" class="dropdown-toggle" >
 						<i class="menu-icon fa fa-desktop"></i>
 						<span class="menu-text">${menu.name }</span>
 						<b class="arrow fa fa-angle-down"></b>

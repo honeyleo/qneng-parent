@@ -1,5 +1,3 @@
-@sidebar-menu-min-text-height: (@nav-item-height + 2);
-
 .menu_min() {
 	& , &.compact, &.navbar-collapse {
 		width: @sidebar-min-width;
@@ -55,7 +53,7 @@
 			z-index: @zindex-submenu - 1;
 
 			width: (@sidebar-width - 14);
-			height: @sidebar-menu-min-text-height;
+			height: (@nav-item-height + 2);
 			line-height: (@nav-item-height - 1);
 			
 			padding-left: 12px;
@@ -71,8 +69,7 @@
 		}
 	  }
 
-	 &:hover > a > .menu-text,
-	 &.hover-show > a > .menu-text {
+	 &:hover > a > .menu-text {
 		display: block;
 	 }
 
@@ -91,7 +88,7 @@
 
 	 > .submenu {
 		position: absolute;
-		z-index: @zindex-submenu;
+		z-index: @zindex-sidebar-fixed + 1;
 		left: (@sidebar-min-width - 1);
 		top: -1px;
 		
@@ -146,10 +143,7 @@
 	 &.open > .submenu {//submenu is shown in non-minimized mode
 		display: none;
 	 }
-	 
-	 
-	 &:hover > .submenu,
-	 &.hover-show > .submenu {
+	 &:hover > .submenu {
 		display: block !important;
 	 }
   }
@@ -169,13 +163,12 @@
   .nav-list li > .arrow {
 	right: -1px;
   }
-  .nav-list > li:hover > .arrow,
-  .nav-list > li.hover-show > .arrow  {
+  .nav-list > li:hover > .arrow {
 	display: block;
   }
   
   .nav-list > li.pull_up > .arrow {
-	 z-index: @zindex-submenu + 1;
+	 z-index: @zindex-sidebar-fixed + 2;
 	 &:after , &:before {
 		border-width: 10px;
 		left: -20px;
@@ -208,8 +201,7 @@
 	border: 1px solid;
 	border-top-width: 0;
   }
-  .sidebar-shortcuts:hover .sidebar-shortcuts-large,
-  .sidebar-shortcuts.hover-show .sidebar-shortcuts-large {
+  .sidebar-shortcuts:hover .sidebar-shortcuts-large{
 	display: block;
   }
 
@@ -234,12 +226,12 @@
 	li > .submenu > li {
 		> a {
 			//3rd level
-			margin-left: 2px;// !important;
+			margin-left: 2px !important;
 			padding-left: 30px;
 		}
 		> .submenu > li > a {
 			//4th level
-			margin-left: 2px;// !important;
+			margin-left: 2px !important;
 			padding-left: 45px;
 		}
 	}
@@ -250,6 +242,18 @@
  }
 
 
+ .enable_submenu_hover_min() when(@enable-submenu-hover = true) {
+  @media only screen and (min-width: @screen-hover-menu) {
+	  .nav-list li.hover > .submenu {
+		margin-left: 0;
+	  }
+	  .nav-list > li > .submenu li.hover > .submenu > li > a,
+	  .nav-list > li > .submenu li > .submenu > li.hover > .submenu > li > a {
+		margin-left: 0 !important;
+	  }
+  }
+ }
+ .enable_submenu_hover_min();
 
 
 
@@ -258,7 +262,6 @@
  }
  //hide the active menu indicator on hover (it goes behind the li > .arrow)
  .nav-list > li.active:hover > a:after,
- .nav-list > li.active.hover-show > a:after,
  .nav-list > li.active.open:hover > a:after {
 	display: none;
  }
@@ -268,48 +271,34 @@
 
 
 
+
+
+ .enable_compact_menu_min() when(@enable-compact-menu = true) {
+  @media (min-width: @screen-compact-menu) {
+  &.compact .nav-list > li > a {
+	height: 39px;
+    line-height: 37px;
+    padding: 0 16px 0 7px;
+    position: relative;
+  }
+  &.compact .nav-list > li > a > .menu-icon {
+	font-size: @nav-item-icon-size;
+	height: auto;
+	line-height: inherit;
+	display: inline-block;
+	vertical-align: sub;
+	width: auto;
+  }
+  }
+ }
+ .enable_compact_menu_min();
+
 }
 
 
 .enable_sidebar_collapse() when(@enable-sidebar-collapse = true) {
  .sidebar.menu-min {
 	.menu_min();
-
-	.enable_submenu_hover_min() when(@enable-submenu-hover = true) {
-	  @media (min-width: @screen-hover-menu) {
-		  .nav-list li.hover > .submenu {
-			margin-left: 0;
-		  }
-		  .nav-list > li > .submenu li.hover > .submenu > li > a,
-		  .nav-list > li > .submenu li > .submenu > li.hover > .submenu > li > a {
-			margin-left: 0 !important;
-		  }
-	  }
-	 }
-	.enable_submenu_hover_min();
-	
-	
-
-	.enable_compact_menu_min() when(@enable-compact-menu = true) {
-	  @media (min-width: @screen-compact-menu) {
-		  &.compact .nav-list > li > a {
-			height: 39px;
-			line-height: 37px;
-			padding: 0 16px 0 7px;
-			position: relative;
-		  }
-		  &.compact .nav-list > li > a > .menu-icon {
-			font-size: @nav-item-icon-size;
-			height: auto;
-			line-height: inherit;
-			display: inline-block;
-			vertical-align: sub;
-			width: auto;
-		  }
-	  }
-	 }
-	 .enable_compact_menu_min();
-
  }
 }
 .enable_sidebar_collapse();

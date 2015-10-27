@@ -6,8 +6,7 @@
 
  It's not often needed and you can have good results using CSS3 media queries to add necessary paddings based on window size.
 */
-(function($ , undefined) {
-
+ace.auto_padding = function($) {
 	var navbar = $('.navbar').eq(0);
 	var navbar_container = $('.navbar-container').eq(0);
 	
@@ -21,7 +20,7 @@
 	var default_padding = 8
 
 	if(navbar.length > 0) {
-	  $(window).on('resize.auto_padding', function() {
+	  $(window).on('resize.padding', function() {
 		if( navbar.css('position') == 'fixed' ) {
 			var padding1 = !ace.vars['nav_collapse'] ? navbar.outerHeight() : navbar_container.outerHeight();
 			padding1 = parseInt(padding1);
@@ -60,22 +59,22 @@
 				}
 			}
 		}
-	  }).triggerHandler('resize.auto_padding');
+	  }).triggerHandler('resize.padding');
 
-	  $(document).on('settings.ace.auto_padding', function(ev, event_name, event_val) {
+	  $(document).on('settings.ace', function(ev, event_name, event_val) {
 		if(event_name == 'navbar_fixed' || event_name == 'breadcrumbs_fixed') {
 			if(ace.vars['webkit']) {
 				//force new 'css position' values to kick in
 				navbar.get(0).offsetHeight;
 				if(breadcrumbs.length > 0) breadcrumbs.get(0).offsetHeight;
 			}
-			$(window).triggerHandler('resize.auto_padding');
+			$(window).triggerHandler('resize.padding');
 		}
 	  });
 	  
 	  /**$('#skin-colorpicker').on('change', function() {
-		$(window).triggerHandler('resize.auto_padding');
+		$(window).triggerHandler('resize.padding');
 	  });*/
 	}
 
-})(window.jQuery);
+}

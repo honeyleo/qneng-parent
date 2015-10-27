@@ -36,10 +36,12 @@
 		border-top: 1px solid;
 		font-size: @font-size-navbar-dropdown-item;
 		line-height: 16px;
-		color: #555 !important;
-		background-color: transparent !important;
-		white-space: normal;
-
+		color: #555;
+		
+		&:active, &:hover, &:focus {
+			background-color: transparent !important;
+			color: #555;
+		}
 		.progress {
 			margin-bottom: 0;
 			margin-top: 4px;
@@ -56,13 +58,14 @@
 	}
 
 	&.dropdown-footer > a {
-		color: #4F99C6 !important;
+		color: #4F99C6;
  
 		text-align:center;
 		font-size: @font-size-navbar-dropdown-footer;
 		
 		&:hover {
 			background-color:#FFF;
+			color:#4F99C6;
 			text-decoration:underline;
 			> .@{icon} {
 				text-decoration:none;
@@ -79,10 +82,10 @@
 	border-color:@border-color;
 	> li {
 		&:hover {
-			background-color: @hover-color;
+			background-color:@hover-color !important;
 		}
 		&.dropdown-header {
-			background-color:@header-bg;
+			background-color:@header-bg !important;
 			color:@header-txt;
 			border-bottom-color:@border-color;
 
@@ -92,7 +95,6 @@
 		}
 		> a {
 			border-top-color: @item-bottom;
-			//background-color: inherit;
 		}
 	}
   }
@@ -123,17 +125,16 @@
 
   //user info on top navbar icons
  .msg-photo {
+	 margin-right: 6px;
 	 max-width: 42px;
-	 float: left;
-	 margin-top: 2px;
  }
  .msg-body {
-	display: block;
+	display: inline-block;
 	line-height: 20px;
 	white-space: normal;
 	vertical-align: middle;
-	
-	margin-left: 50px;
+
+	max-width: 175px;
  }
  .msg-title {
 	display: inline-block;

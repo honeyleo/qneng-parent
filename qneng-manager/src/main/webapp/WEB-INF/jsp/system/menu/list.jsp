@@ -13,17 +13,15 @@
 		<title></title>
 		<meta name="description" content="overview & stats" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link href="<%=basePath %>resources/css/bootstrap.min.css" rel="stylesheet" />
-		<link href="<%=basePath %>resources/css/bootstrap-responsive.min.css" rel="stylesheet" />
-		<link rel="stylesheet" href="<%=basePath %>resources/css/font-awesome.min.css" />
-		<link rel="stylesheet" href="<%=basePath %>resources/css/ace.min.css" />
-		<link rel="stylesheet" href="<%=basePath %>resources/css/ace-responsive.min.css" />
-		<link rel="stylesheet" href="<%=basePath %>resources/css/ace-skins.min.css" />
-		<script type="text/javascript" src="<%=basePath %>resources/js/jquery-1.7.2.js"></script>
+		<link href="<%=basePath %>resources/ace/assets/css/bootstrap.min.css" rel="stylesheet" />
+		<link href="<%=basePath %>resources/ace/assets/css/bootstrap-responsive.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="<%=basePath %>resources/ace/assets/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="<%=basePath %>resources/ace/assets/css/ace.min.css" />
+		<link rel="stylesheet" href="<%=basePath %>resources/ace/assets/css/ace-responsive.min.css" />
+		<link rel="stylesheet" href="<%=basePath %>resources/ace/assets/css/ace-skins.min.css" />
+		<script type="text/javascript" src="<%=basePath %>resources/ace/assets/js/jquery.min.js"></script>
 
 <script type="text/javascript">
-	$(top.hangge());	
-	
 	//新增
 	function addmenu(parentId,onMenu){
 		 top.jzts();

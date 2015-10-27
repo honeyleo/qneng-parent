@@ -2,7 +2,7 @@
 
 //jQuery UI Slider
 .ui-slider {
- background-color: #D5D5D5;
+ background-color: #CCC;
 }
 .ui-slider-horizontal {
  height: 9px;
@@ -100,9 +100,6 @@
 }
 
 .ui-state-disabled {
- &.ui-slider {
-   background-color: #E5E5E5;
- }
  .ui-slider-range {
 	background-color: lighten(desaturate(@slider-color , 30%) , 10%);
  }
@@ -131,10 +128,10 @@
 
 	 &.ui-state-disabled {
 		 .ui-slider-range {
-			background-color: lighten(desaturate(@slider-bg , 33%) , 10%);
+			background-color: lighten(desaturate(@slider-bg , 30%) , 10%);
 		}
 		 .ui-slider-handle {
-			border-color: lighten(desaturate(@slider-bg , 33%) , 10%) !important;
+			border-color: lighten(desaturate(@slider-bg , 30%) , 10%) !important;
 		 }
 	}
   }

@@ -31,7 +31,7 @@ public class LoginController {
 	 */
 	@RequestMapping(value="/login_default")
 	public String defaultPage(){
-		return "system/common/default";
+		return "system/common/home";
 	}
 	
 	@RequestMapping(value="/tab")

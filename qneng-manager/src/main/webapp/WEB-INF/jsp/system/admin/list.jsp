@@ -10,8 +10,7 @@
 <html lang="en">
 	<head>
 	<base href="<%=basePath%>">
-	<!-- jsp文件头和头部 -->
-	<%@ include file="../common/top.jsp"%> 
+	<%@ include file="../common/common_css.jsp"%>
 	</head> 
 <body>
 		
@@ -128,21 +127,19 @@
 		</a>
 		
 		<!-- 引入 -->
-		<script type="text/javascript">window.jQuery || document.write("<script src='<%=basePath %>resources/js/jquery-1.9.1.min.js'>\x3C/script>");</script>
-		<script src="<%=basePath %>resources/js/bootstrap.min.js"></script>
-		<script src="<%=basePath %>resources/js/ace-elements.min.js"></script>
-		<script src="<%=basePath %>resources/js/ace.min.js"></script>
+		<script type="text/javascript">window.jQuery || document.write("<script src='<%=basePath %>resources/ace/assets/js/jquery.min.js'>\x3C/script>");</script>
+		<script src="<%=basePath %>resources/ace/assets/js/bootstrap.min.js"></script>
+		<script src="<%=basePath %>resources/ace/assets/js/ace.min.js"></script>
+		<script src="<%=basePath %>resources/ace/assets/js/ace-elements.min.js"></script>
 		
-		<script type="text/javascript" src="<%=basePath %>resources/js/chosen.jquery.min.js"></script><!-- 下拉框 -->
-		<script type="text/javascript" src="<%=basePath %>resources/js/bootstrap-datepicker.min.js"></script><!-- 日期框 -->
-		<script type="text/javascript" src="<%=basePath %>resources/js/bootbox.min.js"></script><!-- 确认窗口 -->
+		<script type="text/javascript" src="<%=basePath %>resources/ace/assets/js/chosen.jquery.min.js"></script><!-- 下拉框 -->
+		<script type="text/javascript" src="<%=basePath %>resources/ace/assets/js/date-time/bootstrap-datepicker.min.js"></script><!-- 日期框 -->
+		<script type="text/javascript" src="<%=basePath %>resources/ace/assets/js/bootbox.min.js"></script><!-- 确认窗口 -->
 		<!-- 引入 -->
 		
 		
 		<script type="text/javascript" src="<%=basePath %>resources/js/jquery.tips.js"></script><!--提示框-->
 		<script type="text/javascript">
-		
-		$(top.hangge());
 		
 		//检索
 		function search(){

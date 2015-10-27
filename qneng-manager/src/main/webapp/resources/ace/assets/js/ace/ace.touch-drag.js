@@ -13,8 +13,7 @@
 * http://jquery.org/license
 *
 */
-(function($ , undefined) {
-
+ace.add_touch_drag = function($) {
 	if(!ace.vars['touch']) return;
 
 	var touchStartEvent = "touchstart MSPointerDown pointerdown",// : "mousedown",
@@ -114,5 +113,4 @@
 			});
 		}
 	}
-
-})(window.jQuery);
+}

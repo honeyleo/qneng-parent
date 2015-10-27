@@ -6,22 +6,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
 <!-- bootstrap & fontawesome -->
-<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/ace/assets/css/bootstrap.css" />
-<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/ace/assets/css/font-awesome.css" />
+<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/ace/assets/css/bootstrap.min.css" />
+<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/ace/assets/css/font-awesome.min.css" />
 
 <!-- text fonts -->
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/ace/assets/css/ace-fonts.css" />
 
 <!-- ace styles -->
-<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/ace/assets/css/ace.css" />
+<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/ace/assets/css/ace.min.css" />
 
 <!--[if lte IE 9]>
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/ace/assets/css/ace-part2.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/ace/assets/css/ace-part2.min.css" />
 <![endif]-->
-<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/ace/assets/css/ace-rtl.css" />
+<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/ace/assets/css/ace-rtl.min.css" />
 
 <!--[if lte IE 9]>
-  <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/ace/assets/css/ace-ie.css" />
+  <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/ace/assets/css/ace-ie.min.css" />
 <![endif]-->
 
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->

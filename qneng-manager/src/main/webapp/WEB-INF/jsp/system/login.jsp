@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <jsp:include page="common/common_login.jsp"></jsp:include>
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/admin/login.css"/>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/css/login.css"/>
 
 </head>
 
@@ -216,7 +216,7 @@
 
 		<!--[if !IE]> -->
 		<script type="text/javascript">
-			window.jQuery || document.write("<script src='<%=request.getContextPath() %>/resources/ace/assets/js/jquery.js'>"+"<"+"/script>");
+			window.jQuery || document.write("<script src='<%=request.getContextPath() %>/resources/ace/assets/js/jquery.min.js'>"+"<"+"/script>");
 		</script>
 
 		<!-- <![endif]-->
@@ -271,7 +271,7 @@
 		</script>
 		
 		<script type="text/javascript" src="<%=request.getContextPath() %>/resources/js/jquery.validate.js"></script>
-		<script type="text/javascript" src="<%=request.getContextPath() %>/resources/js/core/jquery.cms.validate.js"></script>
+		<script type="text/javascript" src="<%=request.getContextPath() %>/resources/js/jquery.cms.validate.js"></script>
 		
 		
 		<script type="text/javascript">

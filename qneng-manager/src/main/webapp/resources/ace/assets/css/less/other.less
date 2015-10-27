@@ -64,12 +64,13 @@
  top: auto;
  z-index: 12;
 }
-.btn.btn-app.ace-settings-btn {
+.btn.ace-settings-btn {
  float: left;
  display: block; 
+ width: 42px !important;
  text-align: center;
 
- border-radius: 6px 0 0 6px;
+ border-radius: 6px 0 0 6px !important;
  opacity: 0.55;
 
  vertical-align: top;
@@ -77,10 +78,6 @@
  
  &:hover , &.open {
 	opacity: 1;
- }
- 
- &.btn-xs {
-	width: 42px;
  }
 
 }
@@ -99,7 +96,7 @@
  border: 0 solid @ace-settings-box-border;
  
  
- .transition(~"max-width 0.25s linear 0s, max-height 0s linear 0.25s, padding 0s linear 0.25s, border-width 0s linear 0.25s");
+ .transition(~"max-width 0.15s linear 0s, max-height 0s linear 0.15s, padding 0s linear 0.15s, border-width 0s linear 0.15s");
 
  &.open {
 	max-width: 320px;

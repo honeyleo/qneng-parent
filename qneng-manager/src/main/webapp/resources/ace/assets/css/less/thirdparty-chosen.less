@@ -5,7 +5,6 @@
 }
 
 //chosen select boxes -- replace icons with FontAwesome
-/**
 .chosen-select {
   display: inline !important; //for validation plugin to work it must be displayed
   visibility: hidden;
@@ -16,12 +15,11 @@
   height: 0;
   border-width: 0;
 }
-*/
 .chosen-container , [class*="chosen-container"]{
   vertical-align: middle;
   > .chosen-single {
 	line-height: 28px;
-	height: 32px;
+	height: 30px;
 	box-shadow: none;
 	background: #FAFAFA;
   }
@@ -97,11 +95,6 @@
 .chosen-container-multi .chosen-choices li.search-field input[type="text"] {
 	height:25px;
 }
-.chosen-container-multi .chosen-choices li.search-choice {
-	line-height: 16px;
-	padding-bottom: 4px;
-}
-
 
 
 .chosen-container-multi .chosen-choices li.search-choice .search-choice-close {
@@ -181,8 +174,8 @@
   border-radius:0;
 }
 .chosen-container .chosen-results li.highlighted {
- // background:#86BD6F;/* green */
-  //background:#4492C9;/* blue1 */
+  background:#86BD6F;/* green */
+  background:#4492C9;/* blue1 */
   background:#316AC5;
   color: #FFF;
 }
@@ -261,7 +254,7 @@
 		font-size: @baseFontSize;
 		font-weight: normal;
 		margin-bottom: 3px;
-		margin-right: 3px;
+		margin-right: 0;
 		padding: 6px 22px 7px 9px;
 		position: relative;
 		text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);

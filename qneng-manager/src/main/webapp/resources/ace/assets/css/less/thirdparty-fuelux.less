@@ -10,9 +10,9 @@
 
 .enable_plugin_fuelux_spinner() when (@enable-plugin-fuelux-spinner = true) {
 .ace-spinner {
-  display: inline-block;
+  display:inline-block;
 
-  .spinbox-buttons {
+  .spinner-buttons {
 	 min-width: 18px;
 	
 	> .btn {
@@ -34,12 +34,12 @@
 			padding: 0;
 		}
 	}
-	> button.btn.spinbox-up {
+	> button.btn.spinner-up {
 		&:active { top: -1px; }
 	}
   }
   
-  .spinbox-input {
+  .spinner-input {
 	text-align: center;
 	height: 29px;
 	line-height: 1.2;
@@ -48,17 +48,13 @@
 
 }
 
-.ace-spinner:not(.touch-spinner) .spinbox-buttons > .btn > .@{icon} {
-  margin-top: -1px;
-}
-
 
 //touch spinner buttons
-.ace-spinner.touch-spinner .spinbox-buttons {
+.ace-spinner.touch-spinner .spinner-buttons {
    margin: 0;
    font-size: 0;
 }
-.ace-spinner.touch-spinner .spinbox-buttons > .btn {
+.ace-spinner.touch-spinner .spinner-buttons > .btn {
   height: 29px;
   line-height: 16px;
   width: 24px;
@@ -67,7 +63,7 @@
   vertical-align: sub;
   margin: 0 1px !important;//to override .RTL's
 }
-.ace-spinner.touch-spinner .spinbox-buttons > .btn > .@{icon}{
+.ace-spinner.touch-spinner .spinner-buttons > .btn > .@{icon}{
   vertical-align :middle;
   display: inline-block;
 }
@@ -82,7 +78,7 @@
 
 //wizard
 .enable_plugin_fuelux_wizard() when (@enable-plugin-fuelux-wizard = true) {
-.steps  {
+.wizard-steps  {
 	list-style:none;
 	display:table;
 	width:100%;
@@ -129,11 +125,7 @@
 			 z-index: 1;
 		}
 		
-		&.last-child:before {
-			max-width:50%;
-			width:50%;
-		}
-		&:last-child:before {
+		&:last-child:before  {
 			max-width:50%;
 			width:50%;
 		}
@@ -228,20 +220,20 @@
 }
 
 @media only screen and (max-width: @screen-xs-max) {
- .steps li .step {
+ .wizard-steps li .step {
 	width: 30px;
 	height: 30px;
 	line-height:24px;
 	border-width: 3px;
  }
- .steps li:before  , .steps li:after {
+ .wizard-steps li:before  , .wizard-steps li:after {
 	border-width: 3px;
  }
- .steps li.complete .step:before{
+ .wizard-steps li.complete .step:before{
 	line-height: 24px;
 	font-size: 13px;
  }
- .steps li:before {
+ .wizard-steps li:before {
 	top:16px;
  }
  
@@ -265,8 +257,8 @@
 .enable_plugin_fuelux_treeview() when (@enable-plugin-fuelux-treeview = true) {
 @tree-border-color:#67B2DD;
  .tree {
-	margin: auto;
-	padding: 0 0 0 9px;
+	padding-left:
+	9px;
 	overflow-x: hidden;
 	overflow-y: auto;
 	position: relative;
@@ -284,19 +276,14 @@
 		border:1px dotted @tree-border-color;
 		border-width: 0 0 0 1px;
 	}
-	
-	.tree-branch-name, .tree-item-name {
-		cursor: pointer;
-	}
-	
 
 
-	.tree-branch {
+	.tree-folder {
 		width: auto;
 		min-height: 20px;
 		cursor: pointer;
 
-		.tree-branch-header {
+		.tree-folder-header {
 			position: relative;
 			height: 20px;
 			line-height: 20px;
@@ -306,26 +293,24 @@
 		}
 	}
 	
-	.tree-branch .tree-branch-header .tree-branch-name , .tree-item .tree-item-name {
+	.tree-folder .tree-folder-header .tree-folder-name , .tree-item .tree-item-name {
 		display: inline;
 		z-index: 2;
 	}
-	.tree-branch .tree-branch-header > .tree-branch-name > .@{icon}:first-child , 
-	.tree-item > .tree-item-name > .@{icon}:first-child {
+	.tree-folder .tree-folder-header > .@{icon}:first-child , 
+	.tree-item > .@{icon}:first-child {
 	  display: inline-block;
 	  position: relative;
 	  z-index: 2;	  
 	  top: -1px;
 	}
-	.tree-branch {
-		> .tree-branch-header {
-			> .tree-branch-name  {
-				> .tree-label {
-					margin-left: 2px;
-				}
-				> .@{icon}:first-child {
-					margin: -2px 0 0 -2px;
-				}
+	.tree-folder {
+		.tree-folder-header {
+			.tree-folder-name  {
+				margin-left: 2px;
+			}
+			> .@{icon}:first-child {
+				margin: -2px 0 0 -2px;
 			}
 		}
 		&:last-child:after {
@@ -339,11 +324,9 @@
 			left: -15px;
 			border-left: 1px solid #FFF;
 		}
-		.tree-branch-children {
-			margin: 0 0 0 23px;
-			padding: 0;
+		.tree-folder-content {
+			margin-left: 23px;
 			position: relative;
-			
 			&:before {
 				display: inline-block;
 				content: "";
@@ -367,17 +350,13 @@
 		height: 20px;
 		line-height: 20px;
 		cursor: pointer;
-		
 		&:hover {
 			background-color: #F0F7FC;
 		}
 	
-		> .tree-item-name {
+		.tree-item-name {
+			margin-left: 3px;
 			> .@{icon}:first-child {
-				margin-right: 3px;
-			}
-			> .tree-label > .@{icon}:first-child {
-				margin-left: 3px;
 				margin-right: 3px;
 			}
 		}
@@ -386,10 +365,8 @@
 		}
 	}
 	
-	.tree-branch , .tree-item {
+	.tree-folder , .tree-item {
 		position: relative;
-		list-style: none;
-		
 		&:before {
 			display: inline-block;
 			content: ""; 
@@ -415,14 +392,14 @@
 		}
 	}
 
-	.tree-item  , .tree-branch {
+	.tree-item  , .tree-folder {
 		border: 1px solid #FFF;
 	}
 
-	.tree-branch .tree-branch-header {
+	.tree-folder .tree-folder-header {
 		border-radius: 0;
 	}
-	.tree-item  , .tree-branch .tree-branch-header {
+	.tree-item  , .tree-folder .tree-folder-header {
 		margin: 0;
 		padding: 5px;
 		color: #4D6878;
@@ -431,7 +408,7 @@
 	}
 
 
-	.tree-item > .tree-item-name > .@{icon}:first-child {
+	.tree-item > .@{icon}:first-child {
 		color: #F9E8CE;
 		border: 1px solid #CCC;
 		width: 13px;
@@ -449,7 +426,7 @@
 		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 	}
 
-	.tree-selected > .tree-item-name > .@{icon}:first-child {
+	.tree-selected > .@{icon}:first-child {
 		background-color: #F9A021;
 		border-color: #F9A021;
 		color: #FFF;
@@ -457,7 +434,6 @@
 
 
 	.tree-plus.@{icon}:first-child , .tree-minus.@{icon}:first-child {
-		display: inline-block;
 		font-style: normal;
 		 border: 1px solid #DDD;
 		 vertical-align: middle;
@@ -472,7 +448,7 @@
 		 background-color: #FFF;
 		 
 		 position: relative;
-		 z-index: 2;
+		 z-index: 1;
 		 
 		 &:before {
 			content: "";
@@ -498,7 +474,7 @@
 		left: 5px;
 	}
 	
-	.tree-unselectable .tree-item > .tree-item-name > .tree-label > .@{icon}:first-child {
+	.tree-unselectable .tree-item > .@{icon}:first-child {
 		color: #5084A0;
 		border: none;
 		width: 13px;
@@ -518,10 +494,6 @@
 	.@{icon}[class*="-down"] {
 		transform: rotate(-45deg);
 	}
-	.@{icon}[class*="-download"] {
-		transform: none;
-	}
-	
 	.fa-spin {
 		height: auto;
 	}

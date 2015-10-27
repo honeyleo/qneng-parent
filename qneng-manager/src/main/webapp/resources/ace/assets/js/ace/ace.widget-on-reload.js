@@ -3,8 +3,7 @@
  <u><i class="glyphicon glyphicon-flash"></i> You don't need this. Used for demo only</u>
 */
 
-(function($ , undefined) {
-
+ace.widget_reload_handler = function($) {
 	//***default action for reload in this demo
 	//you should remove this and add your own handler for each specific .widget-box
 	//when data is finished loading or processing is done you can call $box.trigger('reloaded.ace.widget')
@@ -25,4 +24,4 @@
 		$(this).trigger('reloaded.ace.widget');
 	});
 	*/
-})(window.jQuery);
+}

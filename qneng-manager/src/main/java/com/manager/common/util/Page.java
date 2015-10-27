@@ -116,7 +116,7 @@ public class Page {
 			
 			//换页函数
 			sb.append("function nextPage(page){");
-			sb.append(" top.jzts();");
+			//sb.append(" top.jzts();");
 			sb.append("	if(true && document.forms[0]){\n");
 			sb.append("		var url = document.forms[0].getAttribute(\"action\");\n");
 			sb.append("		if(url.indexOf('?')>-1){url += \"&"+(entityOrField?"currentPage":"page.currentPage")+"=\";}\n");

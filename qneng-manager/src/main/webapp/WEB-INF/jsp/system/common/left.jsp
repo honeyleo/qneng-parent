@@ -17,7 +17,7 @@
 					</li>
 					<c:forEach items="${menuList}" var="menu">
 				<c:if test="${menu.onMenu == 1}">
-				<li class="">
+				<li class="" id="lm${menu.id }">
 					  <a class="dropdown-toggle" >
 						<i class="menu-icon fa fa-desktop"></i>
 						<span class="menu-text">${menu.name }</span>
@@ -29,7 +29,7 @@
 								<c:if test="${sub.onMenu == 1}">
 								<c:choose>
 									<c:when test="${not empty sub.url}">
-									<li class="">
+									<li class="" id="z${sub.id }">
 										<a target="mainFrame"  href="${sub.url }" onclick="siMenu('z${sub.id }','lm${menu.id }','${sub.name }','${sub.url }')">
 											<i class="menu-icon fa fa-caret-right"></i>${sub.name }
 											<b class="fa-angle-down"></b>
@@ -56,5 +56,19 @@
 				<!-- /section:basics/sidebar.layout.minimize -->
 				<script type="text/javascript">
 					try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+					var fmid = "fhindex";
+					var mid = "fhindex";
+					function siMenu(id,fid,MENU_NAME,MENU_URL){
+						if(id != mid){
+							$("#"+mid).removeClass();
+							mid = id;
+						}
+						if(fid != fmid){
+							$("#"+fmid).removeClass();
+							fmid = fid;
+						}
+						$("#"+fid).attr("class","active open");
+						$("#"+id).attr("class","active");
+					}
 				</script>
 			</div>

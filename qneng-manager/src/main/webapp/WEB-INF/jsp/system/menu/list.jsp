@@ -14,17 +14,14 @@
 		<meta name="description" content="overview & stats" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link href="<%=basePath %>resources/ace/assets/css/bootstrap.min.css" rel="stylesheet" />
-		<link href="<%=basePath %>resources/ace/assets/css/bootstrap-responsive.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="<%=basePath %>resources/ace/assets/css/font-awesome.min.css" />
 		<link rel="stylesheet" href="<%=basePath %>resources/ace/assets/css/ace.min.css" />
-		<link rel="stylesheet" href="<%=basePath %>resources/ace/assets/css/ace-responsive.min.css" />
 		<link rel="stylesheet" href="<%=basePath %>resources/ace/assets/css/ace-skins.min.css" />
 		<script type="text/javascript" src="<%=basePath %>resources/ace/assets/js/jquery.min.js"></script>
 
 <script type="text/javascript">
 	//新增
 	function addmenu(parentId,onMenu){
-		 top.jzts();
 		 var diag = new top.Dialog();
 		 diag.Drag=true;
 		 diag.Title ="新增菜单";
@@ -33,7 +30,6 @@
 		 diag.Height = 256;
 		 diag.CancelEvent = function(){ //关闭事件
 			if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
-				top.jzts(); 
 				setTimeout("location.reload()",100);
 			}
 			diag.close();
@@ -43,7 +39,6 @@
 	
 	//修改
 	function editmenu(menuId){
-		 top.jzts();
 	   	 var diag = new top.Dialog();
 		 diag.Drag=true;
 		 diag.Title ="编辑菜单";
@@ -52,7 +47,6 @@
 		 diag.Height = 256;
 		 diag.CancelEvent = function(){ //关闭事件
 			if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
-				top.jzts(); 
 				setTimeout("location.reload()",100);
 			}
 			diag.close();
@@ -62,7 +56,6 @@
 	
 	//编辑顶部菜单图标
 	function editTb(menuId){
-		 top.jzts();
 	   	 var diag = new top.Dialog();
 		 diag.Drag=true;
 		 diag.Title ="编辑图标";
@@ -71,7 +64,6 @@
 		 diag.Height = 150;
 		 diag.CancelEvent = function(){ //关闭事件
 			if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
-				top.jzts(); 
 				setTimeout("location.reload()",100);
 			}
 			diag.close();
@@ -182,10 +174,10 @@
 				<td class="center">${menu.id}</td>
 				<td class='center'>${menu.orderNo }</td>
 				<td style="width:25%;">
-				<a class="btn btn-mini btn-success" onclick="addmenu('${menu.id}', 1);">新增</a>
-				<a class='btn btn-mini btn-purple' title="图标" onclick="editTb('${menu.id }')" ><i class='icon-picture'></i></a>
-				<a class='btn btn-mini btn-info' title="编辑" onclick="editmenu('${menu.id }')" ><i class='icon-edit'></i></a>
-				<a class='btn btn-mini btn-danger' title="删除"  onclick="delmenu('${menu.id }',true)"><i class='icon-trash'></i></a>
+				<a class='label label-sm label-inverse arrowed-in' title="图标" onclick="editTb('${menu.id }')" >图标</a>
+				<a class="btn btn-xs btn-success" onclick="addmenu('${menu.id}', 1);">新增</a>
+				<a class='btn btn-xs btn-info' title="编辑" onclick="editmenu('${menu.id }')" ><i class='ace-icon fa fa-pencil bigger-120'></i></a>
+				<a class='btn btn-xs btn-danger' title="删除"  onclick="delmenu('${menu.id }',true)"><i class="ace-icon fa fa-trash-o bigger-120"></i></a>
 				</tr>
 				<c:forEach items="${menu.childList}" var="sub" varStatus="subVs">
 				<tr id="tr${sub.id }" style='height:24px;line-height:24px;'>
@@ -206,10 +198,10 @@
 					<td class='center'>${sub.id}</td>
 					<td class='center'>${sub.orderNo}</td>
 					<td>
-						<a class='btn btn-mini btn-warning' onclick="openClose('${sub.id }',this,${subVs.index })" >展开</a> 
-						<a class='btn btn-mini btn-success' onclick="addmenu('${sub.id}', 0);">新增</a> 
-						<a class='btn btn-mini btn-info' title='编辑' onclick="editmenu('${sub.id}')"><i class='icon-edit'></i></a> 
-						<a class='btn btn-mini btn-danger' title='删除' onclick="delmenu('${sub.id}',true)"><i class='icon-trash'></i></a>
+						<a class='label label-sm label-warning' onclick="openClose('${sub.id }',this,${subVs.index })" >展开</a> 
+						<a class='btn btn-xs btn-success' onclick="addmenu('${sub.id}', 0);">新增</a> 
+						<a class='btn btn-xs btn-info' title='编辑' onclick="editmenu('${sub.id}')"><i class='ace-icon fa fa-pencil bigger-120'></i></a> 
+						<a class='btn btn-xs btn-danger' title='删除' onclick="delmenu('${sub.id}',true)"><i class='ace-icon fa fa-trash-o bigger-120'></i></a>
 					</td>
 					</tr>
 				</c:forEach>

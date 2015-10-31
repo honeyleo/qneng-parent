@@ -121,11 +121,6 @@
 </div><!--/#page-content-->
 </div><!--/.fluid-container#main-container-->
 		
-		<!-- 返回顶部  -->
-		<a href="#" id="btn-scroll-up" class="btn btn-small btn-inverse">
-			<i class="icon-double-angle-up icon-only"></i>
-		</a>
-		
 		<!-- 引入 -->
 		<script type="text/javascript">window.jQuery || document.write("<script src='<%=basePath %>resources/ace/assets/js/jquery.min.js'>\x3C/script>");</script>
 		<script src="<%=basePath %>resources/ace/assets/js/bootstrap.min.js"></script>

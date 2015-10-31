@@ -5,7 +5,7 @@
 		<div class="footer-content">
 			<span class="bigger-120">
 				<span class="blue bolder">清能伏 Technology</span>
-				Application &copy; 2014-2015
+				&copy; 2014-2015
 			</span>
 
 			&nbsp; &nbsp;

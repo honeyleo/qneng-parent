@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lfy.qneng.dao.ModuleDataDAO" >
+  <resultMap id="BaseResultMap" type="cn.lfy.qneng.model.Module" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="no" property="no" jdbcType="VARCHAR" />
+    <result column="inputVolt" property="inputVolt" jdbcType="DOUBLE" />
+    <result column="outvolt" property="outvolt" jdbcType="DOUBLE" />
+    <result column="temp" property="temp" jdbcType="DOUBLE" />
+    <result column="capacity" property="capacity" jdbcType="DOUBLE" />
+    <result column="time" property="time" jdbcType="BIGINT" />
+    <result column="stationId" property="stationId" jdbcType="BIGINT" />
+    <result column="BunchId" property="BunchId" jdbcType="BIGINT" />
+    <result column="moduleId" property="moduleId" jdbcType="BIGINT" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.no != null" >
+         and no = #{condition.no}
+      </if>
+      <if test="condition.stationId != null" >
+         and stationId = #{condition.stationId}
+      </if>
+      <if test="condition.BunchId != null" >
+         and BunchId = #{condition.BunchId}
+      </if>
+      <if test="condition.moduleId != null" >
+         and moduleId = #{condition.moduleId}
+      </if>
+    </trim>
+  </sql>
+  
+  <sql id="Example_Order_Clause">
+  	<trim prefix="order by" prefixOverrides="," >
+  		<if test="orderMap.id != null">
+  			,id #{orderMap.id}
+  		</if>
+  	</trim>
+  </sql>
+  
+  <sql id="Base_Column_List" >
+    id, no, inputVolt, outvolt, temp, capacity, time, stationId, BunchId, moduleId, createTime
+  </sql>
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.manager.model.Criteria" >
+    select
+    <include refid="Base_Column_List" />
+    from t_module_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="_parameter != null" >
+      <include refid="Example_Order_Clause" />
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_module_data where id = #{id}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_module_data where id = #{id}
+  </delete>
+  
+  <insert id="insert" parameterType="cn.lfy.qneng.model.ModuleData" useGeneratedKeys="true" keyProperty="id">
+    insert into t_module_data (no, inputVolt, outvolt, temp, capacity, time, stationId, BunchId, moduleId, createTime)
+    values (#{no}, #{inputVolt}, #{outvolt}, #{outvolt}, #{temp}, #{capacity}, #{time}, #{stationId}, #{BunchId}, #{moduleId}, #{createTime})
+  </insert>
+  
+  <select id="countByExample" parameterType="com.manager.model.Criteria" resultType="java.lang.Integer" >
+    select count(*) from t_module_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+</mapper>

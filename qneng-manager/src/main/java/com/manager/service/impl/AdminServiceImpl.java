@@ -3,6 +3,7 @@ package com.manager.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.manager.dao.AdminDAO;
@@ -59,6 +60,12 @@ public class AdminServiceImpl implements AdminService {
         List<Admin> list = this.findListByCriteria(criteria);
         res.setData(list);
         return res;
+    }
+    
+    @Cacheable(value = "commonCache", key = "'user_id_' + #id")
+    @Override
+    public Admin getByIdInCache(Long id) {
+        return adminDAO.selectByPrimaryKey(id);
     }
     
 }

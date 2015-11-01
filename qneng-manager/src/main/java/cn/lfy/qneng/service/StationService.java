@@ -1,12 +1,13 @@
-package com.manager.service;
+package cn.lfy.qneng.service;
 
 import java.util.List;
 
-import com.manager.model.Admin;
+import cn.lfy.qneng.model.Station;
+
 import com.manager.model.Criteria;
 import com.manager.model.PageInfo;
 
-public interface AdminService {
+public interface StationService {
     /**
      * 根据条件查询记录总数
      */
@@ -15,39 +16,32 @@ public interface AdminService {
     /**
      * 保存记录,不管记录里面的属性是否为空
      */
-    Long add(Admin record);
+    Long add(Station record);
 
     /**
      * 根据条件查询记录集
      */
-    List<Admin> findListByCriteria(Criteria criteria);
+    List<Station> findListByCriteria(Criteria criteria);
     
     /**
      * 根据条件查询记录集
      */
-    PageInfo<Admin> findListByCriteria(Criteria criteria, int pageNo, int pageSize);
+    PageInfo<Station> findListByCriteria(Criteria criteria, int pageNo, int pageSize);
 
     /**
      * 根据主键查询记录
      */
-    Admin findById(Long id);
+    Station findById(Long id);
 
     /**
      * 根据主键更新属性不为空的记录
      */
-    int updateByIdSelective(Admin record);
+    int updateByIdSelective(Station record);
     
-    /**
-     * 更加登录名查询
-     * @param username
-     * @return
-     */
-    Admin findByUsername(String username);
     /**
      * 缓存
      * @param id
      * @return
      */
-    Admin getByIdInCache(Long id);
-    
+    Station getByIdInCache(Long id);
 }

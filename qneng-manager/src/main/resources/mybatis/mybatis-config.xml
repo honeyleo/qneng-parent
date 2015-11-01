@@ -30,6 +30,10 @@
 		<mapper resource="com/manager/dao/mybatis/MenuDAO.xml" />
 		<mapper resource="com/manager/dao/mybatis/RoleDAO.xml" />
 		<mapper resource="com/manager/dao/mybatis/RoleDefaultMenuDAO.xml" />
+		<mapper resource="cn/lfy/qneng/dao/mybatis/StationDAO.xml" />
+		<mapper resource="cn/lfy/qneng/dao/mybatis/BunchDAO.xml" />
+		<mapper resource="cn/lfy/qneng/dao/mybatis/ModuleDAO.xml" />
+		<mapper resource="cn/lfy/qneng/dao/mybatis/ModuleDataDAO.xml" />
 	</mappers>
 	  
 	  

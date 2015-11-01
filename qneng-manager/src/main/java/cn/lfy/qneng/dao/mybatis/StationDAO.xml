@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lfy.qneng.dao.StationDAO" >
+  <resultMap id="BaseResultMap" type="cn.lfy.qneng.model.Station" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="userId" property="userId" jdbcType="BIGINT" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="lastUpdateTime" property="lastUpdateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.name != null" >
+         and name = #{condition.name}
+      </if>
+      <if test="condition.nameLike != null" >
+         and name like '%${condition.nameLike}%'
+      </if>
+      <if test="condition.address != null" >
+         and address = #{condition.address}
+      </if>
+      <if test="condition.userId != null" >
+         and userId = #{condition.userId}
+      </if>
+    </trim>
+  </sql>
+  
+  <sql id="Example_Order_Clause">
+  	<trim prefix="order by" prefixOverrides="," >
+  		<if test="orderMap.id != null">
+  			,id #{orderMap.id}
+  		</if>
+  	</trim>
+  </sql>
+  
+  <sql id="Base_Column_List" >
+    id, name, address, userId, createTime, lastUpdateTime
+  </sql>
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.manager.model.Criteria" >
+    select
+    <include refid="Base_Column_List" />
+    from t_station
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="_parameter != null" >
+      <include refid="Example_Order_Clause" />
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_station where id = #{id}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_station where id = #{id}
+  </delete>
+  
+  <insert id="insert" parameterType="cn.lfy.qneng.model.Station" useGeneratedKeys="true" keyProperty="id">
+    insert into t_station (name, address, userId, createTime)
+    values (#{name}, #{address}, #{userId}, #{createTime})
+  </insert>
+  
+  <select id="countByExample" parameterType="com.manager.model.Criteria" resultType="java.lang.Integer" >
+    select count(*) from t_station
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="cn.lfy.qneng.model.Station" >
+    update t_station
+    <set >
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="address != null" >
+        address = #{address},
+      </if>
+      <if test="userId != null" >
+        userId = #{userId},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  
+</mapper>

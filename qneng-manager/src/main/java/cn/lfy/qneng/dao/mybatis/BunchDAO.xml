@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lfy.qneng.dao.BunchDAO" >
+  <resultMap id="BaseResultMap" type="cn.lfy.qneng.model.Bunch" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="element" property="element" jdbcType="INTEGER" />
+    <result column="line" property="line" jdbcType="INTEGER" />
+    <result column="row" property="row" jdbcType="INTEGER" />
+    <result column="stationId" property="stationId" jdbcType="BIGINT" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="lastUpdateTime" property="lastUpdateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.name != null" >
+         and name = #{condition.name}
+      </if>
+      <if test="condition.nameLike != null" >
+         and name like '%${condition.nameLike}%'
+      </if>
+      <if test="condition.stationId != null" >
+         and stationId = #{condition.stationId}
+      </if>
+    </trim>
+  </sql>
+  
+  <sql id="Example_Order_Clause">
+  	<trim prefix="order by" prefixOverrides="," >
+  		<if test="orderMap.id != null">
+  			,id #{orderMap.id}
+  		</if>
+  	</trim>
+  </sql>
+  
+  <sql id="Base_Column_List" >
+    id, name, element, line, row, stationId, createTime, lastUpdateTime
+  </sql>
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.manager.model.Criteria" >
+    select
+    <include refid="Base_Column_List" />
+    from t_bunch
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="_parameter != null" >
+      <include refid="Example_Order_Clause" />
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_bunch where id = #{id}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_bunch where id = #{id}
+  </delete>
+  
+  <insert id="insert" parameterType="cn.lfy.qneng.model.Bunch" useGeneratedKeys="true" keyProperty="id">
+    insert into t_bunch (name, element, line, row, stationId, createTime)
+    values (#{name}, #{element}, #{line}, #{row}, #{stationId}, #{createTime})
+  </insert>
+  
+  <select id="countByExample" parameterType="com.manager.model.Criteria" resultType="java.lang.Integer" >
+    select count(*) from t_bunch
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="cn.lfy.qneng.model.Bunch" >
+    update t_bunch
+    <set >
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="element != null" >
+        element = #{element},
+      </if>
+      <if test="line != null" >
+        line = #{line},
+      </if>
+      <if test="row != null" >
+        row = #{row},
+      </if>
+      <if test="stationId != null" >
+        stationId = #{stationId},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  
+</mapper>

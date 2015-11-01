@@ -12,19 +12,32 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import cn.lfy.qneng.model.Bunch;
+import cn.lfy.qneng.model.Station;
+import cn.lfy.qneng.service.BunchService;
+import cn.lfy.qneng.service.StationService;
+
 import com.manager.common.Constants;
 import com.manager.model.Admin;
 import com.manager.model.LoginAccount;
 import com.manager.model.Menu;
 import com.manager.model.Role;
+import com.manager.service.AdminService;
 import com.manager.service.MenuService;
 import com.manager.service.RoleService;
 
 @Component
 public class Funcs implements Constants {
+	
+	private static AdminService adminService;
+	
     private static RoleService roleService;
 
     private static MenuService menuService;
+    
+    private static StationService stationService;
+    
+    private static BunchService bunchService;
 
     public static Admin getSessionLoginUser(HttpSession session) {
         if (null == session) {
@@ -115,6 +128,39 @@ public class Funcs implements Constants {
         }
         return r.getName();
     }
+    
+    public static String getUserName(Long userId) {
+        if (userId == null) {
+            return "";
+        }
+        Admin r = adminService.getByIdInCache(userId);
+        if (r == null) {
+            return "";
+        }
+        return r.getRealName();
+    }
+    
+    public static String getStationName(Long stationId) {
+        if (stationId == null) {
+            return "";
+        }
+        Station r = stationService.getByIdInCache(stationId);
+        if (r == null) {
+            return "";
+        }
+        return r.getName();
+    }
+    
+    public static String getBunchName(Long stationId) {
+        if (stationId == null) {
+            return "";
+        }
+        Bunch r = bunchService.getByIdInCache(stationId);
+        if (r == null) {
+            return "";
+        }
+        return r.getName();
+    }
 
     public static String getMenuName(Long menuId) {
         Menu m = menuService.getByIdInCache(menuId);
@@ -144,5 +190,19 @@ public class Funcs implements Constants {
     public void setMenuService(MenuService menuService) {
         Funcs.menuService = menuService;
     }
+    
+    @Autowired
+    public void setAdminService(AdminService adminService) {
+        Funcs.adminService = adminService;
+    }
+    @Autowired
+	public void setStationService(StationService stationService) {
+		Funcs.stationService = stationService;
+	}
+
+    @Autowired
+	public void setBunchService(BunchService bunchService) {
+		Funcs.bunchService = bunchService;
+	}
 
 }

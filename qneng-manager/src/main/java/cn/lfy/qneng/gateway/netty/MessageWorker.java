@@ -11,8 +11,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.lfy.qneng.gateway.context.HandlerMgr;
+import cn.lfy.qneng.gateway.context.HandlerMgr.HandlerMeta;
 import cn.lfy.qneng.gateway.disruptor.DisruptorEvent;
-import cn.lfy.qneng.gateway.netty.message.Event;
+import cn.lfy.qneng.gateway.netty.message.AbstractRequest;
+import cn.lfy.qneng.gateway.netty.message.Request;
+import cn.lfy.qneng.gateway.netty.message.Response;
+import cn.lfy.qneng.gateway.netty.util.CheckSumStream;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -31,12 +36,16 @@ public class MessageWorker{
     public String channelId;
     public String version;
 
+    private final CheckSumStream checkSumStream;
+    
     private static TreeSet<Short> ignoreCmd = Sets.newTreeSet();
     
     /**
      * 玩家对象
      */
     private volatile Object attachment;
+    
+    private static DisruptorEvent DISRUPTOR_LOGIN = new DisruptorEvent("LOGIN_THREAD", 10, 1024);
     /**
      * 玩家线性线程
      */
@@ -100,44 +109,55 @@ public class MessageWorker{
             throw new NullPointerException("新建MessageWorker, channel为null");
         }
         this.channel = _channel;
+        checkSumStream = new CheckSumStream();
         loginIp = ((InetSocketAddress) channel.remoteAddress()).getAddress().getHostAddress();
         LOG.info("connection ip = {}",loginIp);
     }
     
     public void messageReceived(ByteBuf buffer) {
-    	if(buffer.readableBytes() < 1){
+    	if(buffer.readableBytes() < 2){
     		LOG.info("message length error......");
             channel.close();
             return;
         }
     	//整个消息包大小
     	short length = buffer.readShort();
+    	if(buffer.readableBytes() < 1){
+    		LOG.error("不够读取一个校验和");
+    		channel.close();
+    		return;
+	    }
+    	
+    	int checkSumByte = buffer.readUnsignedByte();
+		
+		try {
+			checkSumStream.clearSum();
+			buffer.getBytes(buffer.readerIndex(), checkSumStream,
+			        buffer.readableBytes());
+			if (checkSumByte != checkSumStream.getCheckSum()){
+	            LOG.error("校验和错误, expected: " + checkSumStream.getCheckSum() + ", actual: " + checkSumByte);
+	            channel.close();
+	            return;
+	        }
+		} catch (Throwable e) {
+			LOG.error(e.getMessage(), e);
+		}
+		
     	//当前请求CMD
     	short cmd = buffer.readShort();
     	//消息body
-    	byte[] data = new byte[length - 2];
+    	byte[] data = new byte[length - 3];
 		buffer.readBytes(data);
-		
+		Runnable task = new MessageReceivedEvent(length, cmd, data, attachment, channel, this);
     	if(attachment == null) {
-    		processLogin(length, data, cmd);
+    		DISRUPTOR_LOGIN.publish(task);
     	} else {
+    		taskExec.publish(task);
     	}
     }
     
-    private void processLogin(int length, byte[] data, int cmd) {
-		try {
-			switch (cmd) {
-			case 1:
-			default:
-			}
-		} catch (Exception e) {
-		}
-    }
-    
-    public class MessageReceivedEvent implements Runnable, Event {
+    public class MessageReceivedEvent extends AbstractRequest implements Runnable, Request {
     	
-        private byte[] data;
-
         private final int length;
         
         private final int cmd;
@@ -150,9 +170,9 @@ public class MessageWorker{
 
         public MessageReceivedEvent(int length, int cmd, byte[] data, 
         		Object attachment, Channel channel, MessageWorker messageWorker) {
+        	super(data);
     		this.length = length;
     		this.cmd = cmd;
-    		this.data = data;
     		this.attachment = attachment;
     		this.channel = channel;
     		this.messageWorker = messageWorker;
@@ -160,12 +180,12 @@ public class MessageWorker{
         
         public void run() {
         	try {
-            	switch (cmd) {
-        			case 1:
-        				logout();
-        				break;
-        			default:
-        		}
+            	HandlerMeta meta = HandlerMgr.getHandler(this.cmd);
+            	if(meta == null) {
+            		LOG.warn("没有对应的处理类：[cmd={}]", this.cmd);
+            		return;
+            	}
+            	meta.getHandler().action(this, new Response(meta.getOut(), channel));
             } catch (Throwable ex) {
             	LOG.error("处理消息出错, 消息号: [cmd={}]", cmd);
             } 
@@ -195,15 +215,6 @@ public class MessageWorker{
     	public int length() {
     		return length;
     	}
-    	@Override
-    	public byte[] data() {
-    		return data;
-    	}
-    	@Override
-    	public void write(Packet packet) {
-    		channel.write(packet);
-    		messageWorker.unLock((short)cmd);
-    	}
     	
         @Override
         public String toString() {
@@ -224,9 +235,6 @@ public class MessageWorker{
                 return;
             }
     	}
-    }
-    
-    public void logout() {
     }
     
     public void executeTask(Runnable event) {

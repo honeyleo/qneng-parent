@@ -45,7 +45,7 @@ public class MessageWorker{
      */
     private volatile Object attachment;
     
-    private static DisruptorEvent DISRUPTOR_LOGIN = new DisruptorEvent("LOGIN_THREAD", 10, 1024);
+    private static DisruptorEvent DISRUPTOR_LOGIN = new DisruptorEvent("LOGIN_THREAD-", 4, 1024);
     /**
      * 玩家线性线程
      */

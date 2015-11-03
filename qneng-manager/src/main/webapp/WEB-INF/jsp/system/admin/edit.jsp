@@ -123,9 +123,23 @@
 			return false;
 		}
 		
-		$("#userForm").submit();
-		$("#zhongxin").hide();
-		$("#zhongxin2").show();
+		$.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "<%=basePath %>manager/admin/${uri}",
+            data: $('#userForm').serialize(),
+            success: function (data) {
+            	if(data.ret == 0) {
+            		$("#zhongxin").hide();
+            		$("#zhongxin2").show();
+            		top.Dialog.close();
+            	} else {
+            		bootbox.alert(data.msg, function(){
+            			
+            		});
+            	}
+            }
+		});
 	}
 	
 </script>

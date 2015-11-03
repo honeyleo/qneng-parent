@@ -10,8 +10,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.lfy.common.model.Message;
 import cn.lfy.qneng.model.Bunch;
 import cn.lfy.qneng.model.Station;
 import cn.lfy.qneng.service.BunchService;
@@ -80,15 +82,14 @@ public class BunchController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/del")
-    public ModelAndView del(HttpServletRequest request) throws ApplicationException {
+    @ResponseBody
+    public Object del(HttpServletRequest request) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
         Long id = RequestUtil.getLong(request, "id");
         Bunch record = new Bunch();
         record.setId(id);
         bunchService.updateByIdSelective(record);
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("msg","success");
-		mv.setViewName("common/save_result");
-        return mv;
+        return builder.build();
     }
     
     /**
@@ -136,7 +137,9 @@ public class BunchController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/add")
-    public ModelAndView add(HttpServletRequest request) throws ApplicationException {
+    @ResponseBody
+    public Object add(HttpServletRequest request) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
         String name = RequestUtil.getString(request, "name");
         Integer element = RequestUtil.getInteger(request, "element");
         Integer line = RequestUtil.getInteger(request, "line");
@@ -153,11 +156,7 @@ public class BunchController implements Constants {
         record.setCreateTime(new Date());
         bunchService.add(record);
         
-        // 根据角色添加默认权限
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("msg","success");
-		mv.setViewName("common/save_result");
-        return mv;
+        return builder.build();
     }
 
     /**
@@ -168,8 +167,10 @@ public class BunchController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/update")
-    public ModelAndView update(HttpServletRequest request,
+    @ResponseBody
+    public Object update(HttpServletRequest request,
             HttpServletResponse response) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
         Long id = RequestUtil.getLong(request, "id");
         String name = RequestUtil.getString(request, "name");
         Integer element = RequestUtil.getInteger(request, "element");
@@ -186,10 +187,7 @@ public class BunchController implements Constants {
         record.setRow(row);
         record.setStationId(stationId);
         bunchService.updateByIdSelective(record);
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("msg","success");
-		mv.setViewName("common/save_result");
-        return mv;
+        return builder.build();
     }
     
     

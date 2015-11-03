@@ -10,8 +10,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.lfy.common.model.Message;
 import cn.lfy.qneng.model.Station;
 import cn.lfy.qneng.service.StationService;
 
@@ -141,7 +143,9 @@ public class StationController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/add")
-    public ModelAndView add(HttpServletRequest request) throws ApplicationException {
+    @ResponseBody
+    public Object add(HttpServletRequest request) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
         String name = RequestUtil.getString(request, "name");
         String address = RequestUtil.getString(request, "address");
         String userId = RequestUtil.getString(request, "userId");
@@ -154,8 +158,8 @@ public class StationController implements Constants {
         }
         record.setCreateTime(new Date());
         stationService.add(record);
-        
-        return new ModelAndView("/common/save_result", "msg", "success");
+        builder.setMsg("新增成功");
+        return builder.build();
     }
 
     /**
@@ -166,8 +170,10 @@ public class StationController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/update")
-    public ModelAndView update(HttpServletRequest request,
+    @ResponseBody
+    public Object update(HttpServletRequest request,
             HttpServletResponse response) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
         Long id = RequestUtil.getLong(request, "id");
         String address = RequestUtil.getString(request, "address");
         String name = RequestUtil.getString(request, "name");
@@ -180,10 +186,8 @@ public class StationController implements Constants {
         record.setAddress(address);
         record.setUserId(userId);
         stationService.updateByIdSelective(record);
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("msg","success");
-		mv.setViewName("common/save_result");
-        return mv;
+        builder.setMsg("修改成功");
+        return builder.build();
     }
     
     

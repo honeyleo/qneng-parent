@@ -10,8 +10,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.lfy.common.model.Message;
 import cn.lfy.qneng.model.Bunch;
 import cn.lfy.qneng.model.Module;
 import cn.lfy.qneng.service.BunchService;
@@ -80,15 +82,14 @@ public class ModuleController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/del")
-    public ModelAndView del(HttpServletRequest request) throws ApplicationException {
+    @ResponseBody
+    public Object del(HttpServletRequest request) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
         Long id = RequestUtil.getLong(request, "id");
         Module record = new Module();
         record.setId(id);
         moduleService.updateByIdSelective(record);
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("msg","success");
-		mv.setViewName("common/save_result");
-        return mv;
+        return builder.build();
     }
     
     /**
@@ -136,7 +137,9 @@ public class ModuleController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/add")
-    public ModelAndView add(HttpServletRequest request) throws ApplicationException {
+    @ResponseBody
+    public Object add(HttpServletRequest request) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
         String name = RequestUtil.getString(request, "name");
         String no = RequestUtil.getString(request, "no");
         String appSecret = RequestUtil.getString(request, "appSecret");
@@ -149,12 +152,7 @@ public class ModuleController implements Constants {
         record.setBunchId(bunchId);
         record.setCreateTime(new Date());
         moduleService.add(record);
-        
-        // 根据角色添加默认权限
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("msg","success");
-		mv.setViewName("common/save_result");
-        return mv;
+        return builder.build();
     }
 
     /**
@@ -165,8 +163,10 @@ public class ModuleController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/update")
-    public ModelAndView update(HttpServletRequest request,
+    @ResponseBody
+    public Object update(HttpServletRequest request,
             HttpServletResponse response) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
         Long id = RequestUtil.getLong(request, "id");
         String name = RequestUtil.getString(request, "name");
         String no = RequestUtil.getString(request, "no");
@@ -186,10 +186,7 @@ public class ModuleController implements Constants {
         record.setAppSecret(appSecret);
         record.setBunchId(bunchId);
         moduleService.updateByIdSelective(record);
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("msg","success");
-		mv.setViewName("common/save_result");
-        return mv;
+        return builder.build();
     }
     
     

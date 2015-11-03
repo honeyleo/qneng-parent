@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.alibaba.fastjson.JSONObject;
+import cn.lfy.common.model.Message;
+
 import com.google.common.base.Splitter;
 import com.manager.common.Constants;
 import com.manager.common.ErrorCode;
@@ -94,16 +95,15 @@ public class AdminController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/del")
-    public ModelAndView del(HttpServletRequest request) throws ApplicationException {
+    @ResponseBody
+    public Object del(HttpServletRequest request) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
         Long id = RequestUtil.getLong(request, "id");
         Admin record = new Admin();
         record.setId(id);
         record.setState(StateType.INACTIVE.getId());
         adminService.updateByIdSelective(record);
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("msg","success");
-		mv.setViewName("common/save_result");
-        return mv;
+        return builder.build();
     }
     
     /**
@@ -116,6 +116,7 @@ public class AdminController implements Constants {
     @RequestMapping("/delAll")
     @ResponseBody
     public Object delAll(HttpServletRequest request) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
         String userIds = RequestUtil.getString(request, "userIds");
         Iterator<String> it = Splitter.on(",").trimResults().split(userIds).iterator();
         while(it.hasNext()) {
@@ -124,9 +125,7 @@ public class AdminController implements Constants {
             record.setState(StateType.INACTIVE.getId());
             adminService.updateByIdSelective(record);
         }
-        JSONObject json = new JSONObject();
-        json.put("code", 200);
-        return json;
+        return builder.build();
     }
 
     /**
@@ -172,7 +171,9 @@ public class AdminController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/add")
-    public ModelAndView add(HttpServletRequest request) throws ApplicationException {
+    @ResponseBody
+    public Object add(HttpServletRequest request) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
         String username = RequestUtil.getString(request, "username");
         Admin extAdmin = adminService.findByUsername(username);
         if (extAdmin != null) {
@@ -207,10 +208,7 @@ public class AdminController implements Constants {
         
         // 根据角色添加默认权限
         adminMenuService.addAdminDefaultMenu(adminId, roleId);
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("msg","success");
-		mv.setViewName("common/save_result");
-        return mv;
+        return builder.build();
     }
 
     /**
@@ -221,8 +219,10 @@ public class AdminController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/update")
-    public ModelAndView update(HttpServletRequest request,
+    @ResponseBody
+    public Object update(HttpServletRequest request,
             HttpServletResponse response) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
         Long id = RequestUtil.getLong(request, "id");
         String password = RequestUtil.getString(request, "password");
         String realName = RequestUtil.getString(request, "realName");
@@ -251,10 +251,7 @@ public class AdminController implements Constants {
         record.setRoleId(roleId);
         record.setState(state);
         adminService.updateByIdSelective(record);
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("msg","success");
-		mv.setViewName("common/save_result");
-        return mv;
+        return builder.build();
     }
     
     

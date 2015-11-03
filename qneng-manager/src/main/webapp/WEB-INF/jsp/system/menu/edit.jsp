@@ -70,9 +70,23 @@
 						return false;
 					}
 					
-					$("#menuForm").submit();
-					$("#zhongxin").hide();
-					$("#zhongxin2").show();
+					$.ajax({
+			            type: "POST",
+			            dataType: "json",
+			            url: "<%=basePath %>manager/menu/save",
+			            data: $('#menuForm').serialize(),
+			            success: function (data) {
+			            	if(data.ret == 0) {
+			            		$("#zhongxin").hide();
+			            		$("#zhongxin2").show();
+			            		top.Dialog.close();
+			            	} else {
+			            		bootbox.alert(data.msg, function(){
+			            			
+			            		});
+			            	}
+			            }
+					});
 				}
 				
 		</script>

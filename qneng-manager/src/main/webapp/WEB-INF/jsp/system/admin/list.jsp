@@ -183,9 +183,6 @@
 			 diag.Width = 225;
 			 diag.Height = 415;
 			 diag.CancelEvent = function(){ //关闭事件
-				 if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
-					nextPage(${page.currentPage});
-				}
 				diag.close();
 			 };
 			 diag.show();
@@ -198,7 +195,12 @@
 					top.jzts();
 					var url = "<%=basePath%>manager/admin/del?id="+userId+"&tm="+new Date().getTime();
 					$.get(url,function(data){
-						nextPage(${page.currentPage});
+						if(data.ret == 0) {
+							nextPage(${page.currentPage});
+						} else {
+							bootbox.alert(data.msg);
+						}
+						
 					});
 				}
 			});
@@ -256,8 +258,10 @@
 								//beforeSend: validateData,
 								cache: false,
 								success: function(data){
-									if(data.code == 200) {
+									if(data.ret == 0) {
 										nextPage(${page.currentPage});
+									} else {
+										bootbox.alert(data.msg);
 									}
 								}
 							});

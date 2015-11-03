@@ -58,9 +58,23 @@
 			$("#name").val(jQuery.trim($('#name').val()));
 		}
 		
-		$("#bunchForm").submit();
-		$("#zhongxin").hide();
-		$("#zhongxin2").show();
+		$.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "<%=basePath %>manager/bunch/${uri}",
+            data: $('#bunchForm').serialize(),
+            success: function (data) {
+            	if(data.ret == 0) {
+            		$("#zhongxin").hide();
+            		$("#zhongxin2").show();
+            		top.Dialog.close();
+            	} else {
+            		bootbox.alert(data.msg, function(){
+            			
+            		});
+            	}
+            }
+		});
 	}
 	
 </script>

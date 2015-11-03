@@ -127,10 +127,6 @@
 			 diag.Width = 270;
 			 diag.Height = 300;
 			 diag.CancelEvent = function(){ //关闭事件
-				if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
-					top.jzts();
-					setTimeout("self.location.reload()",100);
-				}
 				diag.close();
 			 };
 			 diag.show();
@@ -145,10 +141,6 @@
 			 diag.Width = 270;
 			 diag.Height = 300;
 			 diag.CancelEvent = function(){ //关闭事件
-				 if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
-					top.jzts();
-					setTimeout("self.location.reload()",100);
-				}
 				diag.close();
 			 };
 			 diag.show();
@@ -161,7 +153,7 @@
 					var url = "<%=basePath%>manager/role/del?id="+ROLE_ID+"&guid="+new Date().getTime();
 					top.jzts();
 					$.get(url,function(data){
-						if("success" == data.result){
+						if(data.ret == 0){
 							top.jzts();
 							document.location.reload();
 						}

@@ -24,6 +24,7 @@
 		<script type="text/javascript" src="<%=basePath %>resources/js/jquery-1.7.2.js"></script>
 		<!--提示框-->
 		<script type="text/javascript" src="<%=basePath %>resources/js/jquery.tips.js"></script>
+		<script type="text/javascript" src="<%=basePath %>resources/js/bootbox.min.js"></script>
 		
 <script type="text/javascript">
 	$(top.hangge());
@@ -58,9 +59,25 @@
 			$("#name").val(jQuery.trim($('#name').val()));
 		}
 		
-		$("#stationForm").submit();
-		$("#zhongxin").hide();
-		$("#zhongxin2").show();
+		$.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "<%=basePath %>manager/station/${uri}",
+            data: $('#stationForm').serialize(),
+            success: function (data) {
+            	if(data.ret == 0) {
+            		$("#zhongxin").hide();
+            		$("#zhongxin2").show();
+            		top.Dialog.close();
+            	} else {
+            		bootbox.alert(data.msg, function(){
+            			
+            		});
+            	}
+            }
+		});
+		//$("#zhongxin").hide();
+		//$("#zhongxin2").show();
 	}
 	
 </script>

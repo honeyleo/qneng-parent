@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.alibaba.fastjson.JSONObject;
+import cn.lfy.common.model.Message;
+
 import com.google.common.collect.Lists;
 import com.manager.common.Constants;
 import com.manager.common.ErrorCode;
@@ -90,7 +91,9 @@ public class MenuController implements Constants {
     }
 
     @RequestMapping("/save")
-    public ModelAndView save(HttpServletRequest request) throws ApplicationException {
+    @ResponseBody
+    public Object save(HttpServletRequest request) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
         Long id=RequestUtil.getLong(request, "id");
         String name=RequestUtil.getString(request, "name");
         Integer type=RequestUtil.getInteger(request, "type");
@@ -112,23 +115,19 @@ public class MenuController implements Constants {
         record.setState(1);
         record.setOnMenu(onMenu);
         menuService.save(record);
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("msg","success");
-		mv.setViewName("common/save_result");
-        return mv;
+        return builder.build();
     }
 
     @RequestMapping("/del")
     @ResponseBody
     public Object deleteTreeNode(HttpServletRequest request) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
         Long menuId =RequestUtil.getLong(request, "menuId");
         if(null == menuId) {
             throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "menuId");
         }
         menuService.deleteById(menuId);
-        JSONObject json = new JSONObject();
-        json.put("code", 200);
-        return json;
+        return builder.build();
     }
     
     /**
@@ -150,13 +149,12 @@ public class MenuController implements Constants {
 	 * @return
 	 */
 	@RequestMapping(value="/editIcon")
-	public ModelAndView editicon(HttpServletRequest request)throws Exception{
-		ModelAndView mv = new ModelAndView();
+	@ResponseBody
+	public Object editicon(HttpServletRequest request)throws Exception{
+		Message.Builder builder = Message.newBuilder();
 		Long id = RequestUtil.getLong(request, "menuId");
 		String icon = RequestUtil.getString(request, "icon");
 		menuService.updateIcon(id, icon);
-		mv.addObject("msg","success");
-		mv.setViewName("common/save_result");
-		return mv;
+		return builder.build();
 	}
 }

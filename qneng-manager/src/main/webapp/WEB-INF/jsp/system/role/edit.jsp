@@ -31,9 +31,23 @@
 			$("#roleName").focus();
 			return false;
 		}
-			$("#form1").submit();
-			$("#zhongxin").hide();
-			$("#zhongxin2").show();
+		$.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "<%=basePath %>manager/role/${uri}",
+            data: $('#form1').serialize(),
+            success: function (data) {
+            	if(data.ret == 0) {
+            		$("#zhongxin").hide();
+            		$("#zhongxin2").show();
+            		top.Dialog.close();
+            	} else {
+            		bootbox.alert(data.msg, function(){
+            			
+            		});
+            	}
+            }
+		});
 	}
 	
 </script>

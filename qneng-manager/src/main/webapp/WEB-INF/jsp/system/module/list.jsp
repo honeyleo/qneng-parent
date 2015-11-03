@@ -152,10 +152,6 @@
 			 diag.Width = 225;
 			 diag.Height = 315;
 			 diag.CancelEvent = function(){ //关闭事件
-				 if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
-						top.jzts();
-						setTimeout("self.location.reload()",100);
-					}
 				diag.close();
 			 };
 			 diag.show();
@@ -171,9 +167,6 @@
 			 diag.Width = 225;
 			 diag.Height = 315;
 			 diag.CancelEvent = function(){ //关闭事件
-				 if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
-					nextPage(${page.currentPage});
-				}
 				diag.close();
 			 };
 			 diag.show();

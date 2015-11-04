@@ -68,5 +68,9 @@
 			<mvc:mapping path="/manager/**"/>
 			<bean class="com.manager.common.web.interceptors.PermissionInterceptor"></bean>
 		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/app/**"/>
+			<bean class="com.manager.common.web.interceptors.AppInterceptor"></bean>
+		</mvc:interceptor>
 	</mvc:interceptors> 
 </beans>

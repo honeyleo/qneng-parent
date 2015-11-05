@@ -1,6 +1,7 @@
 package cn.lfy.qneng.gateway.netty.message;
 
 import io.netty.channel.Channel;
+import cn.lfy.qneng.gateway.model.Node;
 import cn.lfy.qneng.gateway.netty.MessageWorker;
 
 public interface Request {
@@ -21,7 +22,7 @@ public interface Request {
 	 * 玩家
 	 * @return
 	 */
-	public Object attachment();
+	public Node node();
 	
 	/**
 	 * 维持的长连接管道

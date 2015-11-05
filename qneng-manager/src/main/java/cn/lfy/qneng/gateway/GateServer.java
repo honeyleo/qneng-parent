@@ -14,13 +14,18 @@ import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.DefaultThreadFactory;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.lfy.qneng.gateway.disruptor.DisruptorEvent;
+import cn.lfy.qneng.gateway.model.Node;
 import cn.lfy.qneng.gateway.netty.SimpleChannelOutboundHandler;
 import cn.lfy.qneng.gateway.netty.SimpleServerEncoder;
 import cn.lfy.qneng.gateway.netty.SingleDecoderHandler;
+
+import com.google.common.collect.Maps;
 
 public class GateServer {
 
@@ -31,6 +36,8 @@ public class GateServer {
 
 	private static ChannelGroup allChannels = new DefaultChannelGroup(new DefaultEventExecutorGroup(1).next());
 	private static Logger logger = LoggerFactory.getLogger(GateServer.class);
+	
+	private static Map<String, Node> ONLINE_MODULE = Maps.newConcurrentMap();
 	
 	public void start() {
 		// Configure the server.
@@ -95,4 +102,22 @@ public class GateServer {
 		int code = Math.abs(no.hashCode());
 		return workers[code & 3];
 	}
+	
+	/**
+	 * 组件连接上网关后放入组件管道
+	 * @param no
+	 * @param channel
+	 */
+	public void putModule(String no, Node node) {
+		ONLINE_MODULE.put(no, node);
+	}
+	/**
+	 * 获取组件输出管道
+	 * @param no
+	 * @return
+	 */
+	public Node getModuleChannel(String no) {
+		return ONLINE_MODULE.get(no);
+	}
+	
 }

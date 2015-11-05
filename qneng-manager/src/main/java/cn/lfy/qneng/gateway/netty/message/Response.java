@@ -11,6 +11,7 @@ public class Response {
 		this.channel = channel;
 		this.cmd = cmd;
 	}
+	
 	private Packet packet;
 
 	public int getCmd() {

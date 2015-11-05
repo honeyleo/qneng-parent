@@ -15,6 +15,7 @@ import cn.lfy.qneng.gateway.GateServer;
 import cn.lfy.qneng.gateway.context.HandlerMgr;
 import cn.lfy.qneng.gateway.context.HandlerMgr.HandlerMeta;
 import cn.lfy.qneng.gateway.disruptor.DisruptorEvent;
+import cn.lfy.qneng.gateway.model.Node;
 import cn.lfy.qneng.gateway.netty.message.AbstractRequest;
 import cn.lfy.qneng.gateway.netty.message.Request;
 import cn.lfy.qneng.gateway.netty.message.Response;
@@ -44,7 +45,7 @@ public class MessageWorker{
     /**
      * 玩家对象
      */
-    private volatile Object attachment;
+    private volatile Node node;
     
     /**
      * 玩家线性线程
@@ -63,7 +64,7 @@ public class MessageWorker{
     	if(ignoreCmd.contains(cmd)) {
     		return;
     	}
-		LOG.info("{} lock cmd={}",attachment, cmd);
+		LOG.info("{} lock cmd={}",node, cmd);
 		long lastAccessTime = System.currentTimeMillis();
 		lockCache.put(cmd, lastAccessTime);
 	}
@@ -99,7 +100,7 @@ public class MessageWorker{
 		if(lastAccessTime != null) {
 			long time = System.currentTimeMillis() - lastAccessTime;
 			if(time > 100) {
-				LOG.warn("{} unlock cmd={}------------------总耗时[time={}].", new Object[]{attachment, cmd, time});
+				LOG.warn("{} unlock cmd={}------------------总耗时[time={}].", new Object[]{node, cmd, time});
 			}
 		}
 	}
@@ -148,8 +149,8 @@ public class MessageWorker{
     	//消息body
     	byte[] data = new byte[length - 3];
 		buffer.readBytes(data);
-		Runnable task = new MessageReceivedEvent(length, cmd, data, attachment, channel, this);
-    	if(attachment == null) {
+		Runnable task = new MessageReceivedEvent(length, cmd, data, node, channel, this);
+    	if(node == null) {
     		GateServer.submitLogin(task);
     	} else {
     		taskExec.publish(task);
@@ -162,18 +163,18 @@ public class MessageWorker{
         
         private final int cmd;
         
-        private Object attachment;
+        private Node node;
     	
     	private Channel channel;
     	
     	private MessageWorker messageWorker;
 
         public MessageReceivedEvent(int length, int cmd, byte[] data, 
-        		Object attachment, Channel channel, MessageWorker messageWorker) {
+        		Node node, Channel channel, MessageWorker messageWorker) {
         	super(data);
     		this.length = length;
     		this.cmd = cmd;
-    		this.attachment = attachment;
+    		this.node = node;
     		this.channel = channel;
     		this.messageWorker = messageWorker;
     	}
@@ -197,8 +198,8 @@ public class MessageWorker{
     	}
 
     	@Override
-    	public Object attachment() {
-    		return attachment;
+    	public Node node() {
+    		return node;
     	}
 
     	@Override
@@ -229,9 +230,9 @@ public class MessageWorker{
      * 玩家掉线处理：设置当前MessageWorker的附加对象为null，设置玩家lastOffLineTime
      */
     public void processDisconnection() {
-    	LOG.info("--------------------玩家【{}】掉线-------------------", attachment);
+    	LOG.info("--------------------组件【{}】掉线-------------------", node);
     	if (offlineProcessed.compareAndSet(false, true)) {
-    		if (attachment == null) {
+    		if (node == null) {
                 return;
             }
     	}
@@ -246,10 +247,10 @@ public class MessageWorker{
     }
 	@Override
 	public String toString() {
-		if(attachment != null) {
-			return attachment.toString();
+		if(node != null) {
+			return node.toString();
 		} else {
-			return "还没登陆的玩家";
+			return "还没入网的组件";
 		}
 	}
     

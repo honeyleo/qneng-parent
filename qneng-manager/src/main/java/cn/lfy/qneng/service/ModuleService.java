@@ -38,4 +38,10 @@ public interface ModuleService {
      */
     int updateByIdSelective(Module record);
     
+    /**
+     * 根据组件no查询记录
+     * @param no 设备唯一码
+     */
+    Module findByNo(String no);
+    
 }

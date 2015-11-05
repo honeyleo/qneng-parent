@@ -37,4 +37,10 @@ public interface ModuleDAO {
      * 根据主键更新属性不为空的记录
      */
     int updateByPrimaryKeySelective(Module record);
+    
+    /**
+     * 根据组件no查询记录
+     * @param no 设备唯一码
+     */
+    Module selectByNo(String no);
 }

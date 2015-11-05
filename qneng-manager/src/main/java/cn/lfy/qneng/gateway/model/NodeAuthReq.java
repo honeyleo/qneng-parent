@@ -22,6 +22,12 @@ public class NodeAuthReq {
 	public void setKey(String key) {
 		this.key = key;
 	}
+
+	@Override
+	public String toString() {
+		return "NodeAuthReq [no=" + no + ", key=" + key + "]";
+	}
+	
 	
 	
 }

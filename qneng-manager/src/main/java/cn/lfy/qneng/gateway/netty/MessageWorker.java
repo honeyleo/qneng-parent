@@ -4,8 +4,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 
 import java.net.InetSocketAddress;
-import java.util.Map;
-import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
@@ -15,14 +13,12 @@ import cn.lfy.qneng.gateway.GateServer;
 import cn.lfy.qneng.gateway.context.HandlerMgr;
 import cn.lfy.qneng.gateway.context.HandlerMgr.HandlerMeta;
 import cn.lfy.qneng.gateway.disruptor.DisruptorEvent;
+import cn.lfy.qneng.gateway.model.ErrorCode;
 import cn.lfy.qneng.gateway.model.Node;
 import cn.lfy.qneng.gateway.netty.message.AbstractRequest;
 import cn.lfy.qneng.gateway.netty.message.Request;
 import cn.lfy.qneng.gateway.netty.message.Response;
 import cn.lfy.qneng.gateway.netty.util.CheckSumStream;
-
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 /**
  * 每个客户端连接都会附带, 处理收到的消息
@@ -35,12 +31,9 @@ public class MessageWorker{
 
     public final String loginIp;
     private final Channel channel;
-    public String channelId;
     public String version;
 
     private final CheckSumStream checkSumStream;
-    
-    private static TreeSet<Short> ignoreCmd = Sets.newTreeSet();
     
     /**
      * 玩家对象
@@ -51,60 +44,7 @@ public class MessageWorker{
      * 玩家线性线程
      */
     private volatile DisruptorEvent taskExec;
-    /**
-     * 玩家消息工作者事件锁
-     */
-    private Map<Short, Long> lockCache = Maps.newConcurrentMap();
-    
-    /**
-     * 玩家事件锁
-     * @param cmd
-     */
-    public void lock(short cmd) {
-    	if(ignoreCmd.contains(cmd)) {
-    		return;
-    	}
-		LOG.info("{} lock cmd={}",node, cmd);
-		long lastAccessTime = System.currentTimeMillis();
-		lockCache.put(cmd, lastAccessTime);
-	}
-    
-    /**
-	 * 检查玩家事件是否已锁
-	 * @param cmd
-	 * @return
-	 */
-	public boolean checkLock(short cmd) {
-		if(ignoreCmd.contains(cmd)) {
-			return false;
-		}
-		Long lastAccessTime = lockCache.get(cmd);
-		if (lastAccessTime != null) {
-			// 锁异常处理: 距离上次访问时间大于1秒钟自动解锁
-			if (System.currentTimeMillis() - lastAccessTime > 1 * 1000) {
-				unLock(cmd);
-				return false;
-			}
-			return true;
-		} else {
-			return false;
-		}
-	}
 	
-	/**
-	 * 解锁玩家事件
-	 * @param cmd
-	 */
-	public void unLock(short cmd) {
-		Long lastAccessTime = lockCache.remove(cmd);
-		if(lastAccessTime != null) {
-			long time = System.currentTimeMillis() - lastAccessTime;
-			if(time > 100) {
-				LOG.warn("{} unlock cmd={}------------------总耗时[time={}].", new Object[]{node, cmd, time});
-			}
-		}
-	}
-    
     public MessageWorker(Channel _channel){
         if (_channel == null){
             throw new NullPointerException("新建MessageWorker, channel为null");
@@ -151,7 +91,17 @@ public class MessageWorker{
 		buffer.readBytes(data);
 		Runnable task = new MessageReceivedEvent(length, cmd, data, node, channel, this);
     	if(node == null) {
-    		GateServer.submitLogin(task);
+    		if(cmd == 1001) {
+    			GateServer.submitLogin(task);
+    		} else {
+    			//没授权就想干，没门
+    			ErrorCode packet = new ErrorCode();
+    			packet.setCode(1);
+    			packet.setMsg("没授权就想干，没门");
+    			new Response(1000, channel).write(packet);
+    			channel.close();
+    		}
+    		
     	} else {
     		taskExec.publish(task);
     	}
@@ -227,7 +177,7 @@ public class MessageWorker{
     private AtomicBoolean offlineProcessed = new AtomicBoolean(false);
     
     /**
-     * 玩家掉线处理：设置当前MessageWorker的附加对象为null，设置玩家lastOffLineTime
+     * 组件掉线处理：设置当前MessageWorker的附加对象为null，设置玩家lastOffLineTime
      */
     public void processDisconnection() {
     	LOG.info("--------------------组件【{}】掉线-------------------", node);
@@ -244,6 +194,9 @@ public class MessageWorker{
 
     public void setTaskExec(DisruptorEvent taskExec) {
     	this.taskExec = taskExec;
+    }
+    public void setNode(Node node) {
+    	this.node = node;
     }
 	@Override
 	public String toString() {

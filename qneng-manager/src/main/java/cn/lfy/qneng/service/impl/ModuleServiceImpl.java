@@ -56,5 +56,10 @@ public class ModuleServiceImpl implements ModuleService {
         res.setData(list);
         return res;
     }
+
+	@Override
+	public Module findByNo(String no) {
+		return dao.selectByNo(no);
+	}
     
 }

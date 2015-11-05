@@ -114,4 +114,10 @@
     where id = #{id}
   </update>
   
+  <select id="selectByNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_module where no = #{no} limit 1
+  </select>
+  
 </mapper>

@@ -17,6 +17,7 @@ import io.netty.util.concurrent.DefaultThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.lfy.qneng.gateway.disruptor.DisruptorEvent;
 import cn.lfy.qneng.gateway.netty.SimpleChannelOutboundHandler;
 import cn.lfy.qneng.gateway.netty.SimpleServerEncoder;
 import cn.lfy.qneng.gateway.netty.SingleDecoderHandler;
@@ -62,8 +63,18 @@ public class GateServer {
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
-
+		initBizThread();
 		logger.info("网关服务器启动成功，开始监听{} 端口...", port);
+	}
+	
+	private DisruptorEvent[] workers;
+	
+	private void initBizThread() {
+		// ------------- 初始化业务线程(线性执行) -----------------
+		workers = new DisruptorEvent[4];
+		for (int i = 0; i < 4; i++) {
+			workers[i] = new DisruptorEvent("GAME_WORKER_" + i, 1);
+		}
 	}
 	public void setPort(int port) {
 		this.port = port;
@@ -75,4 +86,13 @@ public class GateServer {
 		this.workerThread = workerThread;
 	}
 	
+	private static DisruptorEvent DISRUPTOR_LOGIN = new DisruptorEvent("LOGIN_THREAD-", 4, 1024);
+	
+	public static void submitLogin(Runnable task) {
+		DISRUPTOR_LOGIN.publish(task);
+	}
+	public DisruptorEvent getWorker(String no) {
+		int code = Math.abs(no.hashCode());
+		return workers[code & 3];
+	}
 }

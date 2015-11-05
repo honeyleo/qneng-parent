@@ -8,6 +8,7 @@ public class Response {
 	private Channel channel;
 	
 	public Response(int cmd, Channel channel) {
+		this.channel = channel;
 		this.cmd = cmd;
 	}
 	private Packet packet;

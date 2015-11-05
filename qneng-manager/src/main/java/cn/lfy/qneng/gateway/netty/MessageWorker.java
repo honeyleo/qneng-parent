@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.lfy.qneng.gateway.GateServer;
 import cn.lfy.qneng.gateway.context.HandlerMgr;
 import cn.lfy.qneng.gateway.context.HandlerMgr.HandlerMeta;
 import cn.lfy.qneng.gateway.disruptor.DisruptorEvent;
@@ -45,7 +46,6 @@ public class MessageWorker{
      */
     private volatile Object attachment;
     
-    private static DisruptorEvent DISRUPTOR_LOGIN = new DisruptorEvent("LOGIN_THREAD-", 4, 1024);
     /**
      * 玩家线性线程
      */
@@ -150,7 +150,7 @@ public class MessageWorker{
 		buffer.readBytes(data);
 		Runnable task = new MessageReceivedEvent(length, cmd, data, attachment, channel, this);
     	if(attachment == null) {
-    		DISRUPTOR_LOGIN.publish(task);
+    		GateServer.submitLogin(task);
     	} else {
     		taskExec.publish(task);
     	}
@@ -241,6 +241,9 @@ public class MessageWorker{
     	taskExec.publish(event);
     }
 
+    public void setTaskExec(DisruptorEvent taskExec) {
+    	this.taskExec = taskExec;
+    }
 	@Override
 	public String toString() {
 		if(attachment != null) {

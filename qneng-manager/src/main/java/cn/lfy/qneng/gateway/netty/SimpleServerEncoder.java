@@ -32,8 +32,10 @@ public class SimpleServerEncoder extends MessageToByteEncoder<Response> {
 		int cmd = response.getCmd();
 		ByteBuf buf = null;
 		byte[] data = null;
+		String content = null;
 		if(packet != null) {
-			data = packet.writeXml().getBytes("UTF-8");
+			content = packet.writeXml();
+			data = content.getBytes("UTF-8");
 			buf = PooledByteBufAllocator.DEFAULT.buffer(data.length + 2);
 			buf.writeShort(cmd);
 			buf.writeBytes(data);
@@ -49,7 +51,7 @@ public class SimpleServerEncoder extends MessageToByteEncoder<Response> {
 		out.writeShort(size);
 		out.writeByte(checkSumStream.getCheckSum());
 		out.writeShort(cmd);
-		
+		LOG.info("Response[size={}, checkSum={}, cmd={}, body={}]", new Object[]{size, checkSumStream.getCheckSum(), cmd, content});
 		if(data != null) {
 			out.writeBytes(data);
 		}

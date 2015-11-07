@@ -21,6 +21,10 @@ public class Station implements Serializable {
 	 * 电站名称
 	 */
 	private String name;
+	/**
+	 * 电站简介
+	 */
+	private String info;
 	
 	private String address;
 	/**
@@ -78,6 +82,14 @@ public class Station implements Serializable {
 
 	public void setLastUpdateTime(Long lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
 	}
 	
 	

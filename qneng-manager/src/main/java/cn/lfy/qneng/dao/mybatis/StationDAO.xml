@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="cn.lfy.qneng.model.Station" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="info" property="info" jdbcType="VARCHAR" />
     <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="userId" property="userId" jdbcType="BIGINT" />
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
@@ -35,7 +36,7 @@
   </sql>
   
   <sql id="Base_Column_List" >
-    id, name, address, userId, createTime, lastUpdateTime
+    id, name, info, address, userId, createTime, lastUpdateTime
   </sql>
   
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.manager.model.Criteria" >
@@ -62,8 +63,8 @@
   </delete>
   
   <insert id="insert" parameterType="cn.lfy.qneng.model.Station" useGeneratedKeys="true" keyProperty="id">
-    insert into t_station (name, address, userId, createTime)
-    values (#{name}, #{address}, #{userId}, #{createTime})
+    insert into t_station (name, info, address, userId, createTime)
+    values (#{name}, #{info}, #{address}, #{userId}, #{createTime})
   </insert>
   
   <select id="countByExample" parameterType="com.manager.model.Criteria" resultType="java.lang.Integer" >
@@ -78,6 +79,9 @@
     <set >
       <if test="name != null" >
         name = #{name},
+      </if>
+      <if test="info != null" >
+        info = #{info},
       </if>
       <if test="address != null" >
         address = #{address},

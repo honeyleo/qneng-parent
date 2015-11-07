@@ -1,5 +1,7 @@
 package cn.lfy.qneng.controller.app;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.lfy.common.model.Message;
 import cn.lfy.qneng.mgr.SessionManager;
+import cn.lfy.qneng.model.Station;
+import cn.lfy.qneng.service.StationService;
 
 import com.manager.common.Constants;
 import com.manager.common.ErrorCode;
@@ -18,6 +22,7 @@ import com.manager.common.exception.ApplicationException;
 import com.manager.common.util.MessageDigestUtil;
 import com.manager.common.util.RequestUtil;
 import com.manager.model.Admin;
+import com.manager.model.Criteria;
 import com.manager.model.LoginAccount;
 import com.manager.model.type.StateType;
 import com.manager.service.AdminService;
@@ -28,6 +33,8 @@ public class AppLoginController implements Constants {
 
 	@Autowired
     private AdminService adminService;
+	@Autowired
+	private StationService stationService;
 	
 	@RequestMapping("/login")
 	@ResponseBody
@@ -60,12 +67,23 @@ public class AppLoginController implements Constants {
         if (!password.equals(user.getPassword())) {
         	throw ApplicationException.newInstance(ErrorCode.ERROR);
         }
+        
+        Station station = null;
+        Criteria criteria = new Criteria();
+        criteria.put("userId", user.getId());
+        List<Station> list = stationService.findListByCriteria(criteria);
+        if(list != null && !list.isEmpty()) {
+        	station = list.get(0);
+        }
         account.setId(user.getId());
         HttpSession session = request.getSession(true);
         session.setAttribute(SESSION_LOGIN_USER, account);
         String sid = session.getId();
         SessionManager.add(sid, account);
         builder.put("sid", sid);
+        if(station != null) {
+        	builder.put("stationId", station.getId());
+        }
 		return builder.build();
 	}
 	

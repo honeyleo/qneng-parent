@@ -3,6 +3,7 @@ package cn.lfy.qneng.service;
 import java.util.List;
 
 import cn.lfy.qneng.model.Alarm;
+import cn.lfy.qneng.vo.AlarmQuery;
 
 import com.manager.model.Criteria;
 import com.manager.model.PageInfo;
@@ -37,5 +38,12 @@ public interface AlarmService {
      * 根据主键更新属性不为空的记录
      */
     int updateByIdSelective(Alarm record);
+    
+    /**
+     * 根据条件查询
+     * @param alarmQuery
+     * @return
+     */
+    List<Alarm> list(AlarmQuery alarmQuery);
     
 }

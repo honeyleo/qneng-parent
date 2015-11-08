@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import cn.lfy.qneng.dao.ModuleDataDAO;
 import cn.lfy.qneng.model.ModuleData;
 import cn.lfy.qneng.service.ModuleDataService;
+import cn.lfy.qneng.vo.BunchInfo;
+import cn.lfy.qneng.vo.ModuleInfo;
+import cn.lfy.qneng.vo.StationInfo;
 
 import com.manager.model.Criteria;
 import com.manager.model.PageInfo;
@@ -51,5 +54,107 @@ public class ModuleDataServiceImpl implements ModuleDataService {
         res.setData(list);
         return res;
     }
+
+	@Override
+	public Double getStationTotal(Long stationId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getStationTotalForYear(Long stationId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getStationTotalForMonth(Long stationId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public StationInfo getStationInfo(Long stationId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public double[] getStationPowerForDate(String date, Long stationId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public double[] getStationForMonth(String date, Long stationId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public double[] getStationForYear(String date, Long stationId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getBunchTotal(Long bunchId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getBunchTotalForYear(Long bunchId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getBunchTotalForMonth(Long bunchId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BunchInfo getBunchInfo(Long bunchId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public double[] getBunchPowerForDate(String date, Long bunchId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getModuleTotal(Long moduleId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getModuleTotalForYear(Long moduleId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Double getModuleTotalForMonth(Long moduleId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ModuleInfo getModuleInfo(Long moduleId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public double[] getModulePowerForDate(String date, Long moduleId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
 }

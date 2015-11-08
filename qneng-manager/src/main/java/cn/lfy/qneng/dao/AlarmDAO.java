@@ -3,6 +3,7 @@ package cn.lfy.qneng.dao;
 import java.util.List;
 
 import cn.lfy.qneng.model.Alarm;
+import cn.lfy.qneng.vo.AlarmQuery;
 
 import com.manager.model.Criteria;
 
@@ -37,4 +38,10 @@ public interface AlarmDAO {
      * 根据主键更新属性不为空的记录
      */
     int updateByPrimaryKeySelective(Alarm record);
+    /**
+     * 根据条件查询
+     * @param alarmQuery
+     * @return
+     */
+    List<Alarm> list(AlarmQuery alarmQuery);
 }

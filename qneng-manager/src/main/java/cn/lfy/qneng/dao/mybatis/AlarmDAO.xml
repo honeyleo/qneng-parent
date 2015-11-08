@@ -86,4 +86,30 @@
     where id = #{id}
   </update>
   
+  <select id="list" resultMap="BaseResultMap" parameterType="cn.lfy.qneng.vo.AlarmQuery" >
+    SELECT a.* FROM t_alarm a 
+	INNER JOIN t_module m
+	ON m.`no` = a.`no`
+	LEFT JOIN t_bunch b
+	ON m.bunchId = b.id
+	WHERE 1=1
+	<if test="moduleId != null">
+		AND m.id = #{moduleId}
+	</if>
+	<if test="bunchId != null">
+		AND m.bunchId = #{bunchId}
+	</if>
+	<if test="stationId != null">
+		AND b.stationId = #{stationId}
+	</if>
+	<if test="date != null">
+		AND DATE_FORMAT(a.createTime,'%Y-%m-%d') = #{date}
+	</if>
+	<if test="startTime != null && endTime != null">
+		AND a.createTime BETWEEN #{startTime} AND #{endTime}
+	</if>
+	ORDER BY a.id desc
+    limit #{start}, #{limit}
+  </select>
+  
 </mapper>

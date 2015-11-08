@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import cn.lfy.qneng.dao.AlarmDAO;
 import cn.lfy.qneng.model.Alarm;
 import cn.lfy.qneng.service.AlarmService;
+import cn.lfy.qneng.vo.AlarmQuery;
 
 import com.manager.model.Criteria;
 import com.manager.model.PageInfo;
@@ -56,5 +57,10 @@ public class AlarmServiceImpl implements AlarmService {
         res.setData(list);
         return res;
     }
+
+	@Override
+	public List<Alarm> list(AlarmQuery alarmQuery) {
+		return dao.list(alarmQuery);
+	}
     
 }

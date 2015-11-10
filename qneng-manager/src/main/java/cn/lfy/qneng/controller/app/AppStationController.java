@@ -14,7 +14,7 @@ import cn.lfy.common.utils.DateUtils;
 import cn.lfy.qneng.model.Station;
 import cn.lfy.qneng.service.ModuleDataService;
 import cn.lfy.qneng.service.StationService;
-import cn.lfy.qneng.vo.StationInfo;
+import cn.lfy.qneng.vo.DataInfo;
 
 @Controller
 @RequestMapping("/app")
@@ -39,20 +39,20 @@ public class AppStationController {
 		if(station != null) {
 			builder.put("stationName", station.getName());
 			builder.put("stationInfo", station.getInfo());
-			Double total = moduleDataService.getStationTotal(stationId);
+			Double total = moduleDataService.getTotal(stationId, null, null);
 			builder.put("allCapacity", total);
 			if(total != null) {
 				builder.put("displacement", total * 0.785);
 			}
-			Double year = moduleDataService.getStationTotalForYear(stationId);
+			Double year = moduleDataService.getTotalForYear(stationId, null, null);
 			builder.put("yearCapacity", year);
-			Double month = moduleDataService.getStationTotalForMonth(stationId);
+			Double month = moduleDataService.getTotalForMonth(stationId, null, null);
 			builder.put("monthCapacity", month);
-			StationInfo stationInfo = moduleDataService.getStationInfo(stationId);
-			if(stationInfo != null) {
-				builder.put("stationWeather", stationInfo.getWeather());
-				builder.put("stationTemp", stationInfo.getTemp());
-				builder.put("curPower", stationInfo.getCurPower());
+			DataInfo dataInfo = moduleDataService.getDataInfo(stationId, null);
+			if(dataInfo != null) {
+				builder.put("stationWeather", "晴朗");
+				builder.put("stationTemp", 23);
+				builder.put("curPower", dataInfo.getCurVlot() * dataInfo.getCurCurr());
 			}
 		}
 		return builder.build();
@@ -71,11 +71,11 @@ public class AppStationController {
 		Station station = stationService.findById(stationId);
 		if(station != null) {
 			Date date = new Date();
-			double[] day = moduleDataService.getStationPowerForDate(DateUtils.date2String3(date), stationId);
+			double[] day = moduleDataService.getPowerForDate(DateUtils.date2String3(date), stationId, null, null);
 			builder.put("dayPower", day);
-			double[] month = moduleDataService.getStationForMonth(DateUtils.date2String4(date), stationId);
+			double[] month = moduleDataService.getCapacityForMonth(date, stationId, null, null);
 			builder.put("monthCapacity", month);
-			double[] year = moduleDataService.getStationForYear(DateUtils.date2String5(date), stationId);
+			double[] year = moduleDataService.getCapacityForYear(DateUtils.date2String5(date), stationId, null, null);
 			builder.put("yearCapacity", year);
 		}
 		return builder.build();

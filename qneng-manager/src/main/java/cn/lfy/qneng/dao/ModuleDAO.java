@@ -3,6 +3,8 @@ package cn.lfy.qneng.dao;
 import java.util.List;
 
 import cn.lfy.qneng.model.Module;
+import cn.lfy.qneng.vo.DataInfo;
+import cn.lfy.qneng.vo.ModuleQuery;
 
 import com.manager.model.Criteria;
 
@@ -43,4 +45,10 @@ public interface ModuleDAO {
      * @param no 设备唯一码
      */
     Module selectByNo(String no);
+    /**
+     * 查询电站/组串/组件电压和电流
+     * @param query
+     * @return
+     */
+    DataInfo getDataInfo(ModuleQuery query);
 }

@@ -115,6 +115,9 @@ public class DateUtils {
 	
 	public static void main(String[] args) {
 		System.out.println(getDataFormString(1397210397145L));
+		System.out.println(getLastDayOfMonth(2015, 12));
+		System.out.println(getFirstDayOfMonth(new Date()));
+		System.out.println(getLastDayOfMonth(new Date()));
 	}
 	
 	/**
@@ -1073,5 +1076,58 @@ public class DateUtils {
         calendar.set(Calendar.DAY_OF_WEEK,
                      calendar.getFirstDayOfWeek() + 6); // Saturday
         return calendar.getTime();
+    }
+    
+    /**
+     * 返回指定日期中最后一天：如2015-11-30
+     * @param date
+     * @return
+     */
+    public static String getLastDayOfMonth(Date date)
+    {
+        Calendar cal = Calendar.getInstance();
+        
+        cal.setTime(date);
+        //获取某月最大天数
+        int lastDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        //设置日历中月份的最大天数
+        cal.set(Calendar.DAY_OF_MONTH, lastDay);
+        //格式化日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String lastDayOfMonth = sdf.format(cal.getTime());
+         
+        return lastDayOfMonth;
+    }
+    public static String getFirstDayOfMonth(Date date)
+    {
+        Calendar cal = Calendar.getInstance();
+        
+        cal.setTime(date);
+        //获取某月最大天数
+        int firsDay = cal.getActualMinimum(Calendar.DAY_OF_MONTH);
+        //设置日历中月份的最大天数
+        cal.set(Calendar.DAY_OF_MONTH, firsDay);
+        //格式化日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String lastDayOfMonth = sdf.format(cal.getTime());
+         
+        return lastDayOfMonth;
+    }
+    public static String getLastDayOfMonth(int year,int month)
+    {
+        Calendar cal = Calendar.getInstance();
+        //设置年份
+        cal.set(Calendar.YEAR,year);
+        //设置月份
+        cal.set(Calendar.MONTH, month-1);
+        //获取某月最大天数
+        int lastDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        //设置日历中月份的最大天数
+        cal.set(Calendar.DAY_OF_MONTH, lastDay);
+        //格式化日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String lastDayOfMonth = sdf.format(cal.getTime());
+         
+        return lastDayOfMonth;
     }
 }

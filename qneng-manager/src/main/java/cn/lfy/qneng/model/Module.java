@@ -62,6 +62,19 @@ public class Module implements Serializable {
 	
 	private Long lastUpdateTime;
 
+	/**
+	 * 当前电压
+	 */
+	private Double curVlot;
+	/**
+	 * 当前电流
+	 */
+	private Double curCurr;
+	/**
+	 * 当前温度
+	 */
+	private Double curTemp;
+	
 	public Long getId() {
 		return id;
 	}
@@ -164,6 +177,30 @@ public class Module implements Serializable {
 
 	public void setLastUpdateTime(Long lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
+	}
+
+	public Double getCurVlot() {
+		return curVlot;
+	}
+
+	public void setCurVlot(Double curVlot) {
+		this.curVlot = curVlot;
+	}
+
+	public Double getCurCurr() {
+		return curCurr;
+	}
+
+	public void setCurCurr(Double curCurr) {
+		this.curCurr = curCurr;
+	}
+
+	public Double getCurTemp() {
+		return curTemp;
+	}
+
+	public void setCurTemp(Double curTemp) {
+		this.curTemp = curTemp;
 	}
 
 }

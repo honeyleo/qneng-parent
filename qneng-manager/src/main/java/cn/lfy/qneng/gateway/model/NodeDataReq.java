@@ -8,9 +8,13 @@ public class NodeDataReq {
 	 */
 	private Double inputVolt;
 	/**
-	 * 输出电流
+	 * 输出电压
 	 */
 	private Double outvolt;
+	/**
+	 * 输出电流
+	 */
+	private Double curr;
 	/**
 	 * 温度
 	 */
@@ -41,6 +45,12 @@ public class NodeDataReq {
 	public void setOutvolt(Double outvolt) {
 		this.outvolt = outvolt;
 	}
+	public Double getCurr() {
+		return curr;
+	}
+	public void setCurr(Double curr) {
+		this.curr = curr;
+	}
 	public Double getTemp() {
 		return temp;
 	}
@@ -62,7 +72,7 @@ public class NodeDataReq {
 	@Override
 	public String toString() {
 		return "NodeDataReq [no=" + no + ", inputVolt=" + inputVolt
-				+ ", outvolt=" + outvolt + ", temp=" + temp + ", capacity="
+				+ ", outvolt=" + outvolt + ", curr=" + curr + " , temp=" + temp + ", capacity="
 				+ capacity + ", time=" + time + "]";
 	}
 	

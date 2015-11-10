@@ -26,9 +26,13 @@ public class ModuleData implements Serializable {
 	 */
 	private Double inputVolt;
 	/**
-	 * 输出电流
+	 * 输出电压
 	 */
 	private Double outvolt;
+	/**
+	 * 输出电流
+	 */
+	private Double curr;
 	/**
 	 * 温度
 	 */
@@ -120,6 +124,12 @@ public class ModuleData implements Serializable {
 	}
 	public void setModuleId(Long moduleId) {
 		this.moduleId = moduleId;
+	}
+	public Double getCurr() {
+		return curr;
+	}
+	public void setCurr(Double curr) {
+		this.curr = curr;
 	}
 	
 	

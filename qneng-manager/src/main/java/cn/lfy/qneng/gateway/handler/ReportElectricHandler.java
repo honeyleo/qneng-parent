@@ -45,6 +45,12 @@ public class ReportElectricHandler implements Handler {
 		nodeDataResp.setNo(no);
 		Module module = moduleService.findByNo(no);
 		if(module != null) {
+			Module tmp = new Module();
+			tmp.setId(module.getId());
+			tmp.setCurVlot(nodeDataReq.getOutvolt());
+			tmp.setCurCurr(nodeDataReq.getCurr());
+			tmp.setCurTemp(nodeDataReq.getTemp());
+			moduleService.updateByIdSelective(tmp);
 			Bunch bunch = bunchService.findById(module.getBunchId());
 			if(bunch != null) {
 				ModuleData moduleData = new ModuleData();

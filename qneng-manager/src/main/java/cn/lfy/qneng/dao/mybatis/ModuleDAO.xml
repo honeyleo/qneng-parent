@@ -15,6 +15,9 @@
     <result column="BunchId" property="BunchId" jdbcType="BIGINT" />
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
     <result column="lastUpdateTime" property="lastUpdateTime" jdbcType="BIGINT" />
+    <result column="curVlot" property="curVlot" jdbcType="DOUBLE" />
+    <result column="curCurr" property="curCurr" jdbcType="DOUBLE" />
+    <result column="curTemp" property="curTemp" jdbcType="DOUBLE" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <trim prefix="where" prefixOverrides="and|or" >
@@ -39,7 +42,7 @@
   </sql>
   
   <sql id="Base_Column_List" >
-    id, name, no, appSecret, model, manufactory, installdate, power, maxVolt, maxCurr, BunchId, createTime, lastUpdateTime
+    id, name, no, appSecret, model, manufactory, installdate, power, maxVolt, maxCurr, BunchId, createTime, lastUpdateTime, curVlot, curCurr, curTemp
   </sql>
   
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.manager.model.Criteria" >
@@ -110,6 +113,15 @@
       <if test="BunchId != null" >
         BunchId = #{BunchId},
       </if>
+      <if test="curVlot != null" >
+        curVlot = #{curVlot},
+      </if>
+      <if test="curCurr != null" >
+        curCurr = #{curCurr},
+      </if>
+      <if test="curTemp != null" >
+        curTemp = #{curTemp},
+      </if>
     </set>
     where id = #{id}
   </update>
@@ -118,6 +130,25 @@
     select 
     <include refid="Base_Column_List" />
     from t_module where no = #{no} limit 1
+  </select>
+  
+  <select id="getDataInfo" parameterType="cn.lfy.qneng.vo.ModuleQuery" resultType="cn.lfy.qneng.vo.DataInfo">
+    select 
+    sum(m.curVlot) as curVlot,
+    sum(m.curCurr) as curCurr
+    from t_module m
+    left join t_bunch b
+    on m.bunchId = b.id
+    where 1=1
+    <if test="stationId != null">
+    	and b.stationId = #{stationId}
+    </if>
+    <if test="bunchId != null">
+    	and b.id = #{bunchId}
+    </if>
+    <if test="moduleId != null">
+    	and m.id = #{moduleId}
+    </if>
   </select>
   
 </mapper>

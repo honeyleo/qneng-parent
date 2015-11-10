@@ -1,16 +1,22 @@
 package cn.lfy.qneng.service.impl;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.lfy.common.utils.DateUtils;
+import cn.lfy.qneng.dao.ModuleDAO;
 import cn.lfy.qneng.dao.ModuleDataDAO;
 import cn.lfy.qneng.model.ModuleData;
 import cn.lfy.qneng.service.ModuleDataService;
-import cn.lfy.qneng.vo.BunchInfo;
-import cn.lfy.qneng.vo.ModuleInfo;
-import cn.lfy.qneng.vo.StationInfo;
+import cn.lfy.qneng.vo.DataInfo;
+import cn.lfy.qneng.vo.ModuleQuery;
+import cn.lfy.qneng.vo.PowerDataInfo;
 
 import com.manager.model.Criteria;
 import com.manager.model.PageInfo;
@@ -20,6 +26,8 @@ public class ModuleDataServiceImpl implements ModuleDataService {
 
     @Autowired
     private ModuleDataDAO dao;
+    @Resource
+    private ModuleDAO moduleDao;
     
     @Override
     public int countByCriteria(Criteria criteria) {
@@ -56,105 +64,126 @@ public class ModuleDataServiceImpl implements ModuleDataService {
     }
 
 	@Override
-	public Double getStationTotal(Long stationId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Double getTotal(Long stationId, Long bunchId, Long moduleId) {
+		ModuleQuery query = new ModuleQuery();
+		query.setStationId(stationId);
+		query.setBunchId(bunchId);
+		query.setModuleId(moduleId);
+		Double total = dao.getCapacity(query);
+		return total;
 	}
 
 	@Override
-	public Double getStationTotalForYear(Long stationId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Double getTotalForYear(Long stationId, Long bunchId, Long moduleId) {
+		ModuleQuery query = new ModuleQuery();
+		query.setStationId(stationId);
+		query.setBunchId(bunchId);
+		query.setModuleId(moduleId);
+		String date = DateUtils.date2String5(new Date());
+		query.setStartTime(date + "-01-01 00:00:00");
+		query.setEndTime(date + "-12-31 23:59:59");
+		Double year = dao.getCapacity(query);
+		return year;
 	}
 
 	@Override
-	public Double getStationTotalForMonth(Long stationId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Double getTotalForMonth(Long stationId, Long bunchId, Long moduleId) {
+		ModuleQuery query = new ModuleQuery();
+		query.setStationId(stationId);
+		query.setBunchId(bunchId);
+		query.setModuleId(moduleId);
+		Calendar cal = Calendar.getInstance();
+		query.setStartTime(DateUtils.getFirstDayOfMonth(cal.getTime()) + " 00:00:00");
+		query.setEndTime(DateUtils.getLastDayOfMonth(cal.getTime()) + " 23:59:59");
+		Double month = dao.getCapacity(query);
+		return month;
 	}
 
 	@Override
-	public StationInfo getStationInfo(Long stationId) {
-		// TODO Auto-generated method stub
-		return null;
+	public DataInfo getDataInfo(Long stationId, Long bunchId) {
+		ModuleQuery query = new ModuleQuery();
+		query.setStationId(stationId);
+		query.setBunchId(bunchId);
+		return moduleDao.getDataInfo(query);
 	}
 
 	@Override
-	public double[] getStationPowerForDate(String date, Long stationId) {
-		// TODO Auto-generated method stub
-		return null;
+	public double[] getPowerForDate(String date, Long stationId, Long bunchId, Long moduleId) {
+		ModuleQuery query = new ModuleQuery();
+		query.setStationId(stationId);
+		query.setBunchId(bunchId);
+		query.setModuleId(moduleId);
+		query.setStartTime(date + " 00:00:00");
+		query.setEndTime(date + " 23:59:59");
+		double[] data = new double[24];
+		for(int i = 0; i < 24; i ++) {
+			data[i] = 0;
+		}
+		List<PowerDataInfo> list = dao.getDayPowerData(query);
+		for(int i = 0; i < 24; i++) {
+			for(PowerDataInfo info : list) {
+				if(info.getValue() == i) {
+					data[i] = info.getCurVlot() * info.getCurCurr();
+					break;
+				}
+			}
+		}
+		return data;
 	}
 
 	@Override
-	public double[] getStationForMonth(String date, Long stationId) {
-		// TODO Auto-generated method stub
-		return null;
+	public double[] getCapacityForMonth(Date date, Long stationId, Long bunchId, Long moduleId) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		int dayNum = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+		String startTime = DateUtils.date2String4(date) + "-01 00:00:00";
+		String endTime = DateUtils.getLastDayOfMonth(date) + " 23:59:59";
+		ModuleQuery query = new ModuleQuery();
+		query.setStationId(stationId);
+		query.setBunchId(bunchId);
+		query.setModuleId(moduleId);
+		query.setStartTime(startTime);
+		query.setEndTime(endTime);
+		double[] data = new double[dayNum];
+		for(int i = 0; i < dayNum; i ++) {
+			data[i] = 0;
+		}
+		List<PowerDataInfo> list = dao.getMonthCapacityData(query);
+		for(int i = 1; i <= dayNum; i++) {
+			for(PowerDataInfo info : list) {
+				if(info.getValue() == i) {
+					data[i - 1] = info.getCapacity();
+					break;
+				}
+			}
+		}
+		return data;
 	}
 
 	@Override
-	public double[] getStationForYear(String date, Long stationId) {
-		// TODO Auto-generated method stub
-		return null;
+	public double[] getCapacityForYear(String date, Long stationId, Long bunchId, Long moduleId) {
+		String startTime = date + "-01-01 00:00:00";
+		String endTime = date + "-12-31 23:59:59";
+		ModuleQuery query = new ModuleQuery();
+		query.setStationId(stationId);
+		query.setBunchId(bunchId);
+		query.setModuleId(moduleId);
+		query.setStartTime(startTime);
+		query.setEndTime(endTime);
+		double[] data = new double[12];
+		for(int i = 0; i < 12; i ++) {
+			data[i] = 0;
+		}
+		List<PowerDataInfo> list = dao.getDayPowerData(query);
+		for(int i = 1; i <= 12; i++) {
+			for(PowerDataInfo info : list) {
+				if(info.getValue() == i) {
+					data[i - 1] = info.getCapacity();
+					break;
+				}
+			}
+		}
+		return data;
 	}
 
-	@Override
-	public Double getBunchTotal(Long bunchId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Double getBunchTotalForYear(Long bunchId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Double getBunchTotalForMonth(Long bunchId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public BunchInfo getBunchInfo(Long bunchId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public double[] getBunchPowerForDate(String date, Long bunchId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Double getModuleTotal(Long moduleId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Double getModuleTotalForYear(Long moduleId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Double getModuleTotalForMonth(Long moduleId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ModuleInfo getModuleInfo(Long moduleId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public double[] getModulePowerForDate(String date, Long moduleId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-    
 }

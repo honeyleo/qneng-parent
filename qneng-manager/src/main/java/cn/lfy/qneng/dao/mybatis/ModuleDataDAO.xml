@@ -6,6 +6,7 @@
     <result column="no" property="no" jdbcType="VARCHAR" />
     <result column="inputVolt" property="inputVolt" jdbcType="DOUBLE" />
     <result column="outvolt" property="outvolt" jdbcType="DOUBLE" />
+    <result column="curr" property="curr" jdbcType="DOUBLE" />
     <result column="temp" property="temp" jdbcType="DOUBLE" />
     <result column="capacity" property="capacity" jdbcType="DOUBLE" />
     <result column="time" property="time" jdbcType="BIGINT" />
@@ -40,7 +41,7 @@
   </sql>
   
   <sql id="Base_Column_List" >
-    id, no, inputVolt, outvolt, temp, capacity, time, stationId, BunchId, moduleId, createTime
+    id, no, inputVolt, outvolt, curr, temp, capacity, time, stationId, BunchId, moduleId, createTime
   </sql>
   
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.manager.model.Criteria" >
@@ -67,8 +68,8 @@
   </delete>
   
   <insert id="insert" parameterType="cn.lfy.qneng.model.ModuleData" useGeneratedKeys="true" keyProperty="id">
-    insert into t_module_data (no, inputVolt, outvolt, temp, capacity, time, stationId, BunchId, moduleId, createTime)
-    values (#{no}, #{inputVolt}, #{outvolt}, #{outvolt}, #{temp}, #{capacity}, #{time}, #{stationId}, #{BunchId}, #{moduleId}, #{createTime})
+    insert into t_module_data (no, inputVolt, outvolt, curr, temp, capacity, time, stationId, BunchId, moduleId, createTime)
+    values (#{no}, #{inputVolt}, #{outvolt}, #{outvolt}, #{curr}, #{temp}, #{capacity}, #{time}, #{stationId}, #{BunchId}, #{moduleId}, #{createTime})
   </insert>
   
   <select id="countByExample" parameterType="com.manager.model.Criteria" resultType="java.lang.Integer" >
@@ -78,4 +79,86 @@
     </if>
   </select>
   
+  <select id="getCapacity" parameterType="cn.lfy.qneng.vo.ModuleQuery" resultType="java.lang.Double">
+    select 
+    sum(capacity)
+    from t_module_data
+    where 1=1
+    <if test="stationId != null">
+    	and stationId = #{stationId}
+    </if>
+    <if test="bunchId != null">
+    	and bunchId = #{bunchId}
+    </if>
+    <if test="moduleId != null">
+    	and moduleId = #{moduleId}
+    </if>
+    <if test="startTime != null and endTime != null">
+    	createTime between #{startTime} and #{endTime}
+    </if>
+  </select>
+  <select id="getDayPowerData" parameterType="cn.lfy.qneng.vo.ModuleQuery" resultType="cn.lfy.qneng.vo.PowerDataInfo">
+    select 
+    date_format(createTime, '%H') as value,
+    sum(outvolt) as curVlot,
+    sum(curr) as curCurr
+    from t_module_data
+    where 1=1
+    <if test="stationId != null">
+    	and stationId = #{stationId}
+    </if>
+    <if test="bunchId != null">
+    	and bunchId = #{bunchId}
+    </if>
+    <if test="moduleId != null">
+    	and moduleId = #{moduleId}
+    </if>
+    <if test="startTime != null and endTime != null">
+    	createTime between #{startTime} and #{endTime}
+    </if>
+    group by date_format(createTime, '%H')
+    order by date_format(createTime, '%H') asc
+  </select>
+  <select id="getMonthCapacityData" parameterType="cn.lfy.qneng.vo.ModuleQuery" resultType="cn.lfy.qneng.vo.PowerDataInfo">
+    select 
+    date_format(createTime, '%d') as value,
+    sum(capacity) as capacity,
+    from t_module_data
+    where 1=1
+    <if test="stationId != null">
+    	and stationId = #{stationId}
+    </if>
+    <if test="bunchId != null">
+    	and bunchId = #{bunchId}
+    </if>
+    <if test="moduleId != null">
+    	and moduleId = #{moduleId}
+    </if>
+    <if test="startTime != null and endTime != null">
+    	createTime between #{startTime} and #{endTime}
+    </if>
+    group by date_format(createTime, '%d')
+    order by date_format(createTime, '%d') asc
+  </select>
+  <select id="getYearCapacityData" parameterType="cn.lfy.qneng.vo.ModuleQuery" resultType="cn.lfy.qneng.vo.PowerDataInfo">
+    select 
+    date_format(createTime, '%m') as value,
+    sum(capacity) as capacity,
+    from t_module_data
+    where 1=1
+    <if test="stationId != null">
+    	and stationId = #{stationId}
+    </if>
+    <if test="bunchId != null">
+    	and bunchId = #{bunchId}
+    </if>
+    <if test="moduleId != null">
+    	and moduleId = #{moduleId}
+    </if>
+    <if test="startTime != null and endTime != null">
+    	createTime between #{startTime} and #{endTime}
+    </if>
+    group by date_format(createTime, '%m')
+    order by date_format(createTime, '%m') asc
+  </select>
 </mapper>

@@ -15,7 +15,6 @@ import cn.lfy.common.utils.DateUtils;
 import cn.lfy.qneng.model.Module;
 import cn.lfy.qneng.service.ModuleDataService;
 import cn.lfy.qneng.service.ModuleService;
-import cn.lfy.qneng.vo.ModuleInfo;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -69,24 +68,21 @@ public class AppModuleController {
 		Module module = moduleService.findById(moduleId);
 		if(module != null) {
 			builder.put("moduleId", module.getId());
-			Double total = moduleDataService.getModuleTotal(moduleId);
+			Double total = moduleDataService.getTotal(null, null, moduleId);
 			builder.put("allCapacity", total);
-			Double year = moduleDataService.getModuleTotalForYear(moduleId);
+			Double year = moduleDataService.getTotalForYear(null, null, moduleId);
 			builder.put("yearCapacity", year);
-			Double month = moduleDataService.getModuleTotalForMonth(moduleId);
+			Double month = moduleDataService.getTotalForMonth(null, null, moduleId);
 			builder.put("monthCapacity", month);
-			ModuleInfo moduleInfo = moduleDataService.getModuleInfo(moduleId);
 			builder.put("model", module.getModel());
 			builder.put("serial", module.getNo());
 			builder.put("installdate", module.getNo());
 			builder.put("manufactory", module.getNo());
-			if(moduleInfo != null) {
-				builder.put("curTemp", moduleInfo.getCurTemp());
-				builder.put("curPower", moduleInfo.getCurPower());
-				builder.put("curVlot", moduleInfo.getCurVlot());
-				builder.put("curCurr", moduleInfo.getCurCurr());
-				builder.put("alarmNumber", moduleInfo.getAlarmNumber());
-			}
+			builder.put("curTemp", module.getCurTemp());
+			builder.put("curPower", module.getCurVlot() * module.getCurCurr());
+			builder.put("curVlot", module.getCurVlot());
+			builder.put("curCurr", module.getCurCurr());
+			builder.put("alarmNumber", 0);
 		}
 		return builder.build();
 	}
@@ -104,7 +100,7 @@ public class AppModuleController {
 		Module module = moduleService.findById(moduleId);
 		if(module != null) {
 			Date date = new Date();
-			double[] day = moduleDataService.getModulePowerForDate(DateUtils.date2String3(date), moduleId);
+			double[] day = moduleDataService.getPowerForDate(DateUtils.date2String3(date), null, null, moduleId);
 			builder.put("dayPower", day);
 		}
 		return builder.build();

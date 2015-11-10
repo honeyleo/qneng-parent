@@ -15,7 +15,7 @@ import cn.lfy.common.utils.DateUtils;
 import cn.lfy.qneng.model.Bunch;
 import cn.lfy.qneng.service.BunchService;
 import cn.lfy.qneng.service.ModuleDataService;
-import cn.lfy.qneng.vo.BunchInfo;
+import cn.lfy.qneng.vo.DataInfo;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -71,19 +71,19 @@ public class AppBunchController {
 		Bunch bunch = bunchService.findById(bunchId);
 		if(bunch != null) {
 			builder.put("bunchId", bunch.getId());
-			Double total = moduleDataService.getBunchTotal(bunchId);
+			Double total = moduleDataService.getTotal(null, bunchId, null);
 			builder.put("allCapacity", total);
-			Double year = moduleDataService.getBunchTotalForYear(bunchId);
+			Double year = moduleDataService.getTotalForYear(null, bunchId, null);
 			builder.put("yearCapacity", year);
-			Double month = moduleDataService.getBunchTotalForMonth(bunchId);
+			Double month = moduleDataService.getTotalForMonth(null, bunchId, null);
 			builder.put("monthCapacity", month);
-			BunchInfo bunchInfo = moduleDataService.getBunchInfo(bunchId);
-			if(bunchInfo != null) {
-				builder.put("curTemp", bunchInfo.getCurTemp());
-				builder.put("curPower", bunchInfo.getCurPower());
-				builder.put("curVlot", bunchInfo.getCurVlot());
-				builder.put("curCurr", bunchInfo.getCurCurr());
-				builder.put("alarmNumber", bunchInfo.getAlarmNumber());
+			DataInfo dataInfo = moduleDataService.getDataInfo(null, bunchId);
+			if(dataInfo != null) {
+				builder.put("curTemp", 40);
+				builder.put("curPower", dataInfo.getCurVlot() * dataInfo.getCurCurr());
+				builder.put("curVlot", dataInfo.getCurVlot());
+				builder.put("curCurr", dataInfo.getCurCurr());
+				builder.put("alarmNumber", 0);
 			}
 		}
 		return builder.build();
@@ -101,7 +101,7 @@ public class AppBunchController {
 		Bunch bunch = bunchService.findById(bunchId);
 		if(bunch != null) {
 			Date date = new Date();
-			double[] day = moduleDataService.getBunchPowerForDate(DateUtils.date2String3(date), bunchId);
+			double[] day = moduleDataService.getPowerForDate(DateUtils.date2String3(date), null, bunchId, null);
 			builder.put("dayPower", day);
 		}
 		return builder.build();

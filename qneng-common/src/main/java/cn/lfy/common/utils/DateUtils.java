@@ -1130,4 +1130,36 @@ public class DateUtils {
          
         return lastDayOfMonth;
     }
+    
+    /**
+	 * 指定日期昨天开始时间毫秒
+	 * @param date
+	 * @return
+	 */
+	public static long getYesterdayStart(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.DATE,   -1);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		return cal.getTimeInMillis();
+	}
+	
+	/**
+	 * 获取指定日期昨天结束毫秒
+	 * @param date
+	 * @return
+	 */
+	public static long getYesterdayEnd(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.DATE,   -1);
+		cal.set(Calendar.HOUR_OF_DAY, 23);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.SECOND, 59);
+		cal.set(Calendar.MILLISECOND, 999);
+		return cal.getTimeInMillis();
+	}
 }

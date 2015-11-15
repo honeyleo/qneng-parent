@@ -148,9 +148,10 @@
 	<form action="<%=basePath %>manager/admin/${uri}" name="userForm" id="userForm" method="post">
 		<input type="hidden" name="id" id="user_id" value="${admin.id }"/>
 		<div id="zhongxin">
-		<table>
+		<table style="margin: 20px 10px">
 			
 			<tr class="info">
+				<td>角色:</td>
 				<td>
 				<select name="roleId" id="role_id" data-placeholder="请选择角色" style="vertical-align:top;">
 				<option value=""></option>
@@ -161,23 +162,28 @@
 				</td>
 			</tr>
 			<tr>
+				<td>用户名:</td>
 				<td><input type="text" name="username" id="username" value="${admin.username }" maxlength="32" placeholder="这里输入用户名" title="用户名"/></td>
 			</tr>
 			<tr>
+				<td>姓名:</td>
 				<td><input type="text" name="realName" id="realName" value="${admin.realName }" maxlength="32" placeholder="这里输入姓名" title="姓名"/></td>
 			</tr>
 			<tr>
+				<td>密码:</td>
 				<td><input type="password" name="password" id="password"  maxlength="32" placeholder="输入密码" title="密码"/></td>
 			</tr>
 			<tr>
+				<td>确认密码:</td>
 				<td><input type="password" name="chkpwd" id="chkpwd"  maxlength="32" placeholder="确认密码" title="确认密码" /></td>
 			</tr>
 			<tr>
+				<td>手机号:</td>
 				<td><input type="number" name="phone" id="phone"  value="${admin.phone }"  maxlength="32" placeholder="这里输入手机号" title="手机号"/></td>
 			</tr>
 			<tr>
-				<td style="text-align: center;">
-					<a class="btn btn-mini btn-primary" onclick="save();">保存</a>
+				<td style="text-align: center;" colspan="2" height="50">
+					<a class="btn btn-mini btn-primary" onclick="save();">保存</a>&nbsp;&nbsp;&nbsp;&nbsp;
 					<a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
 				</td>
 			</tr>

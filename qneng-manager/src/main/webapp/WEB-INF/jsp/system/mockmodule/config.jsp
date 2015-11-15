@@ -24,46 +24,17 @@
 		<script type="text/javascript" src="<%=basePath %>resources/js/jquery-1.7.2.js"></script>
 		<!--提示框-->
 		<script type="text/javascript" src="<%=basePath %>resources/js/jquery.tips.js"></script>
-		<script type="text/javascript" src="<%=basePath %>resources/js/bootbox.min.js"></script>
 		
 <script type="text/javascript">
 	$(top.hangge());
 	//保存
 	function save(){
-		if($("#user_id").val()==""){
-			
-			$("#user_id").tips({
-				side:3,
-	            msg:'选择用户',
-	            bg:'#AE81FF',
-	            time:2
-	        });
-			
-			$("#user_id").focus();
-			return false;
-		}
-		if($("#name").val()==""){
-			
-			$("#name").tips({
-				side:3,
-	            msg:'输入名称',
-	            bg:'#AE81FF',
-	            time:2
-	        });
-			
-			$("#name").focus();
-			$("#name").val('');
-			$("#name").css("background-color","white");
-			return false;
-		}else{
-			$("#name").val(jQuery.trim($('#name').val()));
-		}
-		
+		alert($('#mockModuleForm').serialize());
 		$.ajax({
             type: "POST",
             dataType: "json",
-            url: "<%=basePath %>manager/station/${uri}",
-            data: $('#stationForm').serialize(),
+            url: "<%=basePath %>manager/mockmodule/configSubmit",
+            data: $('#mockModuleForm').serialize(),
             success: function (data) {
             	if(data.ret == 0) {
             		$("#zhongxin").hide();
@@ -76,43 +47,42 @@
             	}
             }
 		});
-		//$("#zhongxin").hide();
-		//$("#zhongxin2").show();
 	}
 	
 </script>
 	</head>
 <body>
-	<form action="<%=basePath %>manager/station/${uri}" name="stationForm" id="stationForm" method="post">
-		<input type="hidden" name="id" id="station_id" value="${entity.id }"/>
+	<form action="<%=basePath %>manager/mockmodule/configSubmit" name="mockModuleForm" id="mockModuleForm" method="post">
+		<input type="hidden" name="id" id="module_id" value="${entity.id }"/>
 		<div id="zhongxin">
 		<table style="margin: 20px 10px">
-			
-			<tr class="info">
-				<td>关联用户:</td>
-				<td>
-				<select name="userId" id="user_id" data-placeholder="请选择用户" style="vertical-align:top;">
-				<option value=""></option>
-				<c:forEach items="${users}" var="user">
-					<option value="${user.id }" <c:if test="${user.id == entity.userId }">selected</c:if>>${user.realName }</option>
-				</c:forEach>
-				</select>
-				</td>
+			<tr>
+				<td>名称:</td>
+				<td width="100"><input type="text" name="name" id="name" value="${entity.name }" maxlength="32" /></td>
 			</tr>
 			<tr>
-				<td>电站名称:</td>
-				<td><input type="text" name="name" id="name" value="${entity.name }" maxlength="32" placeholder="这里输入电站名称" title="电站名称"/></td>
+				<td>型号:</td>
+				<td><input type="text" name="model" id="model" value="${entity.model }" maxlength="32" /></td>
 			</tr>
 			<tr>
-				<td>电站地址:</td>
-				<td><input type="text" name="address" id="address" value="${entity.address }" maxlength="100" placeholder="这里输入电站地址" title="电站地址"/></td>
+				<td>厂家:</td>
+				<td><input type="text" name="manufactory" id="manufactory" value="${entity.manufactory }" maxlength="32"/></td>
 			</tr>
 			<tr>
-				<td>电站简介:</td>
-				<td>
-					<textarea style="width:95%;height:100px;" rows="10" cols="10" name="info" id="info" title="电站简介" maxlength="1000" placeholder="这里输入电站简介">${entity.info}</textarea>
-					<div><font color="#808080">请不要多于1000字</font></div>
-				</td>
+				<td>安装日期:</td>
+				<td><input type="text" name="installdate" id="installdate" value="${entity.installdate }" maxlength="32"/></td>
+			</tr>
+			<tr>
+				<td>核定电压:</td>
+				<td><input type="text" name="maxVolt" id="maxVolt" value="${entity.maxVolt }" maxlength="32"/></td>
+			</tr>
+			<tr>
+				<td>核定电流:</td>
+				<td><input type="text" name="maxCurr" id="maxCurr" value="${entity.maxCurr }" maxlength="32"/></td>
+			</tr>
+			<tr>
+				<td>功率:</td>
+				<td><input type="text" name="power" id="power" value="${entity.power }" maxlength="32"/></td>
 			</tr>
 			<tr>
 				<td style="text-align: center;" colspan="2" height="50px">

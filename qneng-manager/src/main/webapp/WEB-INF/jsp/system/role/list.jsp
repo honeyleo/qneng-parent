@@ -125,7 +125,7 @@
 			 diag.Title ="新增角色";
 			 diag.URL = '<%=basePath%>manager/role/goadd';
 			 diag.Width = 270;
-			 diag.Height = 300;
+			 diag.Height = 320;
 			 diag.CancelEvent = function(){ //关闭事件
 				diag.close();
 			 };
@@ -139,7 +139,7 @@
 			 diag.Title ="编辑";
 			 diag.URL = '<%=basePath%>manager/role/detail?id='+ROLE_ID;
 			 diag.Width = 270;
-			 diag.Height = 300;
+			 diag.Height = 320;
 			 diag.CancelEvent = function(){ //关闭事件
 				diag.close();
 			 };

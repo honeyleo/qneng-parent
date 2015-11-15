@@ -149,8 +149,8 @@
 			 diag.Drag=true;
 			 diag.Title ="新增";
 			 diag.URL = '<%=basePath%>manager/module/goadd';
-			 diag.Width = 225;
-			 diag.Height = 315;
+			 diag.Width = 330;
+			 diag.Height = 260;
 			 diag.CancelEvent = function(){ //关闭事件
 				diag.close();
 			 };
@@ -164,8 +164,8 @@
 			 diag.Drag=true;
 			 diag.Title ="资料";
 			 diag.URL = '<%=basePath%>manager/module/detail?id='+id;
-			 diag.Width = 225;
-			 diag.Height = 315;
+			 diag.Width = 330;
+			 diag.Height = 260;
 			 diag.CancelEvent = function(){ //关闭事件
 				diag.close();
 			 };

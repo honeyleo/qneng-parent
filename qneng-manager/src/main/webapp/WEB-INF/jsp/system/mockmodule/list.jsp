@@ -26,7 +26,7 @@
 	<div class="row-fluid">
 	
 			<!-- 检索  -->
-			<form action="manager/bunch/list" method="post" name="bunchForm" id="bunchForm">
+			<form action="manager/mockmodule/list" method="post" name="moduleForm" id="moduleForm">
 			<table>
 				<tr>
 					<td>
@@ -45,15 +45,14 @@
 				
 				<thead>
 					<tr>
-						<th>序号</th>
-						<th>编号</th>
-						<th>名称</th>
-						<th>单元数</th>
-						<th>行数</th>
-						<th>列数</th>
-						<th>关联电站</th>
-						<th><i class="icon-time hidden-phone"></i>创建时间</th>
-						<th class="center">操作</th>
+						<th width="27">编号</th>
+						<th width="100">唯一码</th>
+						<th width="100">名称</th>
+						<th width="100">密钥</th>
+						<th width="50">型号</th>
+						<th>关联组串</th>
+						<th>启动/停止组件</th>
+						<th>操作</th>
 					</tr>
 				</thead>
 										
@@ -63,18 +62,27 @@
 				<c:forEach items="${requestScope.result.data}" var="entity" varStatus="var">
 									
 					<tr>
-						<td class='center' style="width: 30px;">${var.index+1}</td>
 						<td>${entity.id }</td>
+						<td><a>${entity.no }</a></td>
 						<td><a>${entity.name }</a></td>
-						<td>${entity.element }</td>
-						<td>${entity.line }</td>
-						<td>${entity.row }</td>
-						<td>${funcs:getStationName(entity.stationId)}</td>
-						<td>${funcs:formatDateTime(entity.createTime,'yyyy-MM-dd HH:mm:ss')}</td>
-						<td style="width: 60px;">
+						<td><a>${entity.appSecret }</a></td>
+						<td>${entity.model }</td>
+						<td>${funcs:getBunchName(entity.bunchId)}</td>
+						<td>
+							<c:if test="${entity.online == true }">
+								<a class="btn btn-mini btn-warning" onclick="stop('${entity.id }');">停止</a>
+							</c:if>
+							<c:if test="${entity.online == false }">
+								<a class='btn btn-mini btn-success' onclick="start('${entity.id }');" >启动</a> 
+							</c:if>
+						</td>
+						<td>
 							<div class='hidden-phone visible-desktop btn-group'>
-								<a class='btn btn-mini btn-info' title="编辑" onclick="editUser('${entity.id }');"><i class='icon-edit'></i></a>
-								<a class='btn btn-mini btn-danger' title="删除" onclick="delUser('${entity.id }','${entity.name }');"><i class='icon-trash'></i></a>
+								<c:if test="${entity.online == true }">
+								<a class='btn btn-mini btn-success' title="上报配置" onclick="reportConfig('${entity.id }');">配置</a>
+								<a class='btn btn-mini btn-info' title="生产发电数据" onclick="reportData('${entity.id }');">生产发电</a>
+								<a class='btn btn-mini btn-warning' title="上报警告" onclick="reportAlarm('${entity.id }');">上报警告</a>
+								</c:if>
 							</div>
 						</td>
 					</tr>
@@ -86,9 +94,6 @@
 		<div class="page-header position-relative">
 		<table style="width:100%;">
 			<tr>
-				<td style="vertical-align:top;">
-					<a class="btn btn-small btn-success" onclick="add();">新增</a>
-				</td>
 				<td style="vertical-align:top;"><div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${page.pageStr}</div></td>
 			</tr>
 		</table>
@@ -126,21 +131,57 @@
 		
 		$(top.hangge());
 		
-		//检索
-		function search(){
-			top.jzts();
-			$("#bunchForm").submit();
+		//启动
+		function start(id){
+			$.ajax({
+	            type: "POST",
+	            dataType: "json",
+	            url: "<%=basePath %>manager/mockmodule/start",
+	            data: {id:id},
+	            success: function (data) {
+	            	if(data.ret == 0) {
+	            		$("#zhongxin").hide();
+	            		$("#zhongxin2").show();
+	            		setTimeout("self.location=self.location",2000);
+	            	} else {
+	            		bootbox.alert(data.msg, function(){
+	            			
+	            		});
+	            	}
+	            }
+			});
 		}
 		
-		//新增
-		function add(){
-			 //top.jzts();
+		//启动
+		function stop(id){
+			$.ajax({
+	            type: "POST",
+	            dataType: "json",
+	            url: "<%=basePath %>manager/mockmodule/stop",
+	            data: {id:id},
+	            success: function (data) {
+	            	if(data.ret == 0) {
+	            		$("#zhongxin").hide();
+	            		$("#zhongxin2").show();
+	            		setTimeout("self.location=self.location",2000);
+	            	} else {
+	            		bootbox.alert(data.msg, function(){
+	            			
+	            		});
+	            	}
+	            }
+			});
+		}
+		
+		//修改
+		function reportConfig(id){
+			 top.jzts();
 			 var diag = new top.Dialog();
 			 diag.Drag=true;
-			 diag.Title ="新增";
-			 diag.URL = '<%=basePath%>manager/bunch/goadd';
-			 diag.Width = 310;
-			 diag.Height = 320;
+			 diag.Title ="资料";
+			 diag.URL = '<%=basePath%>manager/mockmodule/config?id='+id;
+			 diag.Width = 300;
+			 diag.Height = 390;
 			 diag.CancelEvent = function(){ //关闭事件
 				diag.close();
 			 };
@@ -148,33 +189,18 @@
 		}
 		
 		//修改
-		function editUser(id){
-			 top.jzts();
+		function reportData(id){
 			 var diag = new top.Dialog();
 			 diag.Drag=true;
 			 diag.Title ="资料";
-			 diag.URL = '<%=basePath%>manager/bunch/detail?id='+id;
+			 diag.URL = '<%=basePath%>manager/mockmodule/data?id='+id;
 			 diag.Width = 310;
-			 diag.Height = 320;
+			 diag.Height = 390;
 			 diag.CancelEvent = function(){ //关闭事件
 				diag.close();
 			 };
 			 diag.show();
 		}
-		
-		//删除
-		function delUser(id,msg){
-			bootbox.confirm("确定要删除["+msg+"]吗?", function(result) {
-				if(result) {
-					top.jzts();
-					var url = "<%=basePath%>manager/bunch/del?id="+id+"&tm="+new Date().getTime();
-					$.get(url,function(data){
-						nextPage(${page.currentPage});
-					});
-				}
-			});
-		}
-		
 		</script>
 		
 	</body>

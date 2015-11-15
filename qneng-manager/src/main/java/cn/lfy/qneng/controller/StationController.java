@@ -148,11 +148,13 @@ public class StationController implements Constants {
     	Message.Builder builder = Message.newBuilder();
         String name = RequestUtil.getString(request, "name");
         String address = RequestUtil.getString(request, "address");
+        String info = RequestUtil.getString(request, "info");
         String userId = RequestUtil.getString(request, "userId");
 
         Station record = new Station();
         record.setName(name);
         record.setAddress(address);
+        record.setInfo(info);
         if(userId != null) {
         	record.setUserId(Long.parseLong(userId));
         }
@@ -177,6 +179,7 @@ public class StationController implements Constants {
         Long id = RequestUtil.getLong(request, "id");
         String address = RequestUtil.getString(request, "address");
         String name = RequestUtil.getString(request, "name");
+        String info = RequestUtil.getString(request, "info");
         Long userId = RequestUtil.getLong(request, "userId");
 
         Station record = new Station();
@@ -184,6 +187,7 @@ public class StationController implements Constants {
         
         record.setName(name);
         record.setAddress(address);
+        record.setInfo(info);
         record.setUserId(userId);
         stationService.updateByIdSelective(record);
         builder.setMsg("修改成功");

@@ -135,8 +135,8 @@
 			 diag.Drag=true;
 			 diag.Title ="新增";
 			 diag.URL = '<%=basePath%>manager/station/goadd';
-			 diag.Width = 225;
-			 diag.Height = 315;
+			 diag.Width = 320;
+			 diag.Height = 370;
 			 diag.CancelEvent = function(){ //关闭事件
 				diag.close();
 			 };
@@ -149,8 +149,8 @@
 			 diag.Drag=true;
 			 diag.Title ="资料";
 			 diag.URL = '<%=basePath%>manager/station/detail?id='+id;
-			 diag.Width = 225;
-			 diag.Height = 315;
+			 diag.Width = 320;
+			 diag.Height = 370;
 			 diag.CancelEvent = function(){ //关闭事件
 				diag.close();
 			 };

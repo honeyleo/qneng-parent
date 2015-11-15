@@ -56,7 +56,7 @@
 		<form action="<%=basePath %>manager/role/${uri}" name="form1" id="form1"  method="post">
 		<input type="hidden" name="id" id="id" value="${role.id}"/>
 			<div id="zhongxin">
-			<table>
+			<table style="margin: 20px 10px">
 				<tr>
 					<td style="padding-top: 13px;">角色名称:</td>
 				</tr>
@@ -71,7 +71,7 @@
 			</tr>
 				<tr>
 					<td style="text-align: center;">
-						<a class="btn btn-mini btn-primary" onclick="save();">保存</a>
+						<a class="btn btn-mini btn-primary" onclick="save();">保存</a>&nbsp;&nbsp;&nbsp;&nbsp;
 						<a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
 					</td>
 				</tr>

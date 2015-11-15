@@ -157,8 +157,8 @@
 			 diag.Drag=true;
 			 diag.Title ="新增";
 			 diag.URL = '<%=basePath%>manager/admin/goadd';
-			 diag.Width = 225;
-			 diag.Height = 415;
+			 diag.Width = 300;
+			 diag.Height = 350;
 			 diag.CancelEvent = function(){ //关闭事件
 				 /* if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
 					 if('${page.currentPage}' == '0'){
@@ -180,8 +180,8 @@
 			 diag.Drag=true;
 			 diag.Title ="资料";
 			 diag.URL = '<%=basePath%>manager/admin/detail?id='+user_id;
-			 diag.Width = 225;
-			 diag.Height = 415;
+			 diag.Width = 300;
+			 diag.Height = 350;
 			 diag.CancelEvent = function(){ //关闭事件
 				diag.close();
 			 };

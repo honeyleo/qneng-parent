@@ -105,7 +105,7 @@
 	<if test="date != null">
 		AND DATE_FORMAT(a.createTime,'%Y-%m-%d') = #{date}
 	</if>
-	<if test="startTime != null && endTime != null">
+	<if test="startTime != null and endTime != null">
 		AND a.createTime BETWEEN #{startTime} AND #{endTime}
 	</if>
 	ORDER BY a.id desc

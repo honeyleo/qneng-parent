@@ -26,7 +26,11 @@ public class XmlUtil {
 			 T obj=(T)cls.newInstance();
 			 for (int j = 0; j < properties.length; j++) {
 				 setmeth = obj.getClass().getMethod("set" + properties[j].getName().substring(0, 1).toUpperCase() + properties[j].getName().substring(1),properties[j].getType());   
-               setmeth.invoke(obj, objElement.elementText(properties[j].getName()));
+				 String value = objElement.elementText(properties[j].getName());
+				 if("".equals(value)) {
+					 value = null;
+				 }
+				 setmeth.invoke(obj, value);
 			 }
 			 return obj;
        } catch (Exception e) {   
@@ -46,7 +50,9 @@ public class XmlUtil {
            Element dataElement = document.addElement(cls.getSimpleName());
            for (int i = 0; i < properties.length; i++) {          
                Method meth = cls.getMethod("get" + properties[i].getName().substring(0, 1).toUpperCase() + properties[i].getName().substring(1));   
-               dataElement.addElement(properties[i].getName()).setText(meth.invoke(obj).toString());   
+               Object value = meth.invoke(obj);
+               value = value == null ? "" : value;
+               dataElement.addElement(properties[i].getName()).setText(value.toString());   
            }
            StringWriter sw = new StringWriter();
            writer = new XMLWriter(sw, format);   

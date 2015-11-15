@@ -31,8 +31,8 @@
 		 diag.Drag=true;
 		 diag.Title ="新增菜单";
 		 diag.URL = '<%=basePath%>manager/menu/goadd?parentId=' + parentId + '&onMenu=' + onMenu;
-		 diag.Width = 223;
-		 diag.Height = 256;
+		 diag.Width = 300;
+		 diag.Height = 230;
 		 diag.CancelEvent = function(){ //关闭事件
 			diag.close();
 		 };
@@ -46,8 +46,8 @@
 		 diag.Drag=true;
 		 diag.Title ="编辑菜单";
 		 diag.URL = '<%=basePath%>manager/menu/goedit?id='+menuId;
-		 diag.Width = 223;
-		 diag.Height = 256;
+		 diag.Width = 300;
+		 diag.Height = 230;
 		 diag.CancelEvent = function(){ //关闭事件
 			diag.close();
 		 };

@@ -75,6 +75,8 @@ public class Module implements Serializable {
 	 */
 	private Double curTemp;
 	
+	private boolean online;
+	
 	public Long getId() {
 		return id;
 	}
@@ -201,6 +203,14 @@ public class Module implements Serializable {
 
 	public void setCurTemp(Double curTemp) {
 		this.curTemp = curTemp;
+	}
+
+	public boolean isOnline() {
+		return online;
+	}
+
+	public void setOnline(boolean online) {
+		this.online = online;
 	}
 
 }

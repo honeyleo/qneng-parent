@@ -101,19 +101,22 @@
 			<input type="hidden" name="type" id="type" value="1"/>
 			<input type="hidden" name="onMenu" id="onMenu" value="${onMenu}"/>
 			<div id="zhongxin">
-			<table>
+			<table style="margin: 20px 10px">
 				<tr>
+					<td>菜单名称:</td>
 					<td><input type="text" name="name" id="name" placeholder="这里输入菜单名称" value="${menu.name }" title="名称"/></td>
 				</tr>
 				<tr>
-					<td><input type="text" name="url" id="url" placeholder="这里输入链接地址" value="${menu.url }" title="地址"/></td>
+					<td>URL:</td>
+					<td><input type="text" name="url" id="url" placeholder="这里输入链接地址" value="${menu.url }" title="链接地址"/></td>
 				</tr>
 				<tr>
+					<td>顺序号:</td>
 					<td><input type="number" name="orderNo" id="orderNo" placeholder="这里输入序号" value="${menu.orderNo}" title="序号"/></td>
 				</tr>
 				<tr>
-				<td style="text-align: center; padding-top: 10px;">
-					<a class="btn btn-mini btn-primary" onclick="save();">保存</a>
+				<td style="text-align: center; padding-top: 10px;" colspan="2" height="50px">
+					<a class="btn btn-mini btn-primary" onclick="save();">保存</a>&nbsp;&nbsp;&nbsp;&nbsp;
 					<a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
 				</td>
 			</tr>

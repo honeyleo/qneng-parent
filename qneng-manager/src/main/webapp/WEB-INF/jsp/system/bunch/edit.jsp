@@ -83,11 +83,12 @@
 	<form action="<%=basePath %>manager/bunch/${uri}" name="bunchForm" id="bunchForm" method="post">
 		<input type="hidden" name="id" id="bunche_id" value="${entity.id }"/>
 		<div id="zhongxin">
-		<table>
+		<table style="margin: 20px 10px">
 			
 			<tr class="info">
+				<td>关联电站：</td>
 				<td>
-				关联电站：<select name="stationId" id="station_id" data-placeholder="请选择电站" style="vertical-align:top;">
+				<select name="stationId" id="station_id" data-placeholder="请选择电站" style="vertical-align:top;">
 				<option value=""></option>
 				<c:forEach items="${stations}" var="station">
 					<option value="${station.id }" <c:if test="${station.id == entity.stationId }">selected</c:if>>${station.name }</option>
@@ -96,20 +97,24 @@
 				</td>
 			</tr>
 			<tr>
+				<td>组串名称：</td>
 				<td><input type="text" name="name" id="name" value="${entity.name }" maxlength="32" placeholder="这里输入组串名称" title="组串名称"/></td>
 			</tr>
 			<tr>
+				<td>单元数：</td>
 				<td><input type="number" name="element" id="element" placeholder="这里输入单元数" value="${entity.element}" title="单元数"/></td>
 			</tr>
 			<tr>
+				<td>行数：</td>
 				<td><input type="number" name="line" id="line" placeholder="这里输入行数" value="${entity.line}" title="行数"/></td>
 			</tr>
 			<tr>
+				<td>列数：</td>
 				<td><input type="number" name="row" id="row" placeholder="这里输入列数" value="${entity.row}" title="列数"/></td>
 			</tr>
 			<tr>
-				<td style="text-align: center;">
-					<a class="btn btn-mini btn-primary" onclick="save();">保存</a>
+				<td style="text-align: center;" colspan="2" height="50px">
+					<a class="btn btn-mini btn-primary" onclick="save();">保存</a>&nbsp;&nbsp;&nbsp;&nbsp;
 					<a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
 				</td>
 			</tr>

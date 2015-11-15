@@ -41,7 +41,7 @@
   </sql>
   
   <sql id="Base_Column_List" >
-    id, no, inputVolt, outvolt, curr, temp, capacity, time, stationId, BunchId, moduleId, createTime
+    id, no, inputVolt, outvolt, curr, temp, capacity, time, stationId, bunchId, moduleId, createTime
   </sql>
   
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.manager.model.Criteria" >
@@ -68,8 +68,8 @@
   </delete>
   
   <insert id="insert" parameterType="cn.lfy.qneng.model.ModuleData" useGeneratedKeys="true" keyProperty="id">
-    insert into t_module_data (no, inputVolt, outvolt, curr, temp, capacity, time, stationId, BunchId, moduleId, createTime)
-    values (#{no}, #{inputVolt}, #{outvolt}, #{outvolt}, #{curr}, #{temp}, #{capacity}, #{time}, #{stationId}, #{BunchId}, #{moduleId}, #{createTime})
+    insert into t_module_data (no, inputVolt, outvolt, curr, temp, capacity, time, stationId, bunchId, moduleId, createTime)
+    values (#{no}, #{inputVolt}, #{outvolt}, #{curr}, #{temp}, #{capacity}, #{time}, #{stationId}, #{bunchId}, #{moduleId}, #{createTime})
   </insert>
   
   <select id="countByExample" parameterType="com.manager.model.Criteria" resultType="java.lang.Integer" >

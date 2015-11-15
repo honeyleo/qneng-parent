@@ -83,11 +83,12 @@
 	<form action="<%=basePath %>manager/module/${uri}" name="moduleForm" id="moduleForm" method="post">
 		<input type="hidden" name="id" id="module_id" value="${entity.id }"/>
 		<div id="zhongxin">
-		<table>
+		<table style="margin: 20px 10px">
 			
 			<tr class="info">
+				<td>关联组串：</td>
 				<td>
-				关联组串：<select name="bunchId" id="bunch_id" data-placeholder="请选择组串" style="vertical-align:top;">
+				<select name="bunchId" id="bunch_id" data-placeholder="请选择组串" style="vertical-align:top;">
 				<option value=""></option>
 				<c:forEach items="${bunchs}" var="bunch">
 					<option value="${bunch.id }" <c:if test="${bunch.id == entity.bunchId }">selected</c:if>>${bunch.name }</option>
@@ -96,17 +97,20 @@
 				</td>
 			</tr>
 			<tr>
+				<td>组件名称：</td>
 				<td><input type="text" name="name" id="name" value="${entity.name }" maxlength="32" placeholder="这里输入组件名称" title="组件名称"/></td>
 			</tr>
 			<tr>
+				<td>设备唯一码：</td>
 				<td><input type="text" name="no" id="no" value="${entity.no }" maxlength="32" placeholder="这里输入设备唯一码" title="设备唯一码"/></td>
 			</tr>
 			<tr>
+				<td>组件密钥：</td>
 				<td><input type="text" name="appSecret" id="appSecret" value="${entity.appSecret }" maxlength="32" placeholder="请输入设备密钥" title="设备密钥"/></td>
 			</tr>
 			<tr>
-				<td style="text-align: center;">
-					<a class="btn btn-mini btn-primary" onclick="save();">保存</a>
+				<td style="text-align: center;" colspan="2" height="50">
+					<a class="btn btn-mini btn-primary" onclick="save();">保存</a>&nbsp;&nbsp;&nbsp;&nbsp;
 					<a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
 				</td>
 			</tr>

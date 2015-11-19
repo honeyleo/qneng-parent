@@ -40,14 +40,14 @@ public class AppStationController {
 			builder.put("stationName", station.getName());
 			builder.put("stationInfo", station.getInfo());
 			Double total = moduleDataService.getTotal(stationId, null, null);
-			builder.put("allCapacity", total);
+			builder.put("allCapacity", total != null ? total : 0);
 			if(total != null) {
 				builder.put("displacement", total * 0.785);
 			}
 			Double year = moduleDataService.getTotalForYear(stationId, null, null);
-			builder.put("yearCapacity", year);
+			builder.put("yearCapacity", year != null ? year : 0);
 			Double month = moduleDataService.getTotalForMonth(stationId, null, null);
-			builder.put("monthCapacity", month);
+			builder.put("monthCapacity", month != null ? month : 0);
 			DataInfo dataInfo = moduleDataService.getDataInfo(stationId, null);
 			if(dataInfo != null) {
 				builder.put("stationWeather", "晴朗");

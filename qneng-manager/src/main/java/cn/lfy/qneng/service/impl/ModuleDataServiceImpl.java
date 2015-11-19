@@ -174,7 +174,7 @@ public class ModuleDataServiceImpl implements ModuleDataService {
 		for(int i = 0; i < 12; i ++) {
 			data[i] = 0;
 		}
-		List<PowerDataInfo> list = dao.getDayPowerData(query);
+		List<PowerDataInfo> list = dao.getYearCapacityData(query);
 		for(int i = 1; i <= 12; i++) {
 			for(PowerDataInfo info : list) {
 				if(info.getValue() == i) {

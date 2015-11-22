@@ -62,5 +62,10 @@ public class AlarmServiceImpl implements AlarmService {
 	public List<Alarm> list(AlarmQuery alarmQuery) {
 		return dao.list(alarmQuery);
 	}
+
+	@Override
+	public Integer getAlarmCount(AlarmQuery alarmQuery) {
+		return dao.getAlarmCount(alarmQuery);
+	}
     
 }

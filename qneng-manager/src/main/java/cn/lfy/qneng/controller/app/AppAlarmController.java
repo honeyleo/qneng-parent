@@ -67,6 +67,15 @@ public class AppAlarmController {
 			alarmQuery.setStartTime(dateString + " 00:00:00");
 			alarmQuery.setEndTime(dateString + " 23:59:59");
 		}
+		Integer start = RequestUtil.getInteger(request, "curNumer");
+		if(start == null) {
+			start = 0;
+		}
+		alarmQuery.setStart(start);
+		Integer limit = RequestUtil.getInteger(request, "count");
+		if(limit != null) {
+			alarmQuery.setLimit(limit);
+		}
 		List<Alarm> list = alarmService.list(alarmQuery);
 		builder.put("data", list);
 		return builder.build();

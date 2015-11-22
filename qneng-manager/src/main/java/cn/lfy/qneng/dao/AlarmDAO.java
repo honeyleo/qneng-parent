@@ -44,4 +44,11 @@ public interface AlarmDAO {
      * @return
      */
     List<Alarm> list(AlarmQuery alarmQuery);
+    
+    /**
+     * 根据条件查询警告数量
+     * @param alarmQuery
+     * @return
+     */
+    Integer getAlarmCount(AlarmQuery alarmQuery);
 }

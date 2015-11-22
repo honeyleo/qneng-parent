@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.lfy.common.model.Message;
 import cn.lfy.common.utils.DateUtils;
 import cn.lfy.qneng.model.Bunch;
+import cn.lfy.qneng.service.AlarmService;
 import cn.lfy.qneng.service.BunchService;
 import cn.lfy.qneng.service.ModuleDataService;
+import cn.lfy.qneng.vo.AlarmQuery;
 import cn.lfy.qneng.vo.DataInfo;
 
 import com.alibaba.fastjson.JSONArray;
@@ -30,6 +32,9 @@ public class AppBunchController {
 	private BunchService bunchService;
 	@Resource
 	private ModuleDataService moduleDataService;
+	
+	@Resource
+	private AlarmService alarmService;
 	
 	@RequestMapping("/bunchList")
 	@ResponseBody
@@ -47,10 +52,14 @@ public class AppBunchController {
 			for(Bunch bunch : list) {
 				JSONObject obj = new JSONObject();
 				obj.put("bunchId", bunch.getId());
+				obj.put("name", bunch.getName());
 				obj.put("element", bunch.getElement());
 				obj.put("line", bunch.getLine());
 				obj.put("row", bunch.getRow());
-				obj.put("curPower", 0);
+				DataInfo dataInfo = moduleDataService.getDataInfo(null, bunch.getId());
+				Double curPower = dataInfo.getCurVlot() * dataInfo.getCurCurr();
+				curPower = curPower != null ? curPower : 0;
+				obj.put("curPower", curPower);
 				array.add(obj);
 			}
 			builder.put("data", array);
@@ -71,6 +80,7 @@ public class AppBunchController {
 		Bunch bunch = bunchService.findById(bunchId);
 		if(bunch != null) {
 			builder.put("bunchId", bunch.getId());
+			builder.put("name", bunch.getName());
 			Double total = moduleDataService.getTotal(null, bunchId, null);
 			builder.put("allCapacity", total);
 			Double year = moduleDataService.getTotalForYear(null, bunchId, null);
@@ -79,11 +89,18 @@ public class AppBunchController {
 			builder.put("monthCapacity", month);
 			DataInfo dataInfo = moduleDataService.getDataInfo(null, bunchId);
 			if(dataInfo != null) {
+				//TODO 当前温度暂时不填，等确定再说
 				builder.put("curTemp", 40);
 				builder.put("curPower", dataInfo.getCurVlot() * dataInfo.getCurCurr());
 				builder.put("curVlot", dataInfo.getCurVlot());
 				builder.put("curCurr", dataInfo.getCurCurr());
-				builder.put("alarmNumber", 0);
+				AlarmQuery alarmQuery = new AlarmQuery();
+				alarmQuery.setBunchId(bunchId);
+				String date = DateUtils.getCurrentDate();
+				alarmQuery.setDate(date);
+				Integer alarmNumber = alarmService.getAlarmCount(alarmQuery);
+				alarmNumber = alarmNumber != null ? alarmNumber : 0;
+				builder.put("alarmNumber", alarmNumber);
 			}
 		}
 		return builder.build();

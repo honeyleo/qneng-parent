@@ -2,7 +2,12 @@ package cn.lfy.qneng.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +23,9 @@ import cn.lfy.common.model.Message;
 import cn.lfy.common.utils.DateUtils;
 import cn.lfy.qneng.gateway.client.ClientManager;
 import cn.lfy.qneng.gateway.client.NioClient2;
+import cn.lfy.qneng.gateway.model.NodeAlarmReq;
 import cn.lfy.qneng.gateway.model.NodeConfigReq;
+import cn.lfy.qneng.gateway.model.NodeDataReq;
 import cn.lfy.qneng.model.Bunch;
 import cn.lfy.qneng.model.MockModuleData;
 import cn.lfy.qneng.model.Module;
@@ -27,6 +34,8 @@ import cn.lfy.qneng.service.BunchService;
 import cn.lfy.qneng.service.ModuleDataService;
 import cn.lfy.qneng.service.ModuleService;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.manager.common.Constants;
 import com.manager.common.exception.ApplicationException;
 import com.manager.common.util.MD5;
@@ -65,6 +74,10 @@ public class MockModuleController implements Constants {
         	NioClient2 client = ClientManager.getClient(module.getNo());
         	if(client != null) {
         		module.setOnline(true);
+        	}
+        	ScheduledFuture<?> future = MAP_SCHEDULED.get(module.getNo());
+        	if(future != null) {
+        		module.setMock(true);
         	}
         }
         result.setData(list);
@@ -154,20 +167,92 @@ public class MockModuleController implements Constants {
         return new ModelAndView("/system/mockmodule/data");
     }
     
+    private static List<NodeDataReq> LIST_DATA = Lists.newArrayList();
+    static {
+    	NodeDataReq req = new NodeDataReq();
+    	req.setInputVolt(40D);
+    	req.setOutvolt(40D);
+    	req.setCurr(8D);
+    	req.setTemp(15D);
+    	req.setCapacity(80D);
+    	LIST_DATA.add(req);
+    	
+    	req.setInputVolt(38D);
+    	req.setOutvolt(38D);
+    	req.setCurr(7D);
+    	req.setTemp(14D);
+    	req.setCapacity(66.5D);
+    	LIST_DATA.add(req);
+    	
+    	req.setInputVolt(34D);
+    	req.setOutvolt(34D);
+    	req.setCurr(7D);
+    	req.setTemp(14D);
+    	req.setCapacity(59.5D);
+    	LIST_DATA.add(req);
+    }
+    
+    static final ScheduledExecutorService scheduled = Executors.newSingleThreadScheduledExecutor();
+    static Map<String, ScheduledFuture<?>> MAP_SCHEDULED = Maps.newConcurrentMap();
+    
     @RequestMapping("/dataSubmit")
     @ResponseBody
     public Object dataSubmit(HttpServletRequest request, Page page) throws ApplicationException {
     	Message.Builder builder = Message.newBuilder();
         Long id = RequestUtil.getLong(request, "id");
-        Module module = moduleService.findById(id);
-        MockModuleData data = new MockModuleData();
-        data.setId(module.getId());
-        data.setNo(module.getNo());
-        data.setInputVolt(module.getMaxVolt());
-        request.setAttribute("entity", data);
+        final Module module = moduleService.findById(id);
+        if(module != null) {
+        	final NioClient2 client = ClientManager.getClient(module.getNo());
+        	ScheduledFuture<?> future = scheduled.scheduleAtFixedRate(new Runnable() {
+				
+				@Override
+				public void run() {
+					Random random = new Random(System.currentTimeMillis());
+		        	int index = random.nextInt(LIST_DATA.size());
+		        	NodeDataReq nodeDataReq = LIST_DATA.get(index);
+		        	NodeDataReq dataReq = new NodeDataReq();
+		        	dataReq.setInputVolt(nodeDataReq.getInputVolt());
+		        	dataReq.setOutvolt(nodeDataReq.getOutvolt());
+		        	dataReq.setCurr(nodeDataReq.getCurr());
+		        	dataReq.setNo(module.getNo());
+		        	dataReq.setTemp(nodeDataReq.getTemp());
+		        	dataReq.setTime(System.currentTimeMillis());
+		        	Double capacity = nodeDataReq.getCapacity();
+		        	int gailv = 0;
+		        	if(random.nextInt(2) == 1) {
+		        		gailv = random.nextInt(6);
+		        	} else {
+		        		gailv = 0 - random.nextInt(6);
+		        	}
+		        	capacity = capacity + capacity*(gailv/100.00);
+		        	
+		        	dataReq.setCapacity(capacity);
+		        	
+		        	client.send(1005, dataReq);
+		        	
+				}
+			}, 0, 10*60*1000, TimeUnit.MILLISECONDS);
+        	MAP_SCHEDULED.put(module.getNo(), future);
+        	
+        }
         return builder.build();
     }
     
+    @RequestMapping("/cancelScheduled")
+    @ResponseBody
+    public Object cancelScheduled(HttpServletRequest request) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
+        Long id = RequestUtil.getLong(request, "id");
+        final Module module = moduleService.findById(id);
+        if(module != null) {
+        	ScheduledFuture<?> future = MAP_SCHEDULED.get(module.getNo());
+        	if(future != null) {
+        		future.cancel(true);
+        		MAP_SCHEDULED.remove(module.getNo());
+        	}
+        }
+        return builder.build();
+    }
     @RequestMapping("/dataSubmit2")
     @ResponseBody
     public Object dataSubmit2(HttpServletRequest request, Page page, MockModuleData mockModuleData) throws ApplicationException {
@@ -206,4 +291,41 @@ public class MockModuleController implements Constants {
         }
         return builder.build();
     }
+    
+    private static Map<Integer, String> MAP_ALARM = Maps.newConcurrentMap();
+    static {
+    	MAP_ALARM.put(1, "短路告警：光伏组件输出短路");
+    	MAP_ALARM.put(2, "过压告警：光伏组件过压");
+    	MAP_ALARM.put(3, "过流告警：光伏组件过流");
+    	MAP_ALARM.put(4, "过温告警：光伏组件过温");
+    	MAP_ALARM.put(5, "重启动告警：光伏组件分线盒系统重启");
+    }
+    @RequestMapping("/reportAlarm")
+    @ResponseBody
+    public Object reportAlarm(HttpServletRequest request) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
+    	Long id = RequestUtil.getLong(request, "id");
+        Module module = moduleService.findById(id);
+        if(module != null) {
+        	Random random = new Random(System.currentTimeMillis());
+        	int alarmType = 1 + random.nextInt(5);
+            Long time = System.currentTimeMillis();
+            NodeAlarmReq alarmReq = new NodeAlarmReq();
+            alarmReq.setNo(module.getNo());
+            alarmReq.setAlarmType(alarmType);
+            alarmReq.setMemo(MAP_ALARM.get(alarmType));
+            alarmReq.setTime(time);
+            NioClient2 client = ClientManager.getClient(module.getNo());
+            if(client == null) return builder.build();
+            client.send(1007, alarmReq);
+        }
+        return builder.build();
+    }
+    
+    public static void main(String[] args) {
+		int gailv = -2;
+		Double capacity = 33.5;
+		capacity = capacity + capacity*(gailv/100.00);
+		System.out.println(capacity);
+	}
 }

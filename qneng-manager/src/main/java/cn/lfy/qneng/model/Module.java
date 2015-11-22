@@ -77,6 +77,8 @@ public class Module implements Serializable {
 	
 	private boolean online;
 	
+	private boolean mock;
+	
 	public Long getId() {
 		return id;
 	}
@@ -211,6 +213,14 @@ public class Module implements Serializable {
 
 	public void setOnline(boolean online) {
 		this.online = online;
+	}
+
+	public boolean isMock() {
+		return mock;
+	}
+
+	public void setMock(boolean mock) {
+		this.mock = mock;
 	}
 
 }

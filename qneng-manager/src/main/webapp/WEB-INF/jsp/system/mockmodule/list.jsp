@@ -80,7 +80,12 @@
 							<div class='hidden-phone visible-desktop btn-group'>
 								<c:if test="${entity.online == true }">
 								<a class='btn btn-mini btn-success' title="上报配置" onclick="reportConfig('${entity.id }');">配置</a>
-								<a class='btn btn-mini btn-info' title="生产发电数据" onclick="reportData('${entity.id }');">生产发电</a>
+								<c:if test="${entity.online == true and entity.mock == true }">
+									<a class='btn btn-mini btn-info' title="生产发电数据" onclick="cancelScheduled('${entity.id }');">取消正在模拟发电</a>
+								</c:if>
+								<c:if test="${entity.online == true and entity.mock == false }">
+									<a class='btn btn-mini btn-info' title="生产发电数据" onclick="reportData('${entity.id }');">生产发电</a>
+								</c:if>
 								<a class='btn btn-mini btn-warning' title="上报警告" onclick="reportAlarm('${entity.id }');">上报警告</a>
 								</c:if>
 							</div>
@@ -200,6 +205,45 @@
 				diag.close();
 			 };
 			 diag.show();
+		}
+		
+		function reportAlarm(id){
+			$.ajax({
+	            type: "POST",
+	            dataType: "json",
+	            url: "<%=basePath %>manager/mockmodule/reportAlarm",
+	            data: {id:id},
+	            success: function (data) {
+	            	if(data.ret == 0) {
+	            		$("#zhongxin").hide();
+	            		$("#zhongxin2").show();
+	            		setTimeout("self.location=self.location",2000);
+	            	} else {
+	            		bootbox.alert(data.msg, function(){
+	            			
+	            		});
+	            	}
+	            }
+			});
+		}
+		function cancelScheduled(id){
+			$.ajax({
+	            type: "POST",
+	            dataType: "json",
+	            url: "<%=basePath %>manager/mockmodule/cancelScheduled",
+	            data: {id:id},
+	            success: function (data) {
+	            	if(data.ret == 0) {
+	            		$("#zhongxin").hide();
+	            		$("#zhongxin2").show();
+	            		setTimeout("self.location=self.location",3000);
+	            	} else {
+	            		bootbox.alert(data.msg, function(){
+	            			
+	            		});
+	            	}
+	            }
+			});
 		}
 		</script>
 		

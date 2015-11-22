@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.lfy.common.model.Message;
 import cn.lfy.common.utils.DateUtils;
 import cn.lfy.qneng.model.Module;
+import cn.lfy.qneng.service.AlarmService;
 import cn.lfy.qneng.service.ModuleDataService;
 import cn.lfy.qneng.service.ModuleService;
+import cn.lfy.qneng.vo.AlarmQuery;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -29,6 +31,8 @@ public class AppModuleController {
 	private ModuleService moduleService;
 	@Resource
 	private ModuleDataService moduleDataService;
+	@Resource
+	private AlarmService alarmService;
 	
 	@RequestMapping("/moduleList")
 	@ResponseBody
@@ -46,6 +50,7 @@ public class AppModuleController {
 			for(Module module : list) {
 				JSONObject obj = new JSONObject();
 				obj.put("moduleId", module.getId());
+				obj.put("name", module.getName());
 				obj.put("serial", module.getNo());
 				obj.put("curPower", 0);
 				array.add(obj);
@@ -68,21 +73,28 @@ public class AppModuleController {
 		Module module = moduleService.findById(moduleId);
 		if(module != null) {
 			builder.put("moduleId", module.getId());
+			builder.put("name", module.getName());
 			Double total = moduleDataService.getTotal(null, null, moduleId);
-			builder.put("allCapacity", total);
+			builder.put("allCapacity", total != null ? total : 0);
 			Double year = moduleDataService.getTotalForYear(null, null, moduleId);
-			builder.put("yearCapacity", year);
+			builder.put("yearCapacity", year != null ? year : 0);
 			Double month = moduleDataService.getTotalForMonth(null, null, moduleId);
-			builder.put("monthCapacity", month);
+			builder.put("monthCapacity", month != null ? month : 0);
 			builder.put("model", module.getModel());
 			builder.put("serial", module.getNo());
-			builder.put("installdate", module.getNo());
-			builder.put("manufactory", module.getNo());
+			builder.put("installdate", module.getInstalldate());
+			builder.put("manufactory", module.getManufactory());
 			builder.put("curTemp", module.getCurTemp());
 			builder.put("curPower", module.getCurVlot() * module.getCurCurr());
 			builder.put("curVlot", module.getCurVlot());
 			builder.put("curCurr", module.getCurCurr());
-			builder.put("alarmNumber", 0);
+			AlarmQuery alarmQuery = new AlarmQuery();
+			alarmQuery.setModuleId(moduleId);
+			String date = DateUtils.getCurrentDate();
+			alarmQuery.setDate(date);
+			Integer alarmNumber = alarmService.getAlarmCount(alarmQuery);
+			alarmNumber = alarmNumber != null ? alarmNumber : 0;
+			builder.put("alarmNumber", alarmNumber);
 		}
 		return builder.build();
 	}

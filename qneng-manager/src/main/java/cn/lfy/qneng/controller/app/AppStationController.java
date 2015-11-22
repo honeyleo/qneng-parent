@@ -38,7 +38,7 @@ public class AppStationController {
 		Station station = stationService.findById(stationId);
 		if(station != null) {
 			builder.put("stationName", station.getName());
-			builder.put("stationInfo", station.getInfo());
+			builder.put("stationIntro", station.getInfo());
 			Double total = moduleDataService.getTotal(stationId, null, null);
 			builder.put("allCapacity", total != null ? total : 0);
 			if(total != null) {
@@ -50,7 +50,7 @@ public class AppStationController {
 			builder.put("monthCapacity", month != null ? month : 0);
 			DataInfo dataInfo = moduleDataService.getDataInfo(stationId, null);
 			if(dataInfo != null) {
-				builder.put("stationWeather", "晴朗");
+				builder.put("stationWeather", "1");
 				builder.put("stationTemp", 23);
 				builder.put("curPower", dataInfo.getCurVlot() * dataInfo.getCurCurr());
 			}

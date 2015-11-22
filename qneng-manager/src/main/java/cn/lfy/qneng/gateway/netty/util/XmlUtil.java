@@ -26,9 +26,20 @@ public class XmlUtil {
 			 T obj=(T)cls.newInstance();
 			 for (int j = 0; j < properties.length; j++) {
 				 setmeth = obj.getClass().getMethod("set" + properties[j].getName().substring(0, 1).toUpperCase() + properties[j].getName().substring(1),properties[j].getType());   
-				 String value = objElement.elementText(properties[j].getName());
-				 if("".equals(value)) {
-					 value = null;
+				 String text = objElement.elementText(properties[j].getName());
+				 Class<?>[] clsss = setmeth.getParameterTypes();
+				 String type = clsss[0].getName();
+				 Object value = null;
+				 if("java.lang.String".equals(type)) {
+					 value = (String) text;
+				 } else if("java.lang.Integer".equals(type)) {
+					 value = Integer.valueOf(text);
+				 } else if("java.lang.Double".equals(type)) {
+					 value = Double.valueOf(text);
+				 } else if("java.lang.Float".equals(type)) {
+					 value = Float.valueOf(text);
+				 } else if("java.lang.Long".equals(type)) {
+					 value = Long.valueOf(text);
 				 }
 				 setmeth.invoke(obj, value);
 			 }

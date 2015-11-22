@@ -7,9 +7,12 @@ public class AlarmQuery {
 	private Long moduleId;
 	private String startTime;
 	private String endTime;
+	/**
+	 * yyyy-mm-dd
+	 */
 	private String date;
 	private int start;
-	private int limit;
+	private int limit = 15;
 	
 	public Long getStationId() {
 		return stationId;

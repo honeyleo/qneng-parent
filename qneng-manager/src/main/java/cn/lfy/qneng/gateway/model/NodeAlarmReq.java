@@ -17,7 +17,7 @@ public class NodeAlarmReq {
 	/**
 	 * 发送时间
 	 */
-	private long time;
+	private Long time;
 	public String getNo() {
 		return no;
 	}
@@ -36,10 +36,10 @@ public class NodeAlarmReq {
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
-	public long getTime() {
+	public Long getTime() {
 		return time;
 	}
-	public void setTime(long time) {
+	public void setTime(Long time) {
 		this.time = time;
 	}
 	@Override

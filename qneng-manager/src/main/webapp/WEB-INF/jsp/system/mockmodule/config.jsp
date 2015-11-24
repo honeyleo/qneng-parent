@@ -29,7 +29,6 @@
 	$(top.hangge());
 	//保存
 	function save(){
-		alert($('#mockModuleForm').serialize());
 		$.ajax({
             type: "POST",
             dataType: "json",

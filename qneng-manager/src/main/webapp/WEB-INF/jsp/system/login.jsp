@@ -8,7 +8,7 @@
 <html lang="en">
 
 <head>
-<title>登录</title>
+<title>清能云平台登录页</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -29,7 +29,7 @@
 				id="loginForm">
 				<div class="control-group normal_text">
 					<h3>
-						<img src="<%=path %>resources/login/logo.png" alt="Logo" />
+						<img src="<%=path %>resources/login/logo2.png" alt="Logo" />
 					</h3>
 				</div>
 				<div class="control-group">
@@ -87,8 +87,8 @@
 
 			<div class="controls">
 				<div class="main_input_box">
-					<font color="white"><span id="nameerr">Copyright © FH
-							2100</span></font>
+					<font color="white"><span id="nameerr">Copyright © 清能云平台
+							2015</span></font>
 				</div>
 			</div>
 		</div>

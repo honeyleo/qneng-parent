@@ -12,7 +12,7 @@
     <result column="power" property="power" jdbcType="DOUBLE" />
     <result column="maxVolt" property="maxVolt" jdbcType="DOUBLE" />
     <result column="maxCurr" property="maxCurr" jdbcType="DOUBLE" />
-    <result column="BunchId" property="BunchId" jdbcType="BIGINT" />
+    <result column="bunchId" property="bunchId" jdbcType="BIGINT" />
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
     <result column="lastUpdateTime" property="lastUpdateTime" jdbcType="BIGINT" />
     <result column="curVlot" property="curVlot" jdbcType="DOUBLE" />
@@ -26,6 +26,9 @@
       </if>
       <if test="condition.nameLike != null" >
          and name like '%${condition.nameLike}%'
+      </if>
+      <if test="condition.bunchId != null" >
+         and bunchId = #{condition.bunchId}
       </if>
       <if test="condition.manufactory != null" >
          and manufactory = #{condition.manufactory}

@@ -8,6 +8,7 @@
   <artifactId>qneng-manager</artifactId>
   <packaging>war</packaging>
   <name>qneng-manager</name>
+  <build><finalName>qneng-manager</finalName></build>
   <dependencies>
   	<dependency>
   		<groupId>cn.lfy</groupId>
@@ -22,7 +23,6 @@
        <dependency>
         <groupId>javax.servlet</groupId>
 		<artifactId>jstl</artifactId>
-		<scope>provided</scope>
     </dependency>
     <dependency>
 		<groupId>javax.servlet.jsp</groupId>

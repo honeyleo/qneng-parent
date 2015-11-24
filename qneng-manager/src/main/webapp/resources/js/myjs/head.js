@@ -34,8 +34,6 @@ $(function(){
 	});
 });
 
-var USER_ID;
-
 var user = "FH";	//用于即时通讯（ 当前登录用户）
 
 //在线管理
@@ -135,61 +133,15 @@ function editUserH(){
 	 var diag = new top.Dialog();
 	 diag.Drag=true;
 	 diag.Title ="个人资料";
-	 diag.URL = locat+'/user/goEditU.do?USER_ID='+USER_ID+'&fx=head';
-	 diag.Width = 225;
-	 diag.Height = 389;
+	 diag.URL = '/manager/admin/detail?id='+USER_ID;
+	 diag.Width = 300;
+	 diag.Height = 350;
 	 diag.CancelEvent = function(){ //关闭事件
 		diag.close();
 	 };
 	 diag.show();
 }
 
-//系统设置
-function editSys(){
-	 jzts();
-	 var diag = new top.Dialog();
-	 diag.Drag=true;
-	 diag.Title ="系统设置";
-	 diag.URL = locat+'/head/goSystem.do';
-	 diag.Width = 600;
-	 diag.Height = 596;
-	 diag.CancelEvent = function(){ //关闭事件
-		diag.close();
-	 };
-	 diag.show();
-}
-
-//代码生成
-function productCode(){
-	 jzts();
-	 var diag = new top.Dialog();
-	 diag.Drag=true;
-	 diag.Title ="代码生成器";
-	 diag.URL = locat+'/head/goProductCode.do';
-	 diag.Width = 800;
-	 diag.Height = 450;
-	 diag.CancelEvent = function(){ //关闭事件
-		hangge();
-		diag.close();
-	 };
-	 diag.show();
-}
-
-//数据字典
-function zidian(){
-	 jzts();
-	 var diag = new top.Dialog();
-	 diag.Drag=true;
-	 diag.Title ="数据字典";
-	 diag.URL = locat+'/dictionaries.do?PARENT_ID=0';
-	 diag.Width = 799;
-	 diag.Height = 460;
-	 diag.CancelEvent = function(){ //关闭事件
-		diag.close();
-	 };
-	 diag.show();
-	 
-}
 
 //菜单
 function menu(){

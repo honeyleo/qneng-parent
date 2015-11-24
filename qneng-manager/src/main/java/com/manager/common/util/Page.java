@@ -1,5 +1,7 @@
 package com.manager.common.util;
 
+import com.manager.common.Constants;
+
 
 public class Page {
 	
@@ -18,7 +20,7 @@ public class Page {
 		try {
 			this.showCount = Integer.parseInt(Tools.readTxtFile(Const.PAGE));
 		} catch (Exception e) {
-			this.showCount = 1;
+			this.showCount = Constants.PAGE_SIZE;
 		}
 	}
 	

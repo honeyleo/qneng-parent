@@ -4,7 +4,7 @@
 <div class="navbar navbar-inverse">
 		  <div class="navbar-inner">
 		   <div class="container-fluid">
-			  <a class="brand"><small><i class="icon-leaf"></i>  FH Admin</small> </a>
+			  <a class="brand"><small><i class="icon-leaf"></i>  清能云平台</small> </a>
 			  
 			  <ul class="nav ace-nav pull-right">
 			  
@@ -213,8 +213,6 @@
 						</a>
 						<ul id="user_menu" class="pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer">
 							<li><a onclick="editUserH();" style="cursor:pointer;"><i class="icon-user"></i> 修改资料</a></li>
-							<li id="systemset"><a onclick="editSys();" style="cursor:pointer;"><i class="icon-cog"></i> 系统设置</a></li>
-							<li id="productCode"><a onclick="productCode();" style="cursor:pointer;"><i class="icon-cogs"></i> 代码生成</a></li>
 							<li class="divider"></li>
 							<li><a href="<%=path1 %>manager/logout"><i class="icon-off"></i> 退出</a></li>
 						</ul>
@@ -227,3 +225,7 @@
 	
 		<!--引入属于此页面的js -->
 		<script type="text/javascript" src="<%=path1 %>resources/js/myjs/head.js"></script>
+		<script type="text/javascript">
+		
+		var USER_ID = '${USER_ID}';
+		</script>

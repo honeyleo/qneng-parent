@@ -45,6 +45,9 @@
 				
 				<thead>
 					<tr>
+						<th class="center">
+						<label><input type="checkbox" id="zcheckbox" /><span class="lbl"></span></label>
+						</th>
 						<th width="27">编号</th>
 						<th width="100">唯一码</th>
 						<th width="100">名称</th>
@@ -62,6 +65,11 @@
 				<c:forEach items="${requestScope.result.data}" var="entity" varStatus="var">
 									
 					<tr>
+						<td class='center' style="width: 30px;">
+							<c:if test="${entity.online == true }">
+								<input type='checkbox' name='ids' value="${entity.id }" id="${entity.name }"/><span class="lbl"></span></label>
+							</c:if>
+						</td>
 						<td>${entity.id }</td>
 						<td><a>${entity.no }</a></td>
 						<td><a>${entity.name }</a></td>
@@ -81,10 +89,10 @@
 								<c:if test="${entity.online == true }">
 								<a class='btn btn-mini btn-success' title="上报配置" onclick="reportConfig('${entity.id }');">配置</a>
 								<c:if test="${entity.online == true and entity.mock == true }">
-									<a class='btn btn-mini btn-info' title="生产发电数据" onclick="cancelScheduled('${entity.id }');">取消正在模拟发电</a>
+									<a class='btn btn-mini btn-info' title="生产发电数据" onclick="cancelScheduled('${entity.id }');">取消模拟发电</a>
 								</c:if>
 								<c:if test="${entity.online == true and entity.mock == false }">
-									<a class='btn btn-mini btn-info' title="生产发电数据" onclick="reportData('${entity.id }');">生产发电</a>
+									<a class='btn btn-mini btn-info' title="生产发电数据" onclick="mockReport('${entity.id }');">模拟发电</a>
 								</c:if>
 								<a class='btn btn-mini btn-warning' title="上报警告" onclick="reportAlarm('${entity.id }');">上报警告</a>
 								</c:if>
@@ -99,6 +107,9 @@
 		<div class="page-header position-relative">
 		<table style="width:100%;">
 			<tr>
+				<td style="vertical-align:top;">
+					<a title="批量生产发电数据" class="btn btn-small btn-info" onclick="batchReport();" >批量生产发电数据</a>
+				</td>
 				<td style="vertical-align:top;"><div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${page.pageStr}</div></td>
 			</tr>
 		</table>
@@ -135,6 +146,25 @@
 		<script type="text/javascript">
 		
 		$(top.hangge());
+		
+	$(function() {
+			
+			//下拉框
+			$(".chzn-select").chosen(); 
+			$(".chzn-select-deselect").chosen({allow_single_deselect:true}); 
+			
+			//复选框
+			$('table th input:checkbox').on('click' , function(){
+				var that = this;
+				$(this).closest('table').find('tr > td:first-child input:checkbox')
+				.each(function(){
+					this.checked = that.checked;
+					$(this).closest('tr').toggleClass('selected');
+				});
+					
+			});
+			
+		});
 		
 		//启动
 		function start(id){
@@ -193,6 +223,26 @@
 			 diag.show();
 		}
 		
+		function mockReport(id){
+			$.ajax({
+	            type: "POST",
+	            dataType: "json",
+	            url: "<%=basePath %>manager/mockmodule/dataSubmit",
+	            data: {id:id},
+	            success: function (data) {
+	            	if(data.ret == 0) {
+	            		$("#zhongxin").hide();
+	            		$("#zhongxin2").show();
+	            		setTimeout("self.location=self.location",2000);
+	            	} else {
+	            		bootbox.alert(data.msg, function(){
+	            			
+	            		});
+	            	}
+	            }
+			});
+		}
+		
 		//修改
 		function reportData(id){
 			 var diag = new top.Dialog();
@@ -200,7 +250,7 @@
 			 diag.Title ="资料";
 			 diag.URL = '<%=basePath%>manager/mockmodule/data?id='+id;
 			 diag.Width = 310;
-			 diag.Height = 390;
+			 diag.Height = 350;
 			 diag.CancelEvent = function(){ //关闭事件
 				diag.close();
 			 };
@@ -244,6 +294,31 @@
 	            	}
 	            }
 			});
+		}
+		
+		function batchReport() {
+			var str = '';
+			for(var i=0;i < document.getElementsByName('ids').length;i++)
+			{
+				if(document.getElementsByName('ids')[i].checked) {
+				  	if(str=='') {
+				  		str += document.getElementsByName('ids')[i].value;
+				  	}
+				  	else {
+				  		str += ',' + document.getElementsByName('ids')[i].value;
+				  	}
+				}
+			}
+			var diag = new top.Dialog();
+			 diag.Drag=true;
+			 diag.Title ="资料";
+			 diag.URL = '<%=basePath%>manager/mockmodule/data?ids='+str;
+			 diag.Width = 310;
+			 diag.Height = 350;
+			 diag.CancelEvent = function(){ //关闭事件
+				diag.close();
+			 };
+			 diag.show();
 		}
 		</script>
 		

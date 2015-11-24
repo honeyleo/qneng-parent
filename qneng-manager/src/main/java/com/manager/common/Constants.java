@@ -8,7 +8,7 @@ public interface Constants
 
 	String SESSION_LOGIN_USER = "SESSION_USER";
 
-	int PAGE_SIZE = 25;
+	int PAGE_SIZE = 10;
 
 	String EXCEL_FILE_NAME = "EXCEL_FILE_NAME";
 

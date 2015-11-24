@@ -78,7 +78,14 @@
 						<td>${user.phone }</td>
 						<td>${funcs:getRoleName(user.roleId)}</td>
 						<td>${funcs:formatDateTime(user.createTime,'yyyy-MM-dd HH:mm:ss')}</td>
-						<td>${user.state}</td>
+						<td>
+						<c:if test="${user.state == 1}">
+							正常
+						</c:if>
+						<c:if test="${user.state == 0}">
+							停用
+						</c:if>
+						</td>
 						<td style="width: 60px;">
 							<div class='hidden-phone visible-desktop btn-group'>
 								<funcs:permission privilege="20" module="用戶管理_编辑">

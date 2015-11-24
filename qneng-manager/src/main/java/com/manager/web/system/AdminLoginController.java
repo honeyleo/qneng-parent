@@ -55,6 +55,7 @@ public class AdminLoginController implements Constants {
     @RequestMapping("/manager/index")
     public String index(HttpServletRequest request) throws ApplicationException {
         LoginAccount account = Funcs.getSessionLoginAccount(request.getSession());
+        request.setAttribute("USER_ID", account.getId());
         List<Menu> menus = roleDefaultMenuService.getMenuListByRoleId(account.getUser().getRoleId());
         account.setMenus(menus);
         List<Menu> menuList = Lists.newArrayList();
@@ -169,7 +170,7 @@ public class AdminLoginController implements Constants {
         HttpSession session = request.getSession();
         session.removeAttribute(SESSION_LOGIN_USER);
         session.invalidate();
-        return ADMIN_LOGIN;
+        return "redirect:login";
     }
     
 

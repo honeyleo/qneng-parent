@@ -26,29 +26,11 @@
 		<script type="text/javascript" src="<%=basePath %>resources/js/jquery.tips.js"></script>
 		
 <script type="text/javascript">
+$(function() {
+	//日期框
+	$('.date-picker').datepicker();
+});
 	$(top.hangge());
-	//保存
-	function save(){
-		alert($('#mockModuleForm').serialize());
-		$.ajax({
-            type: "POST",
-            dataType: "json",
-            url: "<%=basePath %>manager/mockmodule/dataSubmit",
-            data: $('#mockModuleForm').serialize(),
-            success: function (data) {
-            	if(data.ret == 0) {
-            		$("#zhongxin").hide();
-            		$("#zhongxin2").show();
-            		top.Dialog.close();
-            	} else {
-            		bootbox.alert(data.msg, function(){
-            			
-            		});
-            	}
-            }
-		});
-	}
-	
 	function save2(){
 		alert($('#mockModuleForm').serialize());
 		$.ajax({
@@ -74,41 +56,20 @@
 	</head>
 <body>
 	<form action="<%=basePath %>manager/mockmodule/dataSubmit" name="mockModuleForm" id="mockModuleForm" method="post">
-		<input type="hidden" name="id" id="module_id" value="${entity.id }"/>
+		<input type="hidden" name="ids" id="module_id" value="${ids }"/>
 		<div id="zhongxin">
 		<table style="margin: 20px 10px">
 			<tr>
 				<td>开始时间:</td>
-				<td width="100"><input type="text" name="startTime" id="startTime" value="${entity.startTime }" maxlength="32" /></td>
+				<td width="200"><input class="span10 date-picker" name="startTime" id="startTime"  type="text" data-date-format="yyyy-mm-dd" readonly="readonly" style="width:88px;" placeholder="创建日期" title="创建日期"/></td>
 			</tr>
 			<tr>
 				<td>结束时间:</td>
-				<td width="100"><input type="text" name="endTime" id="endTime" value="${entity.endTime }" maxlength="32" /></td>
-			</tr>
-			<tr>
-				<td>输入电压:</td>
-				<td width="100"><input type="text" name="inputVolt" id="inputVolt" value="${entity.inputVolt }" maxlength="32" /></td>
-			</tr>
-			<tr>
-				<td>输出电压:</td>
-				<td width="100"><input type="text" name="outvolt" id="outvolt" value="${entity.outvolt }" maxlength="32" /></td>
-			</tr>
-			<tr>
-				<td>电流:</td>
-				<td><input type="text" name="curr" id="curr" value="${entity.curr }" maxlength="32" /></td>
-			</tr>
-			<tr>
-				<td>温度:</td>
-				<td><input type="text" name="temp" id="temp" value="${entity.temp }" maxlength="32"/></td>
-			</tr>
-			<tr>
-				<td>发电量:</td>
-				<td><input type="text" name="capacity" id="capacity" value="${entity.capacity }" maxlength="32"/></td>
+				<td width="200"><input class="span10 date-picker" name="endTime" id="endTime"  type="text" data-date-format="yyyy-mm-dd" readonly="readonly" style="width:88px;" placeholder="创建日期" title="创建日期"/></td>
 			</tr>
 			<tr>
 				<td style="text-align: center;" colspan="2" height="50px">
-					<a class="btn btn-mini btn-primary" onclick="save();">启动上报发电数据</a>&nbsp;&nbsp;&nbsp;&nbsp;
-					<a class="btn btn-mini btn-primary" onclick="save2();">时间段</a>&nbsp;&nbsp;&nbsp;&nbsp;
+					<a class="btn btn-mini btn-primary" onclick="save2();">开始</a>&nbsp;&nbsp;&nbsp;&nbsp;
 					<a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
 				</td>
 			</tr>
@@ -125,5 +86,6 @@
 		<script src="<%=basePath %>resources/js/ace-elements.min.js"></script>
 		<script src="<%=basePath %>resources/js/ace.min.js"></script>
 		<script type="text/javascript" src="<%=basePath %>resources/js/chosen.jquery.min.js"></script><!-- 下拉框 -->
+		<script type="text/javascript" src="<%=basePath %>resources/js/bootstrap-datepicker.min.js"></script><!-- 日期框 -->
 </body>
 </html>

@@ -42,8 +42,6 @@ public class AdminController implements Constants {
 
     public static final String UPDATE_ADMIN = "/system/admin/edit";
 
-    public static final int listPageSize = 20;
-
     @Autowired
     private AdminService adminService;
 

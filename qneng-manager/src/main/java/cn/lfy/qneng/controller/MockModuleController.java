@@ -157,34 +157,29 @@ public class MockModuleController implements Constants {
     
     @RequestMapping("/data")
     public ModelAndView data(HttpServletRequest request, Page page) throws ApplicationException {
-        Long id = RequestUtil.getLong(request, "id");
-        Module module = moduleService.findById(id);
-        MockModuleData data = new MockModuleData();
-        data.setId(module.getId());
-        data.setNo(module.getNo());
-        data.setInputVolt(module.getMaxVolt());
-        request.setAttribute("entity", data);
+        String ids = RequestUtil.getString(request, "ids");
+        request.setAttribute("ids", ids);
         return new ModelAndView("/system/mockmodule/data");
     }
     
     private static List<NodeDataReq> LIST_DATA = Lists.newArrayList();
     static {
     	NodeDataReq req = new NodeDataReq();
-    	req.setInputVolt(40D);
+    	req.setInputVolt(100D);
     	req.setOutvolt(40D);
     	req.setCurr(8D);
     	req.setTemp(15D);
     	req.setCapacity(80D);
     	LIST_DATA.add(req);
     	
-    	req.setInputVolt(38D);
+    	req.setInputVolt(100D);
     	req.setOutvolt(38D);
     	req.setCurr(7D);
     	req.setTemp(14D);
     	req.setCapacity(66.5D);
     	LIST_DATA.add(req);
     	
-    	req.setInputVolt(34D);
+    	req.setInputVolt(100D);
     	req.setOutvolt(34D);
     	req.setCurr(7D);
     	req.setTemp(14D);
@@ -220,12 +215,20 @@ public class MockModuleController implements Constants {
 		        	Double capacity = nodeDataReq.getCapacity();
 		        	int gailv = 0;
 		        	if(random.nextInt(2) == 1) {
-		        		gailv = random.nextInt(6);
+		        		gailv = random.nextInt(GAILV);
 		        	} else {
-		        		gailv = 0 - random.nextInt(6);
+		        		gailv = 0 - random.nextInt(GAILV);
 		        	}
-		        	capacity = capacity + capacity*(gailv/100.00);
 		        	
+		        	Double outvolt = nodeDataReq.getOutvolt();
+					outvolt = outvolt + outvolt*(gailv/100.00);
+					dataReq.setOutvolt(outvolt);
+					
+					Double curr = nodeDataReq.getCurr();
+					curr = curr + curr*(gailv/100.00);
+					dataReq.setCurr(curr);
+		        	
+					capacity = outvolt*curr*0.17;
 		        	dataReq.setCapacity(capacity);
 		        	
 		        	client.send(1005, dataReq);
@@ -253,41 +256,78 @@ public class MockModuleController implements Constants {
         }
         return builder.build();
     }
+    
+    static int GAILV = 6;
+    
     @RequestMapping("/dataSubmit2")
     @ResponseBody
     public Object dataSubmit2(HttpServletRequest request, Page page, MockModuleData mockModuleData) throws ApplicationException {
     	Message.Builder builder = Message.newBuilder();
-        Long id = RequestUtil.getLong(request, "id");
-        Module module = moduleService.findById(id);
-        if(module != null) {
-        	Bunch bunch = bunchService.findById(module.getBunchId());
-        	if(bunch == null) return builder.build();
-        	long startTime = DateUtils.strToDate(mockModuleData.getStartTime(), DateUtils.LONGDATE_DATETIME).getTime();
-        	long endTime = DateUtils.strToDate(mockModuleData.getEndTime(), DateUtils.LONGDATE_DATETIME).getTime();
-        	while(startTime < endTime) {
-        		ModuleData moduleData = new ModuleData();
-				moduleData.setStationId(bunch.getStationId());
-				moduleData.setBunchId(module.getBunchId());
-				moduleData.setModuleId(module.getId());
-				moduleData.setNo(module.getNo());
-				moduleData.setInputVolt(mockModuleData.getInputVolt());
-				Double outvolt = mockModuleData.getOutvolt();
-				Random random = new Random(startTime);
-				outvolt = outvolt - random.nextInt(outvolt.intValue());
-				moduleData.setOutvolt(outvolt);
-				Double curr = mockModuleData.getCurr();
-				curr = curr - random.nextInt(curr.intValue());
-				moduleData.setCurr(curr);
-				Double temp = mockModuleData.getTemp();
-				temp = temp - random.nextInt(5);
-				moduleData.setTemp(temp);
-				Double capacity = outvolt*curr*0.17;
-				moduleData.setCapacity(capacity);
-				moduleData.setCreateTime(new Date(startTime));
-				moduleData.setTime(startTime);
-				moduleDataService.add(moduleData);
-        		startTime = startTime + 10*60*1000;
+        String ids = RequestUtil.getString(request, "ids");
+        String[] idArr = ids.split(",");
+        List<Long> idList = Lists.newArrayList();
+        for(String id : idArr) {
+        	if(!"".equals(id)) {
+        		idList.add(Long.parseLong(id));
         	}
+        }
+        final String startTimeStr = mockModuleData.getStartTime() + " 00:00:00";
+        final String endTimeStr = mockModuleData.getEndTime() + " 23:59:59";
+        for(final Long id : idList) {
+        	Thread thread = new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					Module module = moduleService.findById(id);
+			        if(module != null) {
+			        	Bunch bunch = bunchService.findById(module.getBunchId());
+			        	long startTime = DateUtils.strToDate(startTimeStr, DateUtils.LONGDATE_DATETIME).getTime();
+			        	long endTime = DateUtils.strToDate(endTimeStr , DateUtils.LONGDATE_DATETIME).getTime();
+			        	while(startTime < endTime) {
+			        		ModuleData moduleData = new ModuleData();
+							moduleData.setStationId(bunch.getStationId());
+							moduleData.setBunchId(module.getBunchId());
+							moduleData.setModuleId(module.getId());
+							moduleData.setNo(module.getNo());
+							
+							//随机种子
+							Random random = new Random(startTime);
+							int index = random.nextInt(LIST_DATA.size());
+							NodeDataReq nodeDataReq = LIST_DATA.get(index);
+							
+							moduleData.setInputVolt(nodeDataReq.getInputVolt());
+							
+							int gailv = 0;
+				        	if(random.nextInt(2) == 1) {
+				        		gailv = random.nextInt(GAILV);
+				        	} else {
+				        		gailv = 0 - random.nextInt(GAILV);
+				        	}
+				        	
+				        	Double outvolt = nodeDataReq.getOutvolt();
+							outvolt = outvolt + outvolt*(gailv/100.00);
+							moduleData.setOutvolt(outvolt);
+							
+							Double curr = nodeDataReq.getCurr();
+							curr = curr + curr*(gailv/100.00);
+							moduleData.setCurr(curr);
+							
+							Double temp = nodeDataReq.getTemp();
+							temp = temp - random.nextInt(5);
+							moduleData.setTemp(temp);
+							
+							Double capacity = outvolt*curr*0.17;
+							moduleData.setCapacity(capacity);
+							
+							moduleData.setCreateTime(new Date(startTime));
+							moduleData.setTime(startTime);
+							moduleDataService.add(moduleData);
+			        		startTime = startTime + 10*60*1000;
+			        	}
+			        }
+				}
+			});
+        	thread.start();
         }
         return builder.build();
     }
@@ -296,9 +336,9 @@ public class MockModuleController implements Constants {
     static {
     	MAP_ALARM.put(1, "短路告警：光伏组件输出短路");
     	MAP_ALARM.put(2, "过压告警：光伏组件过压");
-    	MAP_ALARM.put(3, "过流告警：光伏组件过流");
-    	MAP_ALARM.put(4, "过温告警：光伏组件过温");
-    	MAP_ALARM.put(5, "重启动告警：光伏组件分线盒系统重启");
+    	//MAP_ALARM.put(3, "过流告警：光伏组件过流");
+    	//MAP_ALARM.put(4, "过温告警：光伏组件过温");
+    	//MAP_ALARM.put(5, "重启动告警：光伏组件分线盒系统重启");
     }
     @RequestMapping("/reportAlarm")
     @ResponseBody

@@ -8,6 +8,8 @@ public enum ErrorCode {
 	NOT_EXIST(1002, "value.not.exist"),
 	PARAM_ILLEGAL(2000, "param.illegal"),
 	PERMISSION_DENIED(1003, "permission.denied"),
+	ERROR_PASSWORD(1004, "error.password"),
+	ERROR_USER_INACTIVE(1005, "error.user.inactive"),
 	;
 	
 	private int code;

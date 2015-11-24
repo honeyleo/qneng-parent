@@ -1,9 +1,7 @@
 package com.manager.web.system;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,16 +10,15 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import cn.lfy.common.model.Message;
 
 import com.google.common.collect.Lists;
 import com.manager.common.Constants;
 import com.manager.common.ErrorCode;
 import com.manager.common.exception.ApplicationException;
-import com.manager.common.util.DwzJsonUtil;
 import com.manager.common.util.MessageDigestUtil;
-import com.manager.common.util.RequestUtil;
 import com.manager.common.web.Funcs;
 import com.manager.model.Admin;
 import com.manager.model.LoginAccount;
@@ -95,54 +92,51 @@ public class AdminLoginController implements Constants {
     }
 
     @RequestMapping("/dologin")
-    public ModelAndView login(HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
-        try {
-            doLogin(request, response);
-        } catch (ApplicationException ex) {
-            String errorMsg = ex.getMessage();
-            if (RequestUtil.isAjax(request)) {
-                return new ModelAndView(JSON_VIEW, JSON_ROOT,
-                        DwzJsonUtil.getErrorStatusMsg(errorMsg));
-            } else {
-                Map<String, Object> model = new HashMap<String, Object>();
-                model.put("loginErrInfo", errorMsg);
-                return new ModelAndView(ADMIN_LOGIN, "model", model);
-            }
-        }
-        if (RequestUtil.isAjax(request)) {
-            return new ModelAndView(JSON_VIEW, JSON_ROOT,
-                    DwzJsonUtil.getOkStatusMsg(null));
-        } else {
-            return new ModelAndView(new RedirectView(request.getContextPath() + "/manager/index"), "model", null);
-        }
+    @ResponseBody
+    public Object login(HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
+    	doLogin(request, response);
+    	return builder.build();
     }
 
     private void doLogin(HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        String code = request.getParameter("code");
 
+        if (null == username || username.trim().length() == 0
+                || null == password || password.length() == 0) {
+            throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "用户名或密码");
+        }
+        if(code == null || code.trim().length() == 0) {
+        	throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "验证码");
+        }
+        String codeS = (String)request.getSession().getAttribute("sessionCode");
+        if(!code.equalsIgnoreCase(codeS)) {
+        	throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "验证码");
+        }
         try {
             password = MessageDigestUtil.getSHA256(password).toUpperCase();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (null == username || username.trim().length() == 0
-                || null == password || password.length() == 0) {
-            throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "用户名或密码");
-        }
         LoginAccount account = getAdminLoginUser(username);
+        if (account == null) {
+            throw ApplicationException.newInstance(ErrorCode.NOT_EXIST, "用户名");
+        }
         Admin user = account.getUser();
         if (user == null) {
-            throw ApplicationException.newInstance(ErrorCode.ERROR);
+            throw ApplicationException.newInstance(ErrorCode.NOT_EXIST, "用户名");
         }
         if (user.getState().equals(StateType.INACTIVE)) {
-        	throw ApplicationException.newInstance(ErrorCode.ERROR);
+        	throw ApplicationException.newInstance(ErrorCode.ERROR_USER_INACTIVE);
         }
         if (!password.equals(user.getPassword())) {
-        	throw ApplicationException.newInstance(ErrorCode.ERROR);
+        	throw ApplicationException.newInstance(ErrorCode.ERROR_PASSWORD);
         }
         account.setId(user.getId());
         request.getSession().setAttribute(SESSION_LOGIN_USER, account);
+        request.getSession().removeAttribute("sessionCode");
     }
     
     private LoginAccount getAdminLoginUser(String username){

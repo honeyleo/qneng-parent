@@ -118,29 +118,13 @@
 					dataType:'json',
 					cache: false,
 					success: function(data){
-						if("200" == data.statusCode){
+						if(0 == data.ret) {
 							saveCookie();
 							window.location.href="manager/index";
-						}else if("usererror" == data.result){
+						} else {
 							$("#loginname").tips({
 								side : 1,
-								msg : "用户名或密码有误",
-								bg : '#FF5080',
-								time : 15
-							});
-							$("#loginname").focus();
-						}else if("codeerror" == data.result){
-							$("#code").tips({
-								side : 1,
-								msg : "验证码输入有误",
-								bg : '#FF5080',
-								time : 15
-							});
-							$("#code").focus();
-						}else{
-							$("#loginname").tips({
-								side : 1,
-								msg : "缺少参数",
+								msg : data.msg,
 								bg : '#FF5080',
 								time : 15
 							});

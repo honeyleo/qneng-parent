@@ -55,7 +55,7 @@
     delete from t_alarm where id = #{id}
   </delete>
   
-  <insert id="insert" parameterType="cn.lfy.qneng.model.Module" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="cn.lfy.qneng.model.Alarm" useGeneratedKeys="true" keyProperty="id">
     insert into t_alarm (no, alarmType, memo, time, createTime)
     values (#{no}, #{alarmType}, #{memo}, #{time}, #{createTime})
   </insert>
@@ -67,7 +67,7 @@
     </if>
   </select>
   
-  <update id="updateByPrimaryKeySelective" parameterType="cn.lfy.qneng.model.Module" >
+  <update id="updateByPrimaryKeySelective" parameterType="cn.lfy.qneng.model.Alarm" >
     update t_alarm
     <set >
       <if test="no != null" >
@@ -86,8 +86,8 @@
     where id = #{id}
   </update>
   
-  <select id="list" resultMap="BaseResultMap" parameterType="cn.lfy.qneng.vo.AlarmQuery" >
-    SELECT a.* FROM t_alarm a 
+  <select id="list" resultType="cn.lfy.qneng.vo.AlarmVo" parameterType="cn.lfy.qneng.vo.AlarmQuery" >
+    SELECT a.*, m.id as moduleId, m.name as name FROM t_alarm a 
 	INNER JOIN t_module m
 	ON m.`no` = a.`no`
 	LEFT JOIN t_bunch b

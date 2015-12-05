@@ -12,7 +12,7 @@
        http://www.springframework.org/schema/aop     
        http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 
-	<bean id="gateServer" class="cn.lfy.qneng.gateway.GateServer" init-method="start">
+	<bean id="gateServer" class="cn.lfy.qneng.gateway.GateServer" init-method="start" destroy-method="shutdown">
 		<property name="port" value="9000"/>
 		<property name="bossThread" value="1"/>
 		<property name="workerThread" value="4"/>

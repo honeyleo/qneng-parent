@@ -1,9 +1,9 @@
-package cn.lfy.qneng.model;
+package cn.lfy.qneng.vo;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class Alarm implements Serializable {
+public class AlarmVo implements Serializable {
 
 	/**
 	 * 

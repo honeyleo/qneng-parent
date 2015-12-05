@@ -35,6 +35,7 @@
 		<mapper resource="cn/lfy/qneng/dao/mybatis/ModuleDAO.xml" />
 		<mapper resource="cn/lfy/qneng/dao/mybatis/ModuleDataDAO.xml" />
 		<mapper resource="cn/lfy/qneng/dao/mybatis/AlarmDAO.xml" />
+		<mapper resource="cn/lfy/qneng/dao/mybatis/SuggestDAO.xml" />
 	</mappers>
 	  
 	  

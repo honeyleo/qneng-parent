@@ -34,6 +34,7 @@
 		 diag.Width = 300;
 		 diag.Height = 230;
 		 diag.CancelEvent = function(){ //关闭事件
+			 self.location=self.location;
 			diag.close();
 		 };
 		 diag.show();
@@ -49,6 +50,7 @@
 		 diag.Width = 300;
 		 diag.Height = 230;
 		 diag.CancelEvent = function(){ //关闭事件
+			 self.location=self.location;
 			diag.close();
 		 };
 		 diag.show();
@@ -64,6 +66,7 @@
 		 diag.Width = 530;
 		 diag.Height = 150;
 		 diag.CancelEvent = function(){ //关闭事件
+			 self.location=self.location;
 			diag.close();
 		 };
 		 diag.show();

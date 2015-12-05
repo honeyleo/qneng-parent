@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.lfy.qneng.model.Alarm;
 import cn.lfy.qneng.vo.AlarmQuery;
+import cn.lfy.qneng.vo.AlarmVo;
 
 import com.manager.model.Criteria;
 
@@ -43,7 +44,7 @@ public interface AlarmDAO {
      * @param alarmQuery
      * @return
      */
-    List<Alarm> list(AlarmQuery alarmQuery);
+    List<AlarmVo> list(AlarmQuery alarmQuery);
     
     /**
      * 根据条件查询警告数量

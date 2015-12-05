@@ -101,7 +101,8 @@
     select 
     date_format(createTime, '%H') as value,
     sum(outvolt) as curVlot,
-    sum(curr) as curCurr
+    sum(curr) as curCurr,
+    sum(outvolt*curr) as curPower
     from t_module_data
     where 1=1
     <if test="stationId != null">

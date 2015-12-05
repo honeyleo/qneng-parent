@@ -123,7 +123,7 @@ public class ModuleDataServiceImpl implements ModuleDataService {
 		for(int i = 0; i < 24; i++) {
 			for(PowerDataInfo info : list) {
 				if(info.getValue() == i) {
-					data[i] = info.getCurVlot() * info.getCurCurr();
+					data[i] = info.getCurPower();
 					break;
 				}
 			}

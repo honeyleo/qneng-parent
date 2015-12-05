@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.lfy.common.model.Message;
 import cn.lfy.common.utils.DateUtils;
-import cn.lfy.qneng.model.Alarm;
 import cn.lfy.qneng.service.AlarmService;
 import cn.lfy.qneng.vo.AlarmQuery;
+import cn.lfy.qneng.vo.AlarmVo;
 
 import com.manager.common.util.RequestUtil;
 
@@ -42,30 +42,36 @@ public class AppAlarmController {
 		if(moduleId != null && moduleId != 0) {
 			alarmQuery.setModuleId(moduleId);
 		}
-		//1-本天；2-本周；3-本年；
-		Integer time = RequestUtil.getInteger(request, "time");
-		if(time != null && time != 0) {
-			if(time == 1) {
-				String dateString = DateUtils.getCurrentDate();
-				alarmQuery.setStartTime(dateString + " 00:00:00");
-				alarmQuery.setEndTime(dateString + " 23:59:59");
-			} else if(time == 2) {
-				Date date = new Date();
-				String startTime = DateUtils.date2String3(DateUtils.getFirstDayOfWeek(date)) + " 00:00:00";
-				String endTime = DateUtils.date2String3(DateUtils.getLastDayOfWeek(date)) + " 23:59:59";
-				alarmQuery.setStartTime(startTime);
-				alarmQuery.setEndTime(endTime);
-			} else if(time == 3) {
-				String year = DateUtils.getNowDate(DateUtils.LONGDATE_DATEYEAR);
-				alarmQuery.setStartTime(year + "-01-01 00:00:00");
-				alarmQuery.setEndTime(year + "-12-31 23:59:59");
-			}
-		}
 		Long date = RequestUtil.getLong(request, "date");
-		if(date != null && date != 0) {
+		if(date == null || date == 0L) {
+			date = System.currentTimeMillis();
+		}
+		Date dateW = new Date(date);
+		//1-本天；2-本月；3-本年；
+		Integer time = RequestUtil.getInteger(request, "time");
+		switch (time) {
+//		case 2:
+//			String startTime = DateUtils.date2String3(DateUtils.getFirstDayOfWeek(dateW)) + " 00:00:00";
+//			String endTime = DateUtils.date2String3(DateUtils.getLastDayOfWeek(dateW)) + " 23:59:59";
+//			alarmQuery.setStartTime(startTime);
+//			alarmQuery.setEndTime(endTime);
+//			break;
+		case 3:
+			String year = DateUtils.date2String5(dateW);
+			alarmQuery.setStartTime(year + "-01-01 00:00:00");
+			alarmQuery.setEndTime(year + "-12-31 23:59:59");
+			break;
+		case 2:
+			String start = DateUtils.getFirstDayOfMonth(dateW);
+			String end = DateUtils.getLastDayOfMonth(dateW);
+			alarmQuery.setStartTime(start);
+			alarmQuery.setEndTime(end);
+			break;
+		default:
 			String dateString = DateUtils.date2String3(new Date(date));
 			alarmQuery.setStartTime(dateString + " 00:00:00");
 			alarmQuery.setEndTime(dateString + " 23:59:59");
+			break;
 		}
 		Integer start = RequestUtil.getInteger(request, "curNumer");
 		if(start == null) {
@@ -76,7 +82,7 @@ public class AppAlarmController {
 		if(limit != null) {
 			alarmQuery.setLimit(limit);
 		}
-		List<Alarm> list = alarmService.list(alarmQuery);
+		List<AlarmVo> list = alarmService.list(alarmQuery);
 		builder.put("data", list);
 		return builder.build();
 	}

@@ -57,9 +57,21 @@ public class AppBunchController {
 				obj.put("line", bunch.getLine());
 				obj.put("row", bunch.getRow());
 				DataInfo dataInfo = moduleDataService.getDataInfo(null, bunch.getId());
-				Double curPower = dataInfo.getCurVlot() * dataInfo.getCurCurr();
+				Double curPower = null;
+				if(dataInfo != null) {
+					curPower = dataInfo.getCurPower();
+				}
 				curPower = curPower != null ? curPower : 0;
 				obj.put("curPower", curPower);
+				
+				AlarmQuery alarmQuery = new AlarmQuery();
+				alarmQuery.setBunchId(bunch.getId());
+				String date = DateUtils.getCurrentDate();
+				alarmQuery.setDate(date);
+				Integer alarmNumber = alarmService.getAlarmCount(alarmQuery);
+				alarmNumber = alarmNumber != null ? alarmNumber : 0;
+				obj.put("alarmNumber", alarmNumber);
+				
 				array.add(obj);
 			}
 			builder.put("data", array);
@@ -91,17 +103,17 @@ public class AppBunchController {
 			if(dataInfo != null) {
 				//TODO 当前温度暂时不填，等确定再说
 				builder.put("curTemp", 40);
-				builder.put("curPower", dataInfo.getCurVlot() * dataInfo.getCurCurr());
+				builder.put("curPower", dataInfo.getCurPower());
 				builder.put("curVlot", dataInfo.getCurVlot());
 				builder.put("curCurr", dataInfo.getCurCurr());
-				AlarmQuery alarmQuery = new AlarmQuery();
-				alarmQuery.setBunchId(bunchId);
-				String date = DateUtils.getCurrentDate();
-				alarmQuery.setDate(date);
-				Integer alarmNumber = alarmService.getAlarmCount(alarmQuery);
-				alarmNumber = alarmNumber != null ? alarmNumber : 0;
-				builder.put("alarmNumber", alarmNumber);
 			}
+			AlarmQuery alarmQuery = new AlarmQuery();
+			alarmQuery.setBunchId(bunchId);
+			String date = DateUtils.getCurrentDate();
+			alarmQuery.setDate(date);
+			Integer alarmNumber = alarmService.getAlarmCount(alarmQuery);
+			alarmNumber = alarmNumber != null ? alarmNumber : 0;
+			builder.put("alarmNumber", alarmNumber);
 		}
 		return builder.build();
 	}

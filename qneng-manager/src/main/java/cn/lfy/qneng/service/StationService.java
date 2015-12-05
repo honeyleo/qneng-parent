@@ -19,6 +19,12 @@ public interface StationService {
     Long add(Station record);
 
     /**
+     * 删除
+     * @param id
+     * @return
+     */
+    int deleteByPrimaryKey(Long id);
+    /**
      * 根据条件查询记录集
      */
     List<Station> findListByCriteria(Criteria criteria);

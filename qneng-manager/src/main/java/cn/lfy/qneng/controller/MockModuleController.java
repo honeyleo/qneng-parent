@@ -228,17 +228,33 @@ public class MockModuleController implements Constants {
 					curr = curr + curr*(gailv/100.00);
 					dataReq.setCurr(curr);
 		        	
-					capacity = outvolt*curr*0.17;
+					capacity = outvolt*curr*0.25;
 		        	dataReq.setCapacity(capacity);
 		        	
 		        	client.send(1005, dataReq);
 		        	
+		        	randomAlarm(module, client);
+		        	
 				}
-			}, 0, 10*60*1000, TimeUnit.MILLISECONDS);
+			}, 0, 15*60*1000, TimeUnit.MILLISECONDS);
         	MAP_SCHEDULED.put(module.getNo(), future);
         	
         }
         return builder.build();
+    }
+    
+    private void randomAlarm(Module module, NioClient2 client) {
+    	Random random = new Random(System.currentTimeMillis());
+    	if(random.nextInt(100) >= 90) {
+    		int alarmType = 1 + random.nextInt(2);
+            Long time = System.currentTimeMillis();
+        	NodeAlarmReq alarmReq = new NodeAlarmReq();
+            alarmReq.setNo(module.getNo());
+            alarmReq.setAlarmType(alarmType);
+            alarmReq.setMemo(MAP_ALARM.get(alarmType));
+            alarmReq.setTime(time);
+            client.send(1007, alarmReq);
+    	}
     }
     
     @RequestMapping("/cancelScheduled")
@@ -348,7 +364,7 @@ public class MockModuleController implements Constants {
         Module module = moduleService.findById(id);
         if(module != null) {
         	Random random = new Random(System.currentTimeMillis());
-        	int alarmType = 1 + random.nextInt(5);
+        	int alarmType = 1 + random.nextInt(2);
             Long time = System.currentTimeMillis();
             NodeAlarmReq alarmReq = new NodeAlarmReq();
             alarmReq.setNo(module.getNo());

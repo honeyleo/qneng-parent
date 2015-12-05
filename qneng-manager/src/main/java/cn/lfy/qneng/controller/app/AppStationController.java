@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.lfy.common.model.Message;
 import cn.lfy.common.utils.DateUtils;
+import cn.lfy.common.utils.NumberUtil;
 import cn.lfy.qneng.model.Station;
 import cn.lfy.qneng.service.ModuleDataService;
 import cn.lfy.qneng.service.StationService;
+import cn.lfy.qneng.service.WeatherService;
 import cn.lfy.qneng.vo.DataInfo;
 
 @Controller
@@ -42,17 +44,20 @@ public class AppStationController {
 			Double total = moduleDataService.getTotal(stationId, null, null);
 			builder.put("allCapacity", total != null ? total : 0);
 			if(total != null) {
-				builder.put("displacement", total * 0.785);
+				builder.put("displacement", NumberUtil.get2Double(total * 0.785));
 			}
 			Double year = moduleDataService.getTotalForYear(stationId, null, null);
 			builder.put("yearCapacity", year != null ? year : 0);
 			Double month = moduleDataService.getTotalForMonth(stationId, null, null);
 			builder.put("monthCapacity", month != null ? month : 0);
+			
+			builder.put("stationTemp", WeatherService.getWeather().getTemp());
+			builder.put("stationWeather", WeatherService.getWeather().getWeather());
+			
 			DataInfo dataInfo = moduleDataService.getDataInfo(stationId, null);
 			if(dataInfo != null) {
-				builder.put("stationWeather", "1");
-				builder.put("stationTemp", 23);
-				builder.put("curPower", dataInfo.getCurVlot() * dataInfo.getCurCurr());
+				Double curPower = dataInfo.getCurPower();
+				builder.put("curPower", curPower != null ? curPower : 0);
 			}
 		}
 		return builder.build();

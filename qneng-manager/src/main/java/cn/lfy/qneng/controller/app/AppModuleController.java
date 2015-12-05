@@ -52,7 +52,21 @@ public class AppModuleController {
 				obj.put("moduleId", module.getId());
 				obj.put("name", module.getName());
 				obj.put("serial", module.getNo());
-				obj.put("curPower", 0);
+				Double curPower = 0D;
+				if(module.getCurCurr() != null && module.getCurVlot() != null) {
+					curPower = module.getCurVlot()*module.getCurCurr();
+				}
+				
+				obj.put("curPower", curPower);
+				
+				AlarmQuery alarmQuery = new AlarmQuery();
+				alarmQuery.setModuleId(module.getId());
+				String date = DateUtils.getCurrentDate();
+				alarmQuery.setDate(date);
+				Integer alarmNumber = alarmService.getAlarmCount(alarmQuery);
+				alarmNumber = alarmNumber != null ? alarmNumber : 0;
+				obj.put("alarmNumber", alarmNumber);
+				
 				array.add(obj);
 			}
 			builder.put("data", array);

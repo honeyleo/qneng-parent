@@ -9,6 +9,7 @@ import cn.lfy.qneng.dao.AlarmDAO;
 import cn.lfy.qneng.model.Alarm;
 import cn.lfy.qneng.service.AlarmService;
 import cn.lfy.qneng.vo.AlarmQuery;
+import cn.lfy.qneng.vo.AlarmVo;
 
 import com.manager.model.Criteria;
 import com.manager.model.PageInfo;
@@ -59,7 +60,7 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
 	@Override
-	public List<Alarm> list(AlarmQuery alarmQuery) {
+	public List<AlarmVo> list(AlarmQuery alarmQuery) {
 		return dao.list(alarmQuery);
 	}
 

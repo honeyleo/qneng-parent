@@ -89,10 +89,10 @@
 						<td style="width: 60px;">
 							<div class='hidden-phone visible-desktop btn-group'>
 								<funcs:permission privilege="20" module="用戶管理_编辑">
-									<a class='btn btn-mini btn-info' title="编辑" onclick="editUser('${user.id }');"><i class='icon-edit'></i></a>
+									<a class='btn btn-mini btn-info' title="编辑" onclick="editUser('${user.id }');">修改</i></a>
 								</funcs:permission>
 								<funcs:permission privilege="22" module="用戶管理_删除">
-									<a class='btn btn-mini btn-danger' title="删除" onclick="delUser('${user.id }','${user.username }');"><i class='icon-trash'></i></a>
+									<a class='btn btn-mini btn-danger' title="删除" onclick="delUser('${user.id }','${user.username }');">删除</a>
 								</funcs:permission>
 							</div>
 						</td>
@@ -110,7 +110,7 @@
 						<a class="btn btn-small btn-success" onclick="add();">新增</a>
 					</funcs:permission>
 					<funcs:permission privilege="23" module="用戶管理_批量删除">
-						<a title="批量删除" class="btn btn-small btn-danger" onclick="makeAll('确定要删除选中的数据吗?');" ><i class='icon-trash'></i></a>
+						<a title="批量删除" class="btn btn-small btn-danger" onclick="makeAll('确定要删除选中的数据吗?');" >删除</i></a>
 					</funcs:permission>
 				</td>
 				<td style="vertical-align:top;"><div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${page.pageStr}</div></td>
@@ -175,6 +175,7 @@
 						 nextPage(${page.currentPage});
 					 }
 				} */
+				self.location=self.location;
 				diag.close();
 			 };
 			 diag.show();
@@ -190,6 +191,7 @@
 			 diag.Width = 300;
 			 diag.Height = 350;
 			 diag.CancelEvent = function(){ //关闭事件
+				 self.location=self.location;
 				diag.close();
 			 };
 			 diag.show();
@@ -283,7 +285,6 @@
 		</script>
 		
 		<script type="text/javascript">
-		
 		$(function() {
 			
 			//日期框

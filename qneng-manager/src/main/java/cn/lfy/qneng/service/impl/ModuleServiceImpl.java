@@ -61,5 +61,10 @@ public class ModuleServiceImpl implements ModuleService {
 	public Module findByNo(String no) {
 		return dao.selectByNo(no);
 	}
+
+	@Override
+	public int deleteByPrimaryKey(Long id) {
+		return dao.deleteByPrimaryKey(id);
+	}
     
 }

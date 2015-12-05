@@ -88,7 +88,7 @@ public class ModuleController implements Constants {
         Long id = RequestUtil.getLong(request, "id");
         Module record = new Module();
         record.setId(id);
-        moduleService.updateByIdSelective(record);
+        moduleService.deleteByPrimaryKey(id);
         return builder.build();
     }
     

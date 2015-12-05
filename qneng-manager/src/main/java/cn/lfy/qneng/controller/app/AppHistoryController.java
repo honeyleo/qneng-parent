@@ -13,6 +13,7 @@ import cn.lfy.common.model.Message;
 import cn.lfy.common.utils.DateUtils;
 import cn.lfy.qneng.service.AlarmService;
 import cn.lfy.qneng.service.ModuleDataService;
+import cn.lfy.qneng.service.WeatherService;
 import cn.lfy.qneng.vo.AlarmQuery;
 
 @Controller
@@ -45,28 +46,40 @@ public class AppHistoryController {
 		if(date == 0) {
 			date = System.currentTimeMillis();
 		}
+		
+		Date dateW = new Date(date);
+		
+		AlarmQuery alarmQuery = new AlarmQuery();
+		alarmQuery.setStationId(stationId);
+		alarmQuery.setBunchId(bunchId);
+		alarmQuery.setModuleId(moduleId);
+		
 		switch (time) {
 		case 2:
 			double[] month = moduleDataService.getCapacityForMonth(new Date(date), stationId, bunchId, moduleId);
 			builder.put("monthCapacity", month);
+			String start = DateUtils.getFirstDayOfMonth(dateW);
+			String end = DateUtils.getLastDayOfMonth(dateW);
+			alarmQuery.setStartTime(start);
+			alarmQuery.setEndTime(end);
 			break;
 		case 3:
 			double[] year = moduleDataService.getCapacityForYear(DateUtils.date2String5(new Date(date)), stationId, bunchId, moduleId);
 			builder.put("yearCapacity", year);
+			
+			String yearString = DateUtils.date2String5(dateW);
+			alarmQuery.setStartTime(yearString + "-01-01 00:00:00");
+			alarmQuery.setEndTime(yearString + "-12-31 23:59:59");
 			break;
 		default:
 			double[] day = moduleDataService.getPowerForDate(DateUtils.date2String3(new Date(date)), stationId, bunchId, moduleId);
 			builder.put("dayPower", day);
 			//TODO 当前温度暂时不填，等确定再说
-			builder.put("curTemp", 20);
-			builder.put("dayWeather", 1);
+			builder.put("curTemp", WeatherService.getWeather().getTemp());
+			builder.put("dayWeather", WeatherService.getWeather().getWeather());
 			
-			AlarmQuery alarmQuery = new AlarmQuery();
-			alarmQuery.setBunchId(bunchId);
 			alarmQuery.setDate(DateUtils.date2String3(new Date(date)));
-			Integer alarmNumber = alarmService.getAlarmCount(alarmQuery);
-			alarmNumber = alarmNumber != null ? alarmNumber : 0;
-			builder.put("alarmNumber", alarmNumber);
+			
 			Double dayCapacity = 0D;
 			for(double d : day) {
 				dayCapacity +=d;
@@ -74,6 +87,10 @@ public class AppHistoryController {
 			builder.put("dayCapacity", dayCapacity);
 			break;
 		}
+		
+		Integer alarmNumber = alarmService.getAlarmCount(alarmQuery);
+		alarmNumber = alarmNumber != null ? alarmNumber : 0;
+		builder.put("alarmNumber", alarmNumber);
 		return builder.build();
 	}
 }

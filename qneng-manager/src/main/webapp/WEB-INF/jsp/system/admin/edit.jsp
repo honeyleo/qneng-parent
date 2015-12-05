@@ -133,6 +133,7 @@
             		$("#zhongxin").hide();
             		$("#zhongxin2").show();
             		top.Dialog.close();
+            		setTimeout("self.location=self.location",100);
             	} else {
             		bootbox.alert(data.msg, function(){
             			

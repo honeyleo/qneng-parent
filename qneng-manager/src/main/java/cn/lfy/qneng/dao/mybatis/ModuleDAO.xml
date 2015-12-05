@@ -138,7 +138,8 @@
   <select id="getDataInfo" parameterType="cn.lfy.qneng.vo.ModuleQuery" resultType="cn.lfy.qneng.vo.DataInfo">
     select 
     sum(m.curVlot) as curVlot,
-    sum(m.curCurr) as curCurr
+    sum(m.curCurr) as curCurr,
+    SUM(m.curVlot*m.curCurr) as curPower
     from t_module m
     left join t_bunch b
     on m.bunchId = b.id

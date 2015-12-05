@@ -781,6 +781,22 @@ public class DateUtils {
 
 		return temp;
 	}
+	
+	/**
+	 * 按提供的格式取当前日期.<BR>
+	 * @param date
+	 * @param get_format
+	 *            日期格式
+	 * @return 按格式返回的日期
+	 */
+	public static String getDate(Date date, String get_format) {
+		SimpleDateFormat sf = new SimpleDateFormat(get_format);
+		TimeZone zone = TimeZone.getTimeZone("GMT+8");
+		sf.setTimeZone(zone);
+		String temp = sf.format(date);
+
+		return temp;
+	}
 
 	/**
 	 * 取当前周数<BR>

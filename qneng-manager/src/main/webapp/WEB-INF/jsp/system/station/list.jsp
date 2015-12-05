@@ -69,8 +69,8 @@
 						<td>${funcs:formatDateTime(entity.createTime,'yyyy-MM-dd HH:mm:ss')}</td>
 						<td style="width: 60px;">
 							<div class='hidden-phone visible-desktop btn-group'>
-								<a class='btn btn-mini btn-info' title="编辑" onclick="editUser('${entity.id }');"><i class='icon-edit'></i></a>
-								<a class='btn btn-mini btn-danger' title="删除" onclick="delUser('${entity.id }','${entity.name }');"><i class='icon-trash'></i></a>
+								<a class='btn btn-mini btn-info' title="编辑" onclick="editUser('${entity.id }');">修改</a>
+								<a class='btn btn-mini btn-danger' title="删除" onclick="delUser('${entity.id }','${entity.name }');">删除</a>
 							</div>
 						</td>
 					</tr>
@@ -138,6 +138,7 @@
 			 diag.Width = 320;
 			 diag.Height = 370;
 			 diag.CancelEvent = function(){ //关闭事件
+				 self.location=self.location;
 				diag.close();
 			 };
 			 diag.show();
@@ -152,6 +153,7 @@
 			 diag.Width = 320;
 			 diag.Height = 370;
 			 diag.CancelEvent = function(){ //关闭事件
+				 self.location=self.location;
 				diag.close();
 			 };
 			 diag.show();

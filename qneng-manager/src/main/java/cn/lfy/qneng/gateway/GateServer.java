@@ -74,6 +74,13 @@ public class GateServer {
 		logger.info("网关服务器启动成功，开始监听{} 端口...", port);
 	}
 	
+	public void shutdown() {
+		for (int i = 0; i < 4; i++) {
+			workers[i].shutdown();
+		}
+		allChannels.close();
+	}
+	
 	private DisruptorEvent[] workers;
 	
 	private void initBizThread() {

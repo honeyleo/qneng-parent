@@ -63,5 +63,10 @@ public class BunchServiceImpl implements BunchService {
     public Bunch getByIdInCache(Long id) {
         return dao.selectByPrimaryKey(id);
     }
+
+	@Override
+	public int deleteByPrimaryKey(Long id) {
+		return dao.deleteByPrimaryKey(id);
+	}
     
 }

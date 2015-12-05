@@ -49,9 +49,9 @@
 						<td>${role.desc }</td>
 						<td style="width: 60px;">
 							<div class='hidden-phone visible-desktop btn-group'>
-								<a class='btn btn-mini btn-info' title="编辑" onclick="editRole('${role.id }');"><i class='icon-edit'></i></a>
-								<a class='btn btn-mini btn-danger' title="删除" onclick="delRole('${role.id }','${role.name }');"><i class='icon-trash'></i></a>
-								<a onclick="roleButton('${role.id }','add_qx');" class="btn btn-warning btn-mini" title="分配权限"><i class="icon-wrench icon-2x icon-only"></i></a>
+								<a class='btn btn-mini btn-info' title="编辑" onclick="editRole('${role.id }');">修改</a>
+								<a class='btn btn-mini btn-danger' title="删除" onclick="delRole('${role.id }','${role.name }');">删除</a>
+								<a onclick="roleButton('${role.id }','add_qx');" class="btn btn-warning btn-mini" title="分配权限">分配权限</a>
 							</div>
 						</td>
 					</tr>
@@ -127,6 +127,7 @@
 			 diag.Width = 270;
 			 diag.Height = 320;
 			 diag.CancelEvent = function(){ //关闭事件
+				 self.location=self.location;
 				diag.close();
 			 };
 			 diag.show();
@@ -141,6 +142,7 @@
 			 diag.Width = 270;
 			 diag.Height = 320;
 			 diag.CancelEvent = function(){ //关闭事件
+				 self.location=self.location;
 				diag.close();
 			 };
 			 diag.show();

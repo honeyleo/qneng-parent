@@ -88,7 +88,7 @@ public class BunchController implements Constants {
         Long id = RequestUtil.getLong(request, "id");
         Bunch record = new Bunch();
         record.setId(id);
-        bunchService.updateByIdSelective(record);
+        bunchService.deleteByPrimaryKey(id);
         return builder.build();
     }
     

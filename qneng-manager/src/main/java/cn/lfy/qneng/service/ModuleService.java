@@ -19,6 +19,12 @@ public interface ModuleService {
     Long add(Module record);
 
     /**
+     * 删除
+     * @param id
+     * @return
+     */
+    int deleteByPrimaryKey(Long id);
+    /**
      * 根据条件查询记录集
      */
     List<Module> findListByCriteria(Criteria criteria);

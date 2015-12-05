@@ -22,8 +22,10 @@ import com.manager.common.exception.ApplicationException;
 import com.manager.common.util.Page;
 import com.manager.common.util.PageData;
 import com.manager.common.util.RequestUtil;
+import com.manager.common.web.Funcs;
 import com.manager.model.Admin;
 import com.manager.model.Criteria;
+import com.manager.model.LoginAccount;
 import com.manager.model.PageInfo;
 import com.manager.service.AdminService;
 
@@ -69,6 +71,13 @@ public class StationController implements Constants {
         if (StringUtils.isNotBlank(realName)) {
             criteria.put("nameLike", realName);
         }
+        LoginAccount account = Funcs.getSessionLoginAccount(request.getSession());
+        if(account != null) {
+        	Long roleId = account.getUser().getRoleId();
+        	if(roleId != null && !(roleId == 1L || roleId == 2L) ) {
+        		criteria.put("userId", account.getId());
+        	}
+        }
         PageInfo<Station> result = stationService.findListByCriteria(criteria, pageNum, page.getShowCount());
         request.setAttribute("result", result);
         page.setPd(pd);
@@ -87,15 +96,14 @@ public class StationController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/del")
-    public ModelAndView del(HttpServletRequest request) throws ApplicationException {
+    @ResponseBody
+    public Object del(HttpServletRequest request) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
         Long id = RequestUtil.getLong(request, "id");
         Station record = new Station();
         record.setId(id);
-        stationService.updateByIdSelective(record);
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("msg","success");
-		mv.setViewName("common/save_result");
-        return mv;
+        stationService.deleteByPrimaryKey(id);
+        return builder.build();
     }
     
     /**

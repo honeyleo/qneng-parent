@@ -113,7 +113,7 @@ public class AdminLoginController implements Constants {
         }
         String codeS = (String)request.getSession().getAttribute("sessionCode");
         if(!code.equalsIgnoreCase(codeS)) {
-        	throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "验证码");
+        	throw ApplicationException.newInstance(ErrorCode.SEC_ERROR);
         }
         try {
             password = MessageDigestUtil.getSHA256(password).toUpperCase();

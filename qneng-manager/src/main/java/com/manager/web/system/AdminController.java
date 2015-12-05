@@ -177,7 +177,7 @@ public class AdminController implements Constants {
         if (extAdmin != null) {
             throw ApplicationException.newInstance(ErrorCode.EXIST, "用户名");
         }
-        String password = RequestUtil.getString(request, "passward");
+        String password = RequestUtil.getString(request, "password");
         try {
             password = MessageDigestUtil.getSHA256(password).toUpperCase();
         } catch (Exception e) {

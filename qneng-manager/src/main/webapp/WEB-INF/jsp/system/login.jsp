@@ -121,7 +121,18 @@
 						if(0 == data.ret) {
 							saveCookie();
 							window.location.href="manager/index";
-						} else {
+						}
+						else if(1004 == data.ret) {
+							$("#password").tips({
+								side : 2,
+								msg : data.msg,
+								bg : '#AE81FF',
+								time : 3
+							});
+
+							$("#password").focus();
+						}
+						else {
 							$("#loginname").tips({
 								side : 1,
 								msg : data.msg,

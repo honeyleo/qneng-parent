@@ -10,6 +10,7 @@ public enum ErrorCode {
 	PERMISSION_DENIED(1003, "permission.denied"),
 	ERROR_PASSWORD(1004, "error.password"),
 	ERROR_USER_INACTIVE(1005, "error.user.inactive"),
+	SEC_ERROR(1006, "secCode.error"),
 	;
 	
 	private int code;

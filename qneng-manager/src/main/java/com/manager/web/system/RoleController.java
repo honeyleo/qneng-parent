@@ -58,7 +58,9 @@ public class RoleController implements Constants {
         Role record = new Role();
         record.setId(id);
         record.setState(StateType.INACTIVE.getId());
-        roleService.updateByIdSelective(record);
+        if(!(id == 1 || id == 2)) {
+        	roleService.deleteByPrimaryKey(id);
+        }
         return builder.build();
     }
 

@@ -100,7 +100,9 @@ public class AdminController implements Constants {
         Admin record = new Admin();
         record.setId(id);
         record.setState(StateType.INACTIVE.getId());
-        adminService.updateByIdSelective(record);
+        if(!(id == 1 || id == 2)) {
+        	adminService.deleteByPrimaryKey(id);
+        }
         return builder.build();
     }
     
@@ -118,10 +120,11 @@ public class AdminController implements Constants {
         String userIds = RequestUtil.getString(request, "userIds");
         Iterator<String> it = Splitter.on(",").trimResults().split(userIds).iterator();
         while(it.hasNext()) {
-        	Admin record = new Admin();
-            record.setId(Long.parseLong(it.next()));
-            record.setState(StateType.INACTIVE.getId());
-            adminService.updateByIdSelective(record);
+        	Long id = Long.parseLong(it.next());
+        	if(!(id == 1 || id == 2)) {
+                adminService.deleteByPrimaryKey(id);
+        	}
+        	
         }
         return builder.build();
     }

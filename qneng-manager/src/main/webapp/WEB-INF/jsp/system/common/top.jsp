@@ -2,7 +2,7 @@
 	String path2 = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+ "/" + request.getContextPath();
 	%>
 	<meta charset="utf-8" />
-	<title>FH Admin</title>
+	<title>清能云平台</title>
 	<meta name="description" content="overview & stats" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<!-- basic styles -->

@@ -67,5 +67,10 @@ public class AdminServiceImpl implements AdminService {
     public Admin getByIdInCache(Long id) {
         return adminDAO.selectByPrimaryKey(id);
     }
+
+	@Override
+	public int deleteByPrimaryKey(Long id) {
+		return adminDAO.deleteByPrimaryKey(id);
+	}
     
 }

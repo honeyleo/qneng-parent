@@ -38,5 +38,9 @@ public interface RoleService {
      * 根据主键更新属性不为空的记录
      */
     int updateByIdSelective(Role record);
+    /**
+     * 根据主键删除记录
+     */
+    int deleteByPrimaryKey(Long id);
 
 }

@@ -94,7 +94,7 @@
 								<c:if test="${entity.online == true and entity.mock == false }">
 									<a class='btn btn-mini btn-info' title="生产发电数据" onclick="mockReport('${entity.id }');">模拟发电</a>
 								</c:if>
-								<a class='btn btn-mini btn-warning' title="上报警告" onclick="reportAlarm('${entity.id }');">上报警告</a>
+								<a class='btn btn-mini btn-warning' title="上报警告" onclick="reportAlarm('${entity.id }');">上报告警</a>
 								</c:if>
 							</div>
 						</td>

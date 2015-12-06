@@ -57,7 +57,6 @@
 						<th>手机号</th>
 						<th>角色名</th>
 						<th><i class="icon-time hidden-phone"></i>创建时间</th>
-						<th>状态</th>
 						<th class="center">操作</th>
 					</tr>
 				</thead>
@@ -78,14 +77,6 @@
 						<td>${user.phone }</td>
 						<td>${funcs:getRoleName(user.roleId)}</td>
 						<td>${funcs:formatDateTime(user.createTime,'yyyy-MM-dd HH:mm:ss')}</td>
-						<td>
-						<c:if test="${user.state == 1}">
-							正常
-						</c:if>
-						<c:if test="${user.state == 0}">
-							停用
-						</c:if>
-						</td>
 						<td style="width: 60px;">
 							<div class='hidden-phone visible-desktop btn-group'>
 								<funcs:permission privilege="20" module="用戶管理_编辑">

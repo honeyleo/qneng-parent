@@ -24,7 +24,9 @@ import com.manager.common.exception.ApplicationException;
 import com.manager.common.util.Page;
 import com.manager.common.util.PageData;
 import com.manager.common.util.RequestUtil;
+import com.manager.common.web.Funcs;
 import com.manager.model.Criteria;
+import com.manager.model.LoginAccount;
 import com.manager.model.PageInfo;
 
 @Controller
@@ -63,6 +65,15 @@ public class ModuleController implements Constants {
         Criteria criteria = new Criteria();
         if (StringUtils.isNotBlank(nameLike)) {
             criteria.put("nameLike", nameLike);
+        }
+        LoginAccount account = Funcs.getSessionLoginAccount(request.getSession());
+        if(account != null && account.getStation() != null && account.getUser().getRoleId() != null 
+        		&& !(account.getUser().getRoleId() == 1L || account.getUser().getRoleId() == 2L) ) {
+        	criteria.put("stationId", account.getStation().getId());
+        } else if(account.getUser().getRoleId() == 1L || account.getUser().getRoleId() == 2L) {
+        	
+        } else {
+        	criteria.put("stationId", 0);
         }
         PageInfo<Module> result = moduleService.findListByCriteria(criteria, pageNum, page.getShowCount());
         request.setAttribute("result", result);
@@ -103,6 +114,15 @@ public class ModuleController implements Constants {
     public ModelAndView goAdd(HttpServletRequest request) throws ApplicationException {
         request.setAttribute("uri", "add");
         Criteria criteria = new Criteria();
+        LoginAccount account = Funcs.getSessionLoginAccount(request.getSession());
+        if(account != null && account.getStation() != null && account.getUser().getRoleId() != null 
+        		&& !(account.getUser().getRoleId() == 1L || account.getUser().getRoleId() == 2L) ) {
+        	criteria.put("stationId", account.getStation().getId());
+        } else if(account.getUser().getRoleId() == 1L || account.getUser().getRoleId() == 2L) {
+        	
+        } else {
+        	criteria.put("stationId", 0);
+        }
         List<Bunch> list = bunchService.findListByCriteria(criteria);
         request.setAttribute("bunchs", list);
         return new ModelAndView(ADD);
@@ -124,6 +144,15 @@ public class ModuleController implements Constants {
         request.setAttribute("uri", "update");
         
         Criteria criteria = new Criteria();
+        LoginAccount account = Funcs.getSessionLoginAccount(request.getSession());
+        if(account != null && account.getStation() != null && account.getUser().getRoleId() != null 
+        		&& !(account.getUser().getRoleId() == 1L || account.getUser().getRoleId() == 2L) ) {
+        	criteria.put("stationId", account.getStation().getId());
+        } else if(account.getUser().getRoleId() == 1L || account.getUser().getRoleId() == 2L) {
+        	
+        } else {
+        	criteria.put("stationId", 0);
+        }
         List<Bunch> list = bunchService.findListByCriteria(criteria);
         request.setAttribute("bunchs", list);
         return new ModelAndView(UPDATE);

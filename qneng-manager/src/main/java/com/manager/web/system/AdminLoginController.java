@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.lfy.common.model.Message;
+import cn.lfy.qneng.model.Station;
+import cn.lfy.qneng.service.StationService;
 
 import com.google.common.collect.Lists;
 import com.manager.common.Constants;
@@ -21,6 +23,7 @@ import com.manager.common.exception.ApplicationException;
 import com.manager.common.util.MessageDigestUtil;
 import com.manager.common.web.Funcs;
 import com.manager.model.Admin;
+import com.manager.model.Criteria;
 import com.manager.model.LoginAccount;
 import com.manager.model.Menu;
 import com.manager.model.type.StateType;
@@ -49,10 +52,14 @@ public class AdminLoginController implements Constants {
     @Autowired
 	private RoleDefaultMenuService roleDefaultMenuService;
     
+    @Autowired
+	private StationService stationService;
+    
     @RequestMapping("/manager/index")
     public String index(HttpServletRequest request) throws ApplicationException {
         LoginAccount account = Funcs.getSessionLoginAccount(request.getSession());
         request.setAttribute("USER_ID", account.getId());
+        request.setAttribute("USER_NAME", account.getUser().getRealName());
         List<Menu> menus = roleDefaultMenuService.getMenuListByRoleId(account.getUser().getRoleId());
         account.setMenus(menus);
         List<Menu> menuList = Lists.newArrayList();
@@ -135,6 +142,15 @@ public class AdminLoginController implements Constants {
         	throw ApplicationException.newInstance(ErrorCode.ERROR_PASSWORD);
         }
         account.setId(user.getId());
+        
+        Station station = null;
+        Criteria criteria = new Criteria();
+        criteria.put("userId", user.getId());
+        List<Station> list = stationService.findListByCriteria(criteria);
+        if(list != null && !list.isEmpty()) {
+        	station = list.get(0);
+        }
+        account.setStation(station);
         request.getSession().setAttribute(SESSION_LOGIN_USER, account);
         request.getSession().removeAttribute("sessionCode");
     }

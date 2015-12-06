@@ -11,6 +11,7 @@ public enum ErrorCode {
 	ERROR_PASSWORD(1004, "error.password"),
 	ERROR_USER_INACTIVE(1005, "error.user.inactive"),
 	SEC_ERROR(1006, "secCode.error"),
+	USER_HAS_STATION(1007, "user.has.station"),
 	;
 	
 	private int code;

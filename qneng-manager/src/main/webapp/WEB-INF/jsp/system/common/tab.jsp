@@ -53,8 +53,8 @@ $( function() {
 	});
 	tab.add( {
 		id :'tab1_index1',
-		title :"主页",
-		url :"<%=basePath%>manager/login_default.do",
+		title :"电站列表",
+		url :"<%=basePath%>manager/station/list",
 		isClosed :false
 	});
 	/**tab.add( {

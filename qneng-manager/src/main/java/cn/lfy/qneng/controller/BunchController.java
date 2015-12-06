@@ -24,7 +24,9 @@ import com.manager.common.exception.ApplicationException;
 import com.manager.common.util.Page;
 import com.manager.common.util.PageData;
 import com.manager.common.util.RequestUtil;
+import com.manager.common.web.Funcs;
 import com.manager.model.Criteria;
+import com.manager.model.LoginAccount;
 import com.manager.model.PageInfo;
 
 @Controller
@@ -63,6 +65,15 @@ public class BunchController implements Constants {
         Criteria criteria = new Criteria();
         if (StringUtils.isNotBlank(nameLike)) {
             criteria.put("nameLike", nameLike);
+        }
+        LoginAccount account = Funcs.getSessionLoginAccount(request.getSession());
+        if(account != null && account.getStation() != null && account.getUser().getRoleId() != null 
+        		&& !(account.getUser().getRoleId() == 1L || account.getUser().getRoleId() == 2L) ) {
+        	criteria.put("stationId", account.getStation().getId());
+        } else if(account.getUser().getRoleId() == 1L || account.getUser().getRoleId() == 2L) {
+        	
+        } else {
+        	criteria.put("stationId", 0);
         }
         PageInfo<Bunch> result = bunchService.findListByCriteria(criteria, pageNum, page.getShowCount());
         request.setAttribute("result", result);
@@ -103,6 +114,13 @@ public class BunchController implements Constants {
     public ModelAndView goAdd(HttpServletRequest request) throws ApplicationException {
         request.setAttribute("uri", "add");
         Criteria criteria = new Criteria();
+        LoginAccount account = Funcs.getSessionLoginAccount(request.getSession());
+        if(account != null) {
+        	Long roleId = account.getUser().getRoleId();
+        	if(roleId != null && !(roleId == 1L || roleId == 2L) ) {
+        		criteria.put("userId", account.getId());
+        	}
+        }
         List<Station> list = stationService.findListByCriteria(criteria);
         request.setAttribute("stations", list);
         return new ModelAndView(ADD);
@@ -124,6 +142,13 @@ public class BunchController implements Constants {
         request.setAttribute("uri", "update");
         
         Criteria criteria = new Criteria();
+        LoginAccount account = Funcs.getSessionLoginAccount(request.getSession());
+        if(account != null) {
+        	Long roleId = account.getUser().getRoleId();
+        	if(roleId != null && !(roleId == 1L || roleId == 2L) ) {
+        		criteria.put("userId", account.getId());
+        	}
+        }
         List<Station> list = stationService.findListByCriteria(criteria);
         request.setAttribute("stations", list);
         return new ModelAndView(UPDATE);

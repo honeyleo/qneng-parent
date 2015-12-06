@@ -18,6 +18,7 @@ import cn.lfy.qneng.model.Station;
 import cn.lfy.qneng.service.StationService;
 
 import com.manager.common.Constants;
+import com.manager.common.ErrorCode;
 import com.manager.common.exception.ApplicationException;
 import com.manager.common.util.Page;
 import com.manager.common.util.PageData;
@@ -157,17 +158,25 @@ public class StationController implements Constants {
         String name = RequestUtil.getString(request, "name");
         String address = RequestUtil.getString(request, "address");
         String info = RequestUtil.getString(request, "info");
-        String userId = RequestUtil.getString(request, "userId");
+        Long userId = RequestUtil.getLong(request, "userId");
 
+        if(isHasStation(userId)) {
+        	throw ApplicationException.newInstance(ErrorCode.USER_HAS_STATION);
+        }
+        
         Station record = new Station();
         record.setName(name);
         record.setAddress(address);
         record.setInfo(info);
         if(userId != null) {
-        	record.setUserId(Long.parseLong(userId));
+        	record.setUserId(userId);
         }
         record.setCreateTime(new Date());
         stationService.add(record);
+        LoginAccount account = Funcs.getSessionLoginAccount(request.getSession());
+        if(account != null && account.getId() == Long.valueOf(userId)) {
+        	account.setStation(record);
+        }
         builder.setMsg("新增成功");
         return builder.build();
     }
@@ -189,7 +198,10 @@ public class StationController implements Constants {
         String name = RequestUtil.getString(request, "name");
         String info = RequestUtil.getString(request, "info");
         Long userId = RequestUtil.getLong(request, "userId");
-
+        
+        if(isHasStation(userId)) {
+        	throw ApplicationException.newInstance(ErrorCode.USER_HAS_STATION);
+        }
         Station record = new Station();
         record.setId(id);
         
@@ -202,6 +214,15 @@ public class StationController implements Constants {
         return builder.build();
     }
     
+    private boolean isHasStation(Long userId) {
+        Criteria criteria = new Criteria();
+        criteria.put("userId", userId);
+        List<Station> list = stationService.findListByCriteria(criteria);
+        if(list != null && !list.isEmpty()) {
+        	return true;
+        }
+        return false;
+    }
     
 
 }

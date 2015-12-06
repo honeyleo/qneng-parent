@@ -2,6 +2,8 @@ package com.manager.model;
 
 import java.util.List;
 
+import cn.lfy.qneng.model.Station;
+
 public class LoginAccount extends BaseEntity {
 	
 	private static final long serialVersionUID = 4049274926799482032L;
@@ -11,6 +13,8 @@ public class LoginAccount extends BaseEntity {
 	private List<Role> roles;
 	
 	private List<Menu> menus;
+	
+	private Station station;
 
 	public Admin getUser() {
 		return user;
@@ -34,6 +38,14 @@ public class LoginAccount extends BaseEntity {
 
 	public void setMenus(List<Menu> menus) {
 		this.menus = menus;
+	}
+
+	public Station getStation() {
+		return station;
+	}
+
+	public void setStation(Station station) {
+		this.station = station;
 	}
 	
 	

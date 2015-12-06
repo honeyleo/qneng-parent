@@ -22,16 +22,19 @@
   <sql id="Example_Where_Clause" >
     <trim prefix="where" prefixOverrides="and|or" >
       <if test="condition.no != null" >
-         and no = #{condition.no}
+         and m.no = #{condition.no}
       </if>
       <if test="condition.nameLike != null" >
-         and name like '%${condition.nameLike}%'
+         and m.name like '%${condition.nameLike}%'
       </if>
       <if test="condition.bunchId != null" >
-         and bunchId = #{condition.bunchId}
+         and m.bunchId = #{condition.bunchId}
       </if>
       <if test="condition.manufactory != null" >
-         and manufactory = #{condition.manufactory}
+         and m.manufactory = #{condition.manufactory}
+      </if>
+      <if test="condition.stationId != null" >
+         and b.stationId = #{condition.stationId}
       </if>
     </trim>
   </sql>
@@ -39,19 +42,21 @@
   <sql id="Example_Order_Clause">
   	<trim prefix="order by" prefixOverrides="," >
   		<if test="orderMap.id != null">
-  			,id #{orderMap.id}
+  			,m.id #{orderMap.id}
   		</if>
   	</trim>
   </sql>
   
   <sql id="Base_Column_List" >
-    id, name, no, appSecret, model, manufactory, installdate, power, maxVolt, maxCurr, BunchId, createTime, lastUpdateTime, curVlot, curCurr, curTemp
+    m.*
   </sql>
   
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.manager.model.Criteria" >
     select
     <include refid="Base_Column_List" />
-    from t_module
+    from t_module m
+    left join t_bunch b on m.bunchId = b.id
+    left join t_station s on s.id = b.stationId
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -64,7 +69,7 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from t_module where id = #{id}
+    from t_module m where m.id = #{id}
   </select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
@@ -72,12 +77,14 @@
   </delete>
   
   <insert id="insert" parameterType="cn.lfy.qneng.model.Module" useGeneratedKeys="true" keyProperty="id">
-    insert into t_module (name, no, appSecret, model, manufactory, installdate, power, maxVolt, maxCurr, BunchId, createTime)
-    values (#{name}, #{no}, #{appSecret}, #{model}, #{manufactory}, #{installdate}, #{power}, #{maxVolt}, #{maxCurr}, #{BunchId}, #{createTime})
+    insert into t_module (name, no, appSecret, model, manufactory, installdate, power, maxVolt, maxCurr, bunchId, createTime)
+    values (#{name}, #{no}, #{appSecret}, #{model}, #{manufactory}, #{installdate}, #{power}, #{maxVolt}, #{maxCurr}, #{bunchId}, #{createTime})
   </insert>
   
   <select id="countByExample" parameterType="com.manager.model.Criteria" resultType="java.lang.Integer" >
-    select count(*) from t_module
+    select count(*) from t_module m
+    left join t_bunch b on m.bunchId = b.id
+    left join t_station s on s.id = b.stationId
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>

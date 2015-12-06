@@ -86,6 +86,7 @@ public class MenuController implements Constants {
             request.setAttribute("menu", menu);
             request.setAttribute("parentId", menu.getParentId());
             request.setAttribute("onMenu", menu.getOnMenu());
+            request.setAttribute("parentIdPath", menu.getParentIdPath() + menu.getId() + "$");
         }
         return "/system/menu/edit";
     }

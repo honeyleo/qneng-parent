@@ -50,4 +50,9 @@ public interface AdminService {
      */
     Admin getByIdInCache(Long id);
     
+    /**
+     * 根据主键删除记录
+     */
+    int deleteByPrimaryKey(Long id);
+    
 }

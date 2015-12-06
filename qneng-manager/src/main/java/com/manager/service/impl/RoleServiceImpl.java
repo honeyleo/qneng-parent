@@ -63,4 +63,9 @@ public class RoleServiceImpl implements RoleService {
         return res;
     }
 
+	@Override
+	public int deleteByPrimaryKey(Long id) {
+		return roleDAO.deleteByPrimaryKey(id);
+	}
+
 }

@@ -166,7 +166,11 @@
 					top.jzts();
 					var url = "<%=basePath%>manager/station/del?id="+id+"&tm="+new Date().getTime();
 					$.get(url,function(data){
-						nextPage(${page.currentPage});
+						if(data.ret == 0) {
+							nextPage(${page.currentPage});
+						} else {
+							bootbox.alert(data.msg);
+						}
 					});
 				}
 			});

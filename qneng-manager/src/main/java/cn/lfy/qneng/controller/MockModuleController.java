@@ -332,13 +332,13 @@ public class MockModuleController implements Constants {
 							temp = temp - random.nextInt(5);
 							moduleData.setTemp(temp);
 							
-							Double capacity = outvolt*curr*0.17;
+							Double capacity = outvolt*curr*0.25;
 							moduleData.setCapacity(capacity);
 							
 							moduleData.setCreateTime(new Date(startTime));
 							moduleData.setTime(startTime);
 							moduleDataService.add(moduleData);
-			        		startTime = startTime + 10*60*1000;
+			        		startTime = startTime + 15*60*1000;
 			        	}
 			        }
 				}

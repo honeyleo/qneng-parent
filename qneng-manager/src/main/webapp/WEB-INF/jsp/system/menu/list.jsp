@@ -87,8 +87,13 @@
 			top.jzts();
 			var url = "<%=basePath%>manager/menu/del?menuId="+menuId+"&guid="+new Date().getTime();
 			$.get(url,function(data){
-				top.jzts();
-				document.location.reload();
+				if(data.ret == 0) {
+					top.jzts();
+					document.location.reload();
+				} else {
+					bootbox.alert(data.msg);
+				}
+				
 			});
 		}
 	}

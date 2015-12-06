@@ -163,6 +163,23 @@ public class AdminController implements Constants {
         request.setAttribute("uri", "update");
         return new ModelAndView(UPDATE_ADMIN);
     }
+    
+    /**
+     * 详情
+     * 
+     * @param request
+     * @return
+     * @throws AdminException
+     */
+    @RequestMapping("/personal")
+    public ModelAndView personal(HttpServletRequest request) throws ApplicationException {
+        Long id = RequestUtil.getLong(request, "id");
+        Admin admin = adminService.findById(id);
+        request.setAttribute("admin", admin);
+        request.setAttribute("operatorId", admin.getOperatorId());
+        
+        return new ModelAndView("/system/admin/personal");
+    }
 
     /**
      * 添加
@@ -255,6 +272,45 @@ public class AdminController implements Constants {
         return builder.build();
     }
     
-    
+    /**
+     * 更新
+     * 
+     * @param request
+     * @return ModelAndView
+     * @throws AdminException
+     */
+    @RequestMapping("/update2")
+    @ResponseBody
+    public Object update2(HttpServletRequest request,
+            HttpServletResponse response) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
+        Long id = RequestUtil.getLong(request, "id");
+        String password = RequestUtil.getString(request, "password");
+        String realName = RequestUtil.getString(request, "realName");
+        String email = RequestUtil.getString(request, "email");
+        String phone = RequestUtil.getString(request, "phone");
+        String address = RequestUtil.getString(request, "address");
+        Integer state = RequestUtil.getInteger(request, "state");
+
+        Admin record = new Admin();
+        record.setId(id);
+        if (StringUtils.isNotBlank(password)) {// 判断password是否为空
+            try {
+                password = MessageDigestUtil.getSHA256(password).toUpperCase();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            record.setPassword(password);
+        }
+        if (StringUtils.isNotBlank(realName)) {// 判断realname是否为空
+            record.setRealName(realName);
+        }
+        record.setEmail(email);
+        record.setPhone(phone);
+        record.setAddress(address);
+        record.setState(state);
+        adminService.updateByIdSelective(record);
+        return builder.build();
+    }
 
 }

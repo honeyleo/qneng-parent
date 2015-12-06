@@ -35,6 +35,8 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 		ignoreUrl.add("/manager/index"); /* 登录验证 */
 		ignoreUrl.add("/manager/tab.do");
 		ignoreUrl.add("/manager/login_default.do");
+		ignoreUrl.add("/manager/admin/personal");
+		ignoreUrl.add("/manager/admin/update2");
 		ignoreUrl.add("/manager/logout");
 
 	}

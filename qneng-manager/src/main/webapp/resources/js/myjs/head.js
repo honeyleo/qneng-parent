@@ -133,7 +133,7 @@ function editUserH(){
 	 var diag = new top.Dialog();
 	 diag.Drag=true;
 	 diag.Title ="个人资料";
-	 diag.URL = '/manager/admin/detail?id='+USER_ID;
+	 diag.URL = '/manager/admin/personal?id='+USER_ID;
 	 diag.Width = 300;
 	 diag.Height = 350;
 	 diag.CancelEvent = function(){ //关闭事件

@@ -139,7 +139,7 @@
   <select id="selectByNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
-    from t_module where no = #{no} limit 1
+    from t_module m where m.no = #{no} limit 1
   </select>
   
   <select id="getDataInfo" parameterType="cn.lfy.qneng.vo.ModuleQuery" resultType="cn.lfy.qneng.vo.DataInfo">

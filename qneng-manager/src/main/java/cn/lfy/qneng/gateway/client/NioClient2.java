@@ -216,7 +216,7 @@ public class NioClient2 extends Thread {
 						close();
 					}
 				}
-			}, 20, 20, TimeUnit.SECONDS);
+			}, 120, 120, TimeUnit.SECONDS);
 		}
 	}
 	

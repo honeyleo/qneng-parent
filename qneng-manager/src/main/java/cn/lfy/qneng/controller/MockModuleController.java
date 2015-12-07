@@ -1,5 +1,6 @@
 package cn.lfy.qneng.controller;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,10 +28,12 @@ import cn.lfy.qneng.gateway.client.NioClient2;
 import cn.lfy.qneng.gateway.model.NodeAlarmReq;
 import cn.lfy.qneng.gateway.model.NodeConfigReq;
 import cn.lfy.qneng.gateway.model.NodeDataReq;
+import cn.lfy.qneng.model.Alarm;
 import cn.lfy.qneng.model.Bunch;
 import cn.lfy.qneng.model.MockModuleData;
 import cn.lfy.qneng.model.Module;
 import cn.lfy.qneng.model.ModuleData;
+import cn.lfy.qneng.service.AlarmService;
 import cn.lfy.qneng.service.BunchService;
 import cn.lfy.qneng.service.ModuleDataService;
 import cn.lfy.qneng.service.ModuleService;
@@ -60,6 +64,9 @@ public class MockModuleController implements Constants {
 	private ModuleDataService moduleDataService;
     @Resource
     private BunchService bunchService;
+    
+    @Resource
+    private AlarmService alarmService;
     
     @RequestMapping("/list")
     public ModelAndView list(HttpServletRequest request, Page page) throws ApplicationException {
@@ -188,6 +195,18 @@ public class MockModuleController implements Constants {
     }
     
     static final ScheduledExecutorService scheduled = Executors.newSingleThreadScheduledExecutor();
+    
+    @PostConstruct
+    public void init() {
+    	scheduled.scheduleAtFixedRate(new Runnable() {
+			
+			@Override
+			public void run() {
+				randomAlarm();
+			}
+		}, 60, 60, TimeUnit.MINUTES);
+    }
+    
     static Map<String, ScheduledFuture<?>> MAP_SCHEDULED = Maps.newConcurrentMap();
     
     @RequestMapping("/dataSubmit")
@@ -233,8 +252,6 @@ public class MockModuleController implements Constants {
 		        	
 		        	client.send(1005, dataReq);
 		        	
-		        	randomAlarm(module, client);
-		        	
 				}
 			}, 0, 15*60*1000, TimeUnit.MILLISECONDS);
         	MAP_SCHEDULED.put(module.getNo(), future);
@@ -243,17 +260,24 @@ public class MockModuleController implements Constants {
         return builder.build();
     }
     
-    private void randomAlarm(Module module, NioClient2 client) {
+    private void randomAlarm() {
     	Random random = new Random(System.currentTimeMillis());
-    	if(random.nextInt(100) >= 90) {
-    		int alarmType = 1 + random.nextInt(2);
-            Long time = System.currentTimeMillis();
-        	NodeAlarmReq alarmReq = new NodeAlarmReq();
-            alarmReq.setNo(module.getNo());
-            alarmReq.setAlarmType(alarmType);
-            alarmReq.setMemo(MAP_ALARM.get(alarmType));
-            alarmReq.setTime(time);
-            client.send(1007, alarmReq);
+    	long id = 1L + random.nextInt(20);
+    	final Module module = moduleService.findById(id);
+    	if(module != null) {
+    		long t = module.getId()%24;
+        	int h = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        	int m = Calendar.getInstance().get(Calendar.MINUTE);
+        	if((t-h == 0 || t + h == 24)&& m >= 45) {
+        		int alarmType = 1 + random.nextInt(2);
+                Long time = System.currentTimeMillis();
+                Alarm alarm = new Alarm();
+                alarm.setNo(module.getNo());
+                alarm.setAlarmType(alarmType);
+                alarm.setMemo(MAP_ALARM.get(alarmType));
+                alarm.setTime(time);
+                alarmService.add(alarm);
+        	}
     	}
     }
     
@@ -383,5 +407,8 @@ public class MockModuleController implements Constants {
 		Double capacity = 33.5;
 		capacity = capacity + capacity*(gailv/100.00);
 		System.out.println(capacity);
+		System.out.println(12%24);
+		int h = Calendar.getInstance().get(Calendar.MINUTE);
+		System.out.println(h);
 	}
 }

@@ -186,4 +186,17 @@ public class ModuleDataServiceImpl implements ModuleDataService {
 		return data;
 	}
 
+	@Override
+	public Double getCapacityForDate(String date, Long stationId, Long bunchId,
+			Long moduleId) {
+		ModuleQuery query = new ModuleQuery();
+		query.setStationId(stationId);
+		query.setBunchId(bunchId);
+		query.setModuleId(moduleId);
+		query.setStartTime(date + " 00:00:00");
+		query.setEndTime(date + " 23:59:59");
+		Double total = dao.getCapacity(query);
+		return total;
+	}
+
 }

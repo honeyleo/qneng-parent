@@ -69,6 +69,13 @@ public interface ModuleDataService {
      */
     double[] getPowerForDate(String date, Long stationId, Long bunchId, Long moduleId);
     /**
+     * 获取某天发电量
+     * @param date yyyy-MM-dd
+     * @param stationId
+     * @return
+     */
+    Double getCapacityForDate(String date, Long stationId, Long bunchId, Long moduleId);
+    /**
      * 获取某月发电量数据
      * @param date yyyy-MM
      * @param stationId

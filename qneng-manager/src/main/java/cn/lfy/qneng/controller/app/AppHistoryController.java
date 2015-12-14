@@ -80,11 +80,8 @@ public class AppHistoryController {
 			
 			alarmQuery.setDate(DateUtils.date2String3(new Date(date)));
 			
-			Double dayCapacity = 0D;
-			for(double d : day) {
-				dayCapacity +=d;
-			}
-			builder.put("dayCapacity", dayCapacity);
+			Double dayCapacity = moduleDataService.getCapacityForDate(DateUtils.date2String3(new Date(date)), stationId, bunchId, moduleId);
+			builder.put("dayCapacity", dayCapacity != null ? dayCapacity : 0);
 			break;
 		}
 		

@@ -57,6 +57,7 @@ public class ReportElectricHandler implements Handler {
 				BeanUtils.copyProperties(nodeDataReq, moduleData);
 				moduleData.setStationId(bunch.getStationId());
 				moduleData.setBunchId(bunch.getId());
+				moduleData.setModuleId(module.getId());
 				moduleData.setCreateTime(new Date());
 				moduleDataService.add(moduleData);
 				nodeDataResp.setStatus("0");

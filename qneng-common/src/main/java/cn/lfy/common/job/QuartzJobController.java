@@ -27,4 +27,6 @@ public interface QuartzJobController {
 	void triggerJob( ScheduleJob scheduleJob ) throws SchedulerException;
 	
 	void rescheduleJob( ScheduleJob scheduleJob ) throws SchedulerException;
+	
+	Boolean isJobRunning( ScheduleJob scheduleJob ) throws SchedulerException;
 }

@@ -17,4 +17,21 @@
 		<property name="bossThread" value="1"/>
 		<property name="workerThread" value="4"/>
 	</bean>
+	
+	<bean id="executor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="5" />
+		<property name="maxPoolSize" value="200" />
+	</bean>
+	<bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<!-- trigger配置在这里，也请同步配置到DB中去,DB配置优先 -->
+			</list>
+		</property>
+		<!-- 并行的taskExecutor -->
+		<property name="taskExecutor" ref="executor" />
+		<property name="applicationContextSchedulerContextKey">
+			<value>applicationContext</value>
+		</property>
+	</bean>
 </beans>

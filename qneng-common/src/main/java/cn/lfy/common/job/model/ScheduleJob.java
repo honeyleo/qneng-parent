@@ -49,7 +49,7 @@ public class ScheduleJob implements Serializable {
     /** 并行，串行标志位 */
     private boolean concurrent;
     
-    private Boolean isRunning;
+    private Boolean isRunning = Boolean.FALSE;
     
     private String idc;
     

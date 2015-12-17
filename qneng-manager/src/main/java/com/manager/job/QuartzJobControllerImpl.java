@@ -328,14 +328,21 @@ public class QuartzJobControllerImpl implements QuartzJobController, Application
 
 	private static org.springframework.context.ApplicationContext context = null;
 
+	private static boolean isStarted = false;
 	@Override
-	public void onApplicationEvent( ContextRefreshedEvent event ) {
-		context = event.getApplicationContext();
-		try {
-			this.loadAndStartTaskFromDB();
-		} catch( SchedulerException e ) {
-			logger.error( e.getMessage() );
+	public void onApplicationEvent( final ContextRefreshedEvent event ) {
+		synchronized (this) {
+			if(!isStarted) {
+				context = event.getApplicationContext();
+				try {
+					this.loadAndStartTaskFromDB();
+				} catch( SchedulerException e ) {
+					logger.error( e.getMessage() );
+				}
+				isStarted = true;
+			}
 		}
+		
 	}
 
 }

@@ -116,7 +116,7 @@ public class QuartzJobControllerImpl implements QuartzJobController, Application
 				// 按新的trigger重新设置job执行
 				scheduler.rescheduleJob( triggerKey, trigger );
 			}
-			if(scheduleJob.isBoot()){
+			if(scheduleJob.getIsBoot()){
 				JobKey jobKey = JobKey.jobKey(scheduleJob.getJobName(), scheduleJob.getJobGroup());
 				scheduler.triggerJob(jobKey);
 			}

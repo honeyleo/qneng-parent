@@ -19,6 +19,7 @@ import com.manager.common.ErrorCode;
 import com.manager.common.exception.ApplicationException;
 import com.manager.common.util.Page;
 import com.manager.common.util.RequestUtil;
+import com.manager.dao.ScheduleJobDAO;
 import com.manager.service.ScheduleJobService;
 
 @Controller
@@ -33,6 +34,9 @@ public class ScheduleJobController implements Constants {
 
     @Autowired
     private ScheduleJobService scheduleJobService;
+    
+    @Autowired
+	ScheduleJobDAO scheduleJobDao;
 
     /**
      * 用户详情列表
@@ -147,4 +151,79 @@ public class ScheduleJobController implements Constants {
         return builder.build();
     }
     
+    /**
+     * 更新任务表达式
+     * 
+     * @param request
+     * @return ModelAndView
+     * @throws AdminException
+     */
+    @RequestMapping("/updateCron")
+    @ResponseBody
+    public Object updateCron(ScheduleJob scheduleJob) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
+        try {
+			scheduleJobService.rescheduleJob(scheduleJob);
+		} catch (SchedulerException e) {
+			throw ApplicationException.newInstance(ErrorCode.ERROR);
+		}
+        return builder.build();
+    }
+    /**
+     * 立即执行
+     * 
+     * @param request
+     * @return ModelAndView
+     * @throws AdminException
+     */
+    @RequestMapping("/runOne")
+    @ResponseBody
+    public Object runOne(ScheduleJob scheduleJob) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
+        try {
+        	scheduleJob = scheduleJobDao.loadJobById(scheduleJob.getJobId());
+			scheduleJobService.triggerJob(scheduleJob);
+		} catch (SchedulerException e) {
+			throw ApplicationException.newInstance(ErrorCode.ERROR);
+		}
+        return builder.build();
+    }
+    /**
+     * 暂停执行
+     * 
+     * @param request
+     * @return ModelAndView
+     * @throws AdminException
+     */
+    @RequestMapping("/pause")
+    @ResponseBody
+    public Object pause(ScheduleJob scheduleJob) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
+        try {
+        	scheduleJob = scheduleJobDao.loadJobById(scheduleJob.getJobId());
+			scheduleJobService.pauseJob(scheduleJob);
+		} catch (SchedulerException e) {
+			throw ApplicationException.newInstance(ErrorCode.ERROR);
+		}
+        return builder.build();
+    }
+    /**
+     * 暂停执行
+     * 
+     * @param request
+     * @return ModelAndView
+     * @throws AdminException
+     */
+    @RequestMapping("/resume")
+    @ResponseBody
+    public Object resume(ScheduleJob scheduleJob) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
+        try {
+        	scheduleJob = scheduleJobDao.loadJobById(scheduleJob.getJobId());
+			scheduleJobService.resumeJob(scheduleJob);
+		} catch (SchedulerException e) {
+			throw ApplicationException.newInstance(ErrorCode.ERROR);
+		}
+        return builder.build();
+    }
 }

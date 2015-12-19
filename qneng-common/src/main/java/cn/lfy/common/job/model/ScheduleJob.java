@@ -182,7 +182,7 @@ public class ScheduleJob implements Serializable {
 	}
 
 
-	public boolean isBoot() {
+	public boolean getIsBoot() {
 		return isBoot;
 	}
 

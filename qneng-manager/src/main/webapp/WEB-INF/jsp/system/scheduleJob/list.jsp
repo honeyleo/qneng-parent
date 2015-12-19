@@ -39,7 +39,6 @@
 						<th>任务描述</th>
 						<th>串/并行</th>
 						<th>开机启动</th>
-						<th>操作时间</th>
 						<th>操作</th>
 					</tr>
 				</thead>
@@ -56,11 +55,33 @@
 						<td><a>${entity.jobStatus }</a></td>
 						<td>${entity.cronExpression }</td>
 						<td>${entity.desc}</td>
-						<td>${entity.concurrent }</td>
 						<td>
-							
+						<c:if test="${entity.concurrent == true }">
+								并行
+							</c:if>
+							<c:if test="${entity.concurrent == false }">
+								串行
+							</c:if>
+						<td>
+							<c:if test="${entity.isBoot == true }">
+								是
+							</c:if>
+							<c:if test="${entity.isBoot == false }">
+								否
+							</c:if>
 						</td>
-						<td>${entity.opTime }</td>
+						<td>
+							<div class='hidden-phone visible-desktop btn-group'>
+								<a class='btn btn-mini btn-info' title="更新任务表达式" onclick="updateCron('${entity.jobId }','${entity.cronExpression }');">更新表达式</a>
+								<a class='btn btn-mini btn-danger' title="马上运行一次任务" onclick="runOne('${entity.jobId }');">马上运行</a>
+								<c:if test="${entity.jobStatus eq 'PAUSED' }">
+									<a class='btn btn-mini btn-danger' title="恢复该任务" onclick="resume('${entity.jobId }');">恢复任务</a>
+								</c:if>
+							<c:if test="${entity.jobStatus ne 'PAUSED' }">
+								<a class='btn btn-mini btn-danger' title="暂停该任务" onclick="pause('${entity.jobId }');">暂停任务</a>
+							</c:if>
+							</div>
+						</td>
 					</tr>
 				
 				</c:forEach>
@@ -71,7 +92,9 @@
 		<table style="width:100%;">
 			<tr>
 				<td style="vertical-align:top;">
-					<a title="批量生产发电数据" class="btn btn-small btn-info" onclick="batchReport();" >批量生产发电数据</a>
+				<!--  
+					<a title="新增定时任务" class="btn btn-small btn-info" onclick="add();" >新增定时任务</a>
+					-->
 				</td>
 			</tr>
 		</table>
@@ -109,178 +132,88 @@
 		
 		$(top.hangge());
 		
-	$(function() {
+		//更新表达式
+		function updateCron(id,cron){
 			
-			//下拉框
-			$(".chzn-select").chosen(); 
-			$(".chzn-select-deselect").chosen({allow_single_deselect:true}); 
-			
-			//复选框
-			$('table th input:checkbox').on('click' , function(){
-				var that = this;
-				$(this).closest('table').find('tr > td:first-child input:checkbox')
-				.each(function(){
-					this.checked = that.checked;
-					$(this).closest('tr').toggleClass('selected');
-				});
-					
-			});
-			
-		});
-		
-		//启动
-		function start(id){
-			$.ajax({
-	            type: "POST",
-	            dataType: "json",
-	            url: "<%=basePath %>manager/mockmodule/start",
-	            data: {id:id},
-	            success: function (data) {
-	            	if(data.ret == 0) {
-	            		$("#zhongxin").hide();
-	            		$("#zhongxin2").show();
-	            		setTimeout("self.location=self.location",2000);
-	            	} else {
-	            		bootbox.alert(data.msg, function(){
-	            			
-	            		});
-	            	}
-	            }
-			});
-		}
-		
-		//启动
-		function stop(id){
-			$.ajax({
-	            type: "POST",
-	            dataType: "json",
-	            url: "<%=basePath %>manager/mockmodule/stop",
-	            data: {id:id},
-	            success: function (data) {
-	            	if(data.ret == 0) {
-	            		$("#zhongxin").hide();
-	            		$("#zhongxin2").show();
-	            		setTimeout("self.location=self.location",2000);
-	            	} else {
-	            		bootbox.alert(data.msg, function(){
-	            			
-	            		});
-	            	}
-	            }
-			});
-		}
-		
-		//修改
-		function reportConfig(id){
-			 top.jzts();
-			 var diag = new top.Dialog();
-			 diag.Drag=true;
-			 diag.Title ="资料";
-			 diag.URL = '<%=basePath%>manager/mockmodule/config?id='+id;
-			 diag.Width = 300;
-			 diag.Height = 390;
-			 diag.CancelEvent = function(){ //关闭事件
-				diag.close();
-			 };
-			 diag.show();
-		}
-		
-		function mockReport(id){
-			$.ajax({
-	            type: "POST",
-	            dataType: "json",
-	            url: "<%=basePath %>manager/mockmodule/dataSubmit",
-	            data: {id:id},
-	            success: function (data) {
-	            	if(data.ret == 0) {
-	            		$("#zhongxin").hide();
-	            		$("#zhongxin2").show();
-	            		setTimeout("self.location=self.location",2000);
-	            	} else {
-	            		bootbox.alert(data.msg, function(){
-	            			
-	            		});
-	            	}
-	            }
-			});
-		}
-		
-		//修改
-		function reportData(id){
-			 var diag = new top.Dialog();
-			 diag.Drag=true;
-			 diag.Title ="资料";
-			 diag.URL = '<%=basePath%>manager/mockmodule/data?id='+id;
-			 diag.Width = 310;
-			 diag.Height = 350;
-			 diag.CancelEvent = function(){ //关闭事件
-				diag.close();
-			 };
-			 diag.show();
-		}
-		
-		function reportAlarm(id){
-			$.ajax({
-	            type: "POST",
-	            dataType: "json",
-	            url: "<%=basePath %>manager/mockmodule/reportAlarm",
-	            data: {id:id},
-	            success: function (data) {
-	            	if(data.ret == 0) {
-	            		$("#zhongxin").hide();
-	            		$("#zhongxin2").show();
-	            		setTimeout("self.location=self.location",2000);
-	            	} else {
-	            		bootbox.alert(data.msg, function(){
-	            			
-	            		});
-	            	}
-	            }
-			});
-		}
-		function cancelScheduled(id){
-			$.ajax({
-	            type: "POST",
-	            dataType: "json",
-	            url: "<%=basePath %>manager/mockmodule/cancelScheduled",
-	            data: {id:id},
-	            success: function (data) {
-	            	if(data.ret == 0) {
-	            		$("#zhongxin").hide();
-	            		$("#zhongxin2").show();
-	            		setTimeout("self.location=self.location",3000);
-	            	} else {
-	            		bootbox.alert(data.msg, function(){
-	            			
-	            		});
-	            	}
-	            }
-			});
-		}
-		
-		function batchReport() {
-			var str = '';
-			for(var i=0;i < document.getElementsByName('ids').length;i++)
-			{
-				if(document.getElementsByName('ids')[i].checked) {
-				  	if(str=='') {
-				  		str += document.getElementsByName('ids')[i].value;
-				  	}
-				  	else {
-				  		str += ',' + document.getElementsByName('ids')[i].value;
-				  	}
+			bootbox.confirm('定时任务表达式：<input id = "updateCron" type="text" value="' + cron + '"/>', function(result) {
+				if(result == true) {
+					cron = $('#updateCron').val();
+					$.ajax({
+						type: "POST",
+						url: '<%=basePath%>manager/scheduleJob/updateCron?tm='+new Date().getTime(),
+				    	data: {jobId:id,cronExpression:cron}, 
+						dataType:'json',
+						cache: false,
+						success: function(data){
+							if(data.ret == 0) {
+								self.location=self.location;
+							} else {
+								bootbox.alert(data.msg);
+							}
+						}
+					});
 				}
-			}
-			var diag = new top.Dialog();
-			 diag.Drag=true;
-			 diag.Title ="资料";
-			 diag.URL = '<%=basePath%>manager/mockmodule/data?ids='+str;
-			 diag.Width = 310;
-			 diag.Height = 350;
-			 diag.CancelEvent = function(){ //关闭事件
-				diag.close();
-			 };
-			 diag.show();
+			});
+		}
+		function runOne(id) {
+			bootbox.confirm('确定要马上运行一次吗？', function(result) {
+				if(result == true) {
+					$.ajax({
+						type: "POST",
+						url: '<%=basePath%>manager/scheduleJob/runOne?tm='+new Date().getTime(),
+				    	data: {jobId:id}, 
+						dataType:'json',
+						cache: false,
+						success: function(data){
+							if(data.ret == 0) {
+								self.location=self.location;
+							} else {
+								bootbox.alert(data.msg);
+							}
+						}
+					});
+				}
+			});
+		}
+		function pause(id) {
+			bootbox.confirm('确定要暂停该定时任务吗？', function(result) {
+				if(result == true) {
+					$.ajax({
+						type: "POST",
+						url: '<%=basePath%>manager/scheduleJob/pause?tm='+new Date().getTime(),
+				    	data: {jobId:id}, 
+						dataType:'json',
+						cache: false,
+						success: function(data){
+							if(data.ret == 0) {
+								self.location=self.location;
+							} else {
+								bootbox.alert(data.msg);
+							}
+						}
+					});
+				}
+			});
+		}
+		function resume(id) {
+			bootbox.confirm('确定要恢复该定时任务吗？', function(result) {
+				if(result == true) {
+					$.ajax({
+						type: "POST",
+						url: '<%=basePath%>manager/scheduleJob/resume?tm='+new Date().getTime(),
+				    	data: {jobId:id}, 
+						dataType:'json',
+						cache: false,
+						success: function(data){
+							if(data.ret == 0) {
+								self.location=self.location;
+							} else {
+								bootbox.alert(data.msg);
+							}
+						}
+					});
+				}
+			});
 		}
 		</script>
 		

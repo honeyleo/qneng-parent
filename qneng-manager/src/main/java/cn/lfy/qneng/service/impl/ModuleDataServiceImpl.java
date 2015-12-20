@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import cn.lfy.common.utils.DateUtils;
 import cn.lfy.qneng.dao.ModuleDAO;
 import cn.lfy.qneng.dao.ModuleDataDAO;
+import cn.lfy.qneng.dao.ModuleDataDayDAO;
 import cn.lfy.qneng.model.ModuleData;
 import cn.lfy.qneng.service.ModuleDataService;
 import cn.lfy.qneng.vo.DataInfo;
@@ -28,6 +29,8 @@ public class ModuleDataServiceImpl implements ModuleDataService {
     private ModuleDataDAO dao;
     @Resource
     private ModuleDAO moduleDao;
+    @Resource
+    private ModuleDataDayDAO moduleDataDayDAO;
     
     @Override
     public int countByCriteria(Criteria criteria) {
@@ -69,7 +72,7 @@ public class ModuleDataServiceImpl implements ModuleDataService {
 		query.setStationId(stationId);
 		query.setBunchId(bunchId);
 		query.setModuleId(moduleId);
-		Double total = dao.getCapacity(query);
+		Double total = moduleDataDayDAO.getCapacity(query);
 		return total;
 	}
 
@@ -80,9 +83,9 @@ public class ModuleDataServiceImpl implements ModuleDataService {
 		query.setBunchId(bunchId);
 		query.setModuleId(moduleId);
 		String date = DateUtils.date2String5(new Date());
-		query.setStartTime(date + "-01-01 00:00:00");
-		query.setEndTime(date + "-12-31 23:59:59");
-		Double year = dao.getCapacity(query);
+		query.setStartTime(date + "-01-01");
+		query.setEndTime(date + "-12-31");
+		Double year = moduleDataDayDAO.getCapacity(query);
 		return year;
 	}
 
@@ -93,9 +96,9 @@ public class ModuleDataServiceImpl implements ModuleDataService {
 		query.setBunchId(bunchId);
 		query.setModuleId(moduleId);
 		Calendar cal = Calendar.getInstance();
-		query.setStartTime(DateUtils.getFirstDayOfMonth(cal.getTime()) + " 00:00:00");
-		query.setEndTime(DateUtils.getLastDayOfMonth(cal.getTime()) + " 23:59:59");
-		Double month = dao.getCapacity(query);
+		query.setStartTime(DateUtils.getFirstDayOfMonth(cal.getTime()));
+		query.setEndTime(DateUtils.getLastDayOfMonth(cal.getTime()));
+		Double month = moduleDataDayDAO.getCapacity(query);
 		return month;
 	}
 
@@ -136,8 +139,8 @@ public class ModuleDataServiceImpl implements ModuleDataService {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		int dayNum = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-		String startTime = DateUtils.date2String4(date) + "-01 00:00:00";
-		String endTime = DateUtils.getLastDayOfMonth(date) + " 23:59:59";
+		String startTime = DateUtils.getFirstDayOfMonth(date);
+		String endTime = DateUtils.getLastDayOfMonth(date);
 		ModuleQuery query = new ModuleQuery();
 		query.setStationId(stationId);
 		query.setBunchId(bunchId);
@@ -148,7 +151,7 @@ public class ModuleDataServiceImpl implements ModuleDataService {
 		for(int i = 0; i < dayNum; i ++) {
 			data[i] = 0;
 		}
-		List<PowerDataInfo> list = dao.getMonthCapacityData(query);
+		List<PowerDataInfo> list = moduleDataDayDAO.getMonthCapacityData(query);
 		for(int i = 1; i <= dayNum; i++) {
 			for(PowerDataInfo info : list) {
 				if(info.getValue() == i) {
@@ -162,8 +165,8 @@ public class ModuleDataServiceImpl implements ModuleDataService {
 
 	@Override
 	public double[] getCapacityForYear(String date, Long stationId, Long bunchId, Long moduleId) {
-		String startTime = date + "-01-01 00:00:00";
-		String endTime = date + "-12-31 23:59:59";
+		String startTime = date + "-01-01";
+		String endTime = date + "-12-31";
 		ModuleQuery query = new ModuleQuery();
 		query.setStationId(stationId);
 		query.setBunchId(bunchId);
@@ -174,7 +177,7 @@ public class ModuleDataServiceImpl implements ModuleDataService {
 		for(int i = 0; i < 12; i ++) {
 			data[i] = 0;
 		}
-		List<PowerDataInfo> list = dao.getYearCapacityData(query);
+		List<PowerDataInfo> list = moduleDataDayDAO.getYearCapacityData(query);
 		for(int i = 1; i <= 12; i++) {
 			for(PowerDataInfo info : list) {
 				if(info.getValue() == i) {
@@ -193,9 +196,9 @@ public class ModuleDataServiceImpl implements ModuleDataService {
 		query.setStationId(stationId);
 		query.setBunchId(bunchId);
 		query.setModuleId(moduleId);
-		query.setStartTime(date + " 00:00:00");
-		query.setEndTime(date + " 23:59:59");
-		Double total = dao.getCapacity(query);
+		query.setStartTime(date);
+		query.setEndTime(date);
+		Double total = moduleDataDayDAO.getCapacity(query);
 		return total;
 	}
 

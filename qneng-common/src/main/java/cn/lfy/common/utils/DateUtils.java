@@ -118,6 +118,7 @@ public class DateUtils {
 		System.out.println(getLastDayOfMonth(2015, 12));
 		System.out.println(getFirstDayOfMonth(new Date()));
 		System.out.println(getLastDayOfMonth(new Date()));
+		System.out.println(getYesterdayDate());
 	}
 	
 	/**
@@ -399,6 +400,15 @@ public class DateUtils {
 	 */
 	public static String getCurrentDate() {
 		return getDate(0);
+	}
+	
+	/**
+	 * 取昨天日期函数 yyyy-MM-dd.<BR>
+	 * 
+	 * @return 返回昨天日期字符串
+	 */
+	public static String getYesterdayDate() {
+		return getDate(-1);
 	}
 
 	
@@ -1114,6 +1124,11 @@ public class DateUtils {
          
         return lastDayOfMonth;
     }
+    /**
+     * 返回指定日期中第一天：如2015-11-01
+     * @param date
+     * @return
+     */
     public static String getFirstDayOfMonth(Date date)
     {
         Calendar cal = Calendar.getInstance();

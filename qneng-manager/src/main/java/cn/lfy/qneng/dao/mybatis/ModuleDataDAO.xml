@@ -162,4 +162,11 @@
     group by date_format(createTime, '%m')
     order by date_format(createTime, '%m') asc
   </select>
+  <select id="getCapacityForStartTime2EndTime">
+  	select DATE_FORMAT(createTime,'%Y-%m-%d') as date,moduleId,stationId,bunchId,sum(capacity) as capacity
+	from t_module_data 
+	where 1=1
+	and createTime between #{startTime} and #{endTime}
+	GROUP BY DATE_FORMAT(createTime,'%Y-%m-%d'),moduleId;
+  </select>
 </mapper>

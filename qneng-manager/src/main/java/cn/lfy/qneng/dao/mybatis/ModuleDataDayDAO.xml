@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lfy.qneng.dao.ModuleDataDayDAO" >
+  
+  <insert id="insertOrUpdate">
+    INSERT INTO t_module_data_day(`date`, `no`, stationId, bunchId, moduleId, capacity)
+	SELECT 
+	DATE_FORMAT(createTime,'%Y-%m-%d') AS `date`, `no`,
+	stationId, bunchId, moduleId, sum(capacity) AS capacity
+	FROM t_module_data 
+	WHERE 1=1
+	AND createTime BETWEEN #{startTime} AND #{endTime}
+	GROUP BY DATE_FORMAT(createTime,'%Y-%m-%d'),moduleId
+	ON DUPLICATE KEY UPDATE capacity = VALUES(capacity), `no` = VALUES(`no`),stationId=VALUES(stationId),bunchId=VALUES(bunchId)
+  </insert>
+  
+  <select id="getCapacity" parameterType="cn.lfy.qneng.vo.ModuleQuery" resultType="java.lang.Double">
+    select 
+    sum(capacity)
+    from t_module_data_day
+    where 1=1
+    <if test="stationId != null">
+    	and stationId = #{stationId}
+    </if>
+    <if test="bunchId != null">
+    	and bunchId = #{bunchId}
+    </if>
+    <if test="moduleId != null">
+    	and moduleId = #{moduleId}
+    </if>
+    <if test="startTime != null and endTime != null">
+    	and `date` between #{startTime} and #{endTime}
+    </if>
+  </select>
+  
+  <select id="getMonthCapacityData" parameterType="cn.lfy.qneng.vo.ModuleQuery" resultType="cn.lfy.qneng.vo.PowerDataInfo">
+    select 
+    date_format(`date`, '%d') as value,
+    sum(capacity) as capacity
+    from t_module_data_day
+    where 1=1
+    <if test="stationId != null">
+    	and stationId = #{stationId}
+    </if>
+    <if test="bunchId != null">
+    	and bunchId = #{bunchId}
+    </if>
+    <if test="moduleId != null">
+    	and moduleId = #{moduleId}
+    </if>
+    <if test="startTime != null and endTime != null">
+    	and `date` between #{startTime} and #{endTime}
+    </if>
+    group by date_format(`date`, '%d')
+    order by date_format(`date`, '%d') asc
+  </select>
+  <select id="getYearCapacityData" parameterType="cn.lfy.qneng.vo.ModuleQuery" resultType="cn.lfy.qneng.vo.PowerDataInfo">
+    select 
+    date_format(`date`, '%m') as value,
+    sum(capacity) as capacity
+    from t_module_data_day
+    where 1=1
+    <if test="stationId != null">
+    	and stationId = #{stationId}
+    </if>
+    <if test="bunchId != null">
+    	and bunchId = #{bunchId}
+    </if>
+    <if test="moduleId != null">
+    	and moduleId = #{moduleId}
+    </if>
+    <if test="startTime != null and endTime != null">
+    	and `date` between #{startTime} and #{endTime}
+    </if>
+    group by date_format(`date`, '%m')
+    order by date_format(`date`, '%m') asc
+  </select>
+</mapper>

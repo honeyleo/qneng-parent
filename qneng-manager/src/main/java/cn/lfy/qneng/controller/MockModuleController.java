@@ -230,7 +230,7 @@ public class MockModuleController implements Constants {
 		        	dataReq.setCurr(nodeDataReq.getCurr());
 		        	dataReq.setNo(module.getNo());
 		        	dataReq.setTemp(nodeDataReq.getTemp());
-		        	dataReq.setTime(System.currentTimeMillis());
+		        	dataReq.setTime(0L);
 		        	Double capacity = nodeDataReq.getCapacity();
 		        	int gailv = 0;
 		        	if(random.nextInt(2) == 1) {

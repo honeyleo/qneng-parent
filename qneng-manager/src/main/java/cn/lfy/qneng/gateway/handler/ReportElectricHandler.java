@@ -50,11 +50,22 @@ public class ReportElectricHandler implements Handler {
 			tmp.setCurVlot(nodeDataReq.getOutvolt());
 			tmp.setCurCurr(nodeDataReq.getCurr());
 			tmp.setCurTemp(nodeDataReq.getTemp());
+			tmp.setLastCapacity(nodeDataReq.getCapacity());
 			moduleService.updateByIdSelective(tmp);
 			Bunch bunch = bunchService.findById(module.getBunchId());
 			if(bunch != null) {
 				ModuleData moduleData = new ModuleData();
 				BeanUtils.copyProperties(nodeDataReq, moduleData);
+				if(nodeDataReq.getTime() != 0L) {
+					if(nodeDataReq.getCapacity() == 0D) {
+						moduleData.setCapacity(0D);
+						moduleData.setPrevCapacity(0D);
+					} else {
+						moduleData.setCapacity(nodeDataReq.getCapacity() - module.getLastCapacity());
+						moduleData.setPrevCapacity(module.getLastCapacity());
+					}
+					moduleData.setCurCapacity(nodeDataReq.getCapacity());
+				}
 				moduleData.setStationId(bunch.getStationId());
 				moduleData.setBunchId(bunch.getId());
 				moduleData.setModuleId(module.getId());
@@ -68,5 +79,5 @@ public class ReportElectricHandler implements Handler {
 		nodeDataResp.setStatus("1");
 		resp.write(nodeDataResp);
 	}
-
+	
 }

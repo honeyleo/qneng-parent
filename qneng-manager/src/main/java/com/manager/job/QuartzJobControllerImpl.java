@@ -56,9 +56,9 @@ public class QuartzJobControllerImpl implements QuartzJobController, Application
 
 	@Override
 	public void loadAndStartTaskFromDB() throws SchedulerException {
-		List<ScheduleJob> jobList = scheduleJobDao.findAllEnabled("DEFAULT");
-		logger.info( "Enabled Job List size: {}", jobList.size() );
-		scheduleAllJobs( jobList );
+//		List<ScheduleJob> jobList = scheduleJobDao.findAllEnabled("DEFAULT");
+//		logger.info( "Enabled Job List size: {}", jobList.size() );
+//		scheduleAllJobs( jobList );
 	}
 
 	@Override

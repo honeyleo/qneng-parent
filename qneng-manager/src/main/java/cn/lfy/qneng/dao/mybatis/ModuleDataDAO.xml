@@ -9,6 +9,8 @@
     <result column="curr" property="curr" jdbcType="DOUBLE" />
     <result column="temp" property="temp" jdbcType="DOUBLE" />
     <result column="capacity" property="capacity" jdbcType="DOUBLE" />
+    <result column="prevCapacity" property="prevCapacity" jdbcType="DOUBLE" />
+    <result column="curCapacity" property="curCapacity" jdbcType="DOUBLE" />
     <result column="time" property="time" jdbcType="BIGINT" />
     <result column="stationId" property="stationId" jdbcType="BIGINT" />
     <result column="BunchId" property="BunchId" jdbcType="BIGINT" />
@@ -41,7 +43,7 @@
   </sql>
   
   <sql id="Base_Column_List" >
-    id, no, inputVolt, outvolt, curr, temp, capacity, time, stationId, bunchId, moduleId, createTime
+    id, no, inputVolt, outvolt, curr, temp, capacity, time, stationId, bunchId, moduleId, createTime,prevCapacity,curCapacity
   </sql>
   
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.manager.model.Criteria" >
@@ -68,8 +70,8 @@
   </delete>
   
   <insert id="insert" parameterType="cn.lfy.qneng.model.ModuleData" useGeneratedKeys="true" keyProperty="id">
-    insert into t_module_data (no, inputVolt, outvolt, curr, temp, capacity, time, stationId, bunchId, moduleId, createTime)
-    values (#{no}, #{inputVolt}, #{outvolt}, #{curr}, #{temp}, #{capacity}, #{time}, #{stationId}, #{bunchId}, #{moduleId}, #{createTime})
+    insert into t_module_data (no, inputVolt, outvolt, curr, temp, capacity, time, stationId, bunchId, moduleId, createTime,prevCapacity,curCapacity)
+    values (#{no}, #{inputVolt}, #{outvolt}, #{curr}, #{temp}, #{capacity}, #{time}, #{stationId}, #{bunchId}, #{moduleId}, #{createTime}, #{prevCapacity}, #{curCapacity})
   </insert>
   
   <select id="countByExample" parameterType="com.manager.model.Criteria" resultType="java.lang.Integer" >

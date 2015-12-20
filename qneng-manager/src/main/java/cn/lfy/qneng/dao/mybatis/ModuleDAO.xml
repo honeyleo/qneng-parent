@@ -18,6 +18,7 @@
     <result column="curVlot" property="curVlot" jdbcType="DOUBLE" />
     <result column="curCurr" property="curCurr" jdbcType="DOUBLE" />
     <result column="curTemp" property="curTemp" jdbcType="DOUBLE" />
+    <result column="lastCapacity" property="lastCapacity" jdbcType="DOUBLE" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <trim prefix="where" prefixOverrides="and|or" >
@@ -131,6 +132,9 @@
       </if>
       <if test="curTemp != null" >
         curTemp = #{curTemp},
+      </if>
+      <if test="lastCapacity != null" >
+        lastCapacity = #{lastCapacity},
       </if>
     </set>
     where id = #{id}

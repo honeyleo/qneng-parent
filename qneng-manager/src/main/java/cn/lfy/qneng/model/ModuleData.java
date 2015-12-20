@@ -42,6 +42,14 @@ public class ModuleData implements Serializable {
 	 */
 	private Double capacity;
 	/**
+	 * 上一次上传过来的发电量
+	 */
+	private Double prevCapacity = 0D;
+	/**
+	 * 当前上传上来的发电量
+	 */
+	private Double curCapacity = 0D;
+	/**
 	 * 发送时间
 	 */
 	private Long time;
@@ -94,6 +102,19 @@ public class ModuleData implements Serializable {
 	}
 	public void setCapacity(Double capacity) {
 		this.capacity = capacity;
+	}
+	
+	public Double getPrevCapacity() {
+		return prevCapacity;
+	}
+	public void setPrevCapacity(Double prevCapacity) {
+		this.prevCapacity = prevCapacity;
+	}
+	public Double getCurCapacity() {
+		return curCapacity;
+	}
+	public void setCurCapacity(Double curCapacity) {
+		this.curCapacity = curCapacity;
 	}
 	public Long getTime() {
 		return time;

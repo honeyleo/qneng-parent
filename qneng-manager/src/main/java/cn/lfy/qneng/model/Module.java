@@ -74,6 +74,10 @@ public class Module implements Serializable {
 	 * 当前温度
 	 */
 	private Double curTemp;
+	/**
+	 * 最后一次上传的发电量
+	 */
+	private Double lastCapacity = 0D;
 	
 	private boolean online;
 	
@@ -205,6 +209,14 @@ public class Module implements Serializable {
 
 	public void setCurTemp(Double curTemp) {
 		this.curTemp = curTemp;
+	}
+
+	public Double getLastCapacity() {
+		return lastCapacity;
+	}
+
+	public void setLastCapacity(Double lastCapacity) {
+		this.lastCapacity = lastCapacity;
 	}
 
 	public boolean isOnline() {

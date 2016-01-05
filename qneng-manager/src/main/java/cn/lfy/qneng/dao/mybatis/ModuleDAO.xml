@@ -150,7 +150,7 @@
     select 
     sum(m.curVlot) as curVlot,
     sum(m.curCurr) as curCurr,
-    SUM(m.curVlot*m.curCurr) as curPower
+    SUM(truncate(m.curVlot*m.curCurr/1000,2))*1000 as curPower
     from t_module m
     left join t_bunch b
     on m.bunchId = b.id

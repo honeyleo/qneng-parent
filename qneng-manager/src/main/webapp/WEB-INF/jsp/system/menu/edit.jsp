@@ -112,7 +112,7 @@
 				</tr>
 				<tr>
 					<td>顺序号:</td>
-					<td><input type="number" name="orderNo" id="orderNo" placeholder="这里输入序号" value="${menu.orderNo}" title="序号"/></td>
+					<td><input type="number" name="orderNo" min="1" id="orderNo" placeholder="这里输入序号" value="${menu.orderNo}" title="序号"/></td>
 				</tr>
 				<tr>
 				<td style="text-align: center; padding-top: 10px;" colspan="2" height="50px">

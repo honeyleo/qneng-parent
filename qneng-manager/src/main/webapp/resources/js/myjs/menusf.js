@@ -1,9 +1,11 @@
 $(function() {
 	if(typeof($.cookie('menusf')) == "undefined"){
-		$("#sidebar").attr("class","menu-min");
-	}else{
 		$("#sidebar").attr("class","");
+		//$("#sidebar").attr("class","menu-min");
 	}
+	//else{
+		//$("#sidebar").attr("class","");
+	//}
 });
 
 //保存缩放菜单状态

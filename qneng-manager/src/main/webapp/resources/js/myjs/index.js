@@ -1,10 +1,11 @@
 	$(function() {
-			if (typeof ($.cookie('menusf')) == "undefined") {
-				$("#menusf").attr("checked", true);
-				$("#sidebar").attr("class", "menu-min");
-			} else {
-				$("#sidebar").attr("class", "");
-			}
+		$("#sidebar").attr("class", "");
+//			if (typeof ($.cookie('menusf')) == "undefined") {
+//				$("#menusf").attr("checked", true);
+//				$("#sidebar").attr("class", "menu-min");
+//			} else {
+//				$("#sidebar").attr("class", "");
+//			}
 		});
 		function cmainFrame(){
 			var hmain = document.getElementById("mainFrame");

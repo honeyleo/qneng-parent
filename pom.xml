@@ -211,5 +211,6 @@
   <modules>
   <module>qneng-manager</module>
   <module>qneng-common</module>
+  <module>qneng-client</module>
   </modules>
 </project>

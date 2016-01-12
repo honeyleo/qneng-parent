@@ -37,5 +37,11 @@ public class Node {
 			new Response(cmd, channel).write(packet);
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "Node [no=" + no + "]";
+	}
+	
 	
 }

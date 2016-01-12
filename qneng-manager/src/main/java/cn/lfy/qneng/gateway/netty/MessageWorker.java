@@ -3,6 +3,7 @@ package cn.lfy.qneng.gateway.netty;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 
+import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -52,7 +53,7 @@ public class MessageWorker{
         this.channel = _channel;
         checkSumStream = new CheckSumStream();
         loginIp = ((InetSocketAddress) channel.remoteAddress()).getAddress().getHostAddress();
-        LOG.info("connection ip = {}",loginIp);
+        LOG.info("设备连接上来已经建立连接，设备IP = {}",loginIp);
     }
     
     public void messageReceived(ByteBuf buffer) {
@@ -89,6 +90,15 @@ public class MessageWorker{
     	//消息body
     	byte[] data = new byte[length - 3];
 		buffer.readBytes(data);
+		String body = null;
+		try {
+			if(data.length > 0) {
+				body = new String(data, "UTF-8");
+			}
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		LOG.info("Node={} Request[size={}, sum={}, cmd={}, body={}]", new Object[]{node, length, checkSumStream.getCheckSum(), cmd, body});
 		Runnable task = new MessageReceivedEvent(length, cmd, data, node, channel, this);
     	if(node == null) {
     		if(cmd == 1001) {

@@ -2,6 +2,7 @@ package cn.lfy.qneng.client;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -181,6 +182,18 @@ public class NioClient extends Thread {
 					buf.putShort((short)(bodyBytes.length + 1));
 					buf.put((byte)sum);
 					buf.put(bodyBytes);
+					byte[] data = buf.array();
+					System.out.println(data);
+					StringBuilder sb = new StringBuilder();
+					for(byte b : data) {
+						String tmp = Integer.toHexString(0xFF & b);  
+			            if (tmp.length() == 1)// 每个字节8为，转为16进制标志，2个16进制位  
+			            {  
+			                tmp = "0" + tmp;  
+			            }  
+			            sb.append(tmp).append(" ");  
+					}
+					System.out.println(sb);
 					buf.flip();
 					client.write(buf);
 				} catch (Exception e) {
@@ -296,7 +309,7 @@ public class NioClient extends Thread {
 	}
 	public static void main(String[] args) {
 		try {
-			login("12345678901", MD5.md5("12345678901:" + "0123456789"));
+			login("1234567", MD5.md5("1234567:" + "7654321"));
 //			login("qngfdz010010002", MD5.md5("qngfdz010010002:" + "qngfdz010010012_fDdfX4455"));
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -35,6 +35,8 @@ public class Station implements Serializable {
 	private Date createTime;
 	
 	private Long lastUpdateTime;
+	
+	private String city;
 
 	public Long getId() {
 		return id;
@@ -90,6 +92,14 @@ public class Station implements Serializable {
 
 	public void setInfo(String info) {
 		this.info = info;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 	
 	

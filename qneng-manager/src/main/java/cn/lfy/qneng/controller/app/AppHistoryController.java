@@ -26,6 +26,8 @@ public class AppHistoryController {
 	@Resource
 	private AlarmService alarmService;
 	
+	@Resource
+	private WeatherService weatherService;
 	/**
 	 * 获取电站概览数据
 	 * @param stationId
@@ -75,8 +77,8 @@ public class AppHistoryController {
 			double[] day = moduleDataService.getPowerForDate(DateUtils.date2String3(new Date(date)), stationId, bunchId, moduleId);
 			builder.put("dayPower", day);
 			//TODO 当前温度暂时不填，等确定再说
-			builder.put("curTemp", WeatherService.getWeather().getTemp());
-			builder.put("dayWeather", WeatherService.getWeather().getWeather());
+			builder.put("curTemp", weatherService.getWeatherByStationId(stationId).getTemp());
+			builder.put("dayWeather", weatherService.getWeatherByStationId(stationId).getWeather());
 			
 			alarmQuery.setDate(DateUtils.date2String3(new Date(date)));
 			

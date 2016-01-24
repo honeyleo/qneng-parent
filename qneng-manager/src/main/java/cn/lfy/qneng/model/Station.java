@@ -36,6 +36,8 @@ public class Station implements Serializable {
 	
 	private Long lastUpdateTime;
 	
+	private String province;
+	
 	private String city;
 
 	public Long getId() {
@@ -92,6 +94,14 @@ public class Station implements Serializable {
 
 	public void setInfo(String info) {
 		this.info = info;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
 	}
 
 	public String getCity() {

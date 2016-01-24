@@ -48,7 +48,8 @@
 						<th>序号</th>
 						<th>编号</th>
 						<th>电站名称</th>
-						<th>电站地址</th>
+						<th>省市</th>
+						<th>详细地址</th>
 						<th>关联用户</th>
 						<th><i class="icon-time hidden-phone"></i>创建时间</th>
 						<th class="center">操作</th>
@@ -65,6 +66,7 @@
 						<td>${entity.id }</td>
 						<td><a>${entity.name }</a></td>
 						<td>${entity.address }</td>
+						<td>${entity.province }${entity.city }</td>
 						<td>${funcs:getUserName(entity.userId)}</td>
 						<td>${funcs:formatDateTime(entity.createTime,'yyyy-MM-dd HH:mm:ss')}</td>
 						<td style="width: 60px;">
@@ -136,7 +138,7 @@
 			 diag.Title ="新增";
 			 diag.URL = '<%=basePath%>manager/station/goadd';
 			 diag.Width = 320;
-			 diag.Height = 370;
+			 diag.Height = 430;
 			 diag.CancelEvent = function(){ //关闭事件
 				 self.location=self.location;
 				diag.close();
@@ -151,7 +153,7 @@
 			 diag.Title ="资料";
 			 diag.URL = '<%=basePath%>manager/station/detail?id='+id;
 			 diag.Width = 320;
-			 diag.Height = 370;
+			 diag.Height = 430;
 			 diag.CancelEvent = function(){ //关闭事件
 				 self.location=self.location;
 				diag.close();

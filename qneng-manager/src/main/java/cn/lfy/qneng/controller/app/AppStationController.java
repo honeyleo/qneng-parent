@@ -26,7 +26,8 @@ public class AppStationController {
 	private StationService stationService;
 	@Resource
 	private ModuleDataService moduleDataService;
-	
+	@Resource
+	private WeatherService weatherService;
 	/**
 	 * 获取电站概览
 	 * @param stationId
@@ -51,8 +52,8 @@ public class AppStationController {
 			Double month = moduleDataService.getTotalForMonth(stationId, null, null);
 			builder.put("monthCapacity", month != null ? month : 0);
 			
-			builder.put("stationTemp", WeatherService.getWeather().getTemp());
-			builder.put("stationWeather", WeatherService.getWeather().getWeather());
+			builder.put("stationTemp", weatherService.getWeatherByStationId(stationId).getTemp());
+			builder.put("stationWeather", weatherService.getWeatherByStationId(stationId).getWeather());
 			
 			DataInfo dataInfo = moduleDataService.getDataInfo(stationId, null);
 			if(dataInfo != null) {

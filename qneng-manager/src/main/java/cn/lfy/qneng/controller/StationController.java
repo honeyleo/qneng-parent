@@ -159,15 +159,18 @@ public class StationController implements Constants {
         String address = RequestUtil.getString(request, "address");
         String info = RequestUtil.getString(request, "info");
         Long userId = RequestUtil.getLong(request, "userId");
-
-        if(isHasStation(userId)) {
+        String province = RequestUtil.getString(request, "province");
+        String city = RequestUtil.getString(request, "city");
+        
+        if(isHasStation(userId, 0L)) {
         	throw ApplicationException.newInstance(ErrorCode.USER_HAS_STATION);
         }
-        
         Station record = new Station();
         record.setName(name);
         record.setAddress(address);
         record.setInfo(info);
+        record.setProvince(province);
+        record.setCity(city);
         if(userId != null) {
         	record.setUserId(userId);
         }
@@ -198,8 +201,10 @@ public class StationController implements Constants {
         String name = RequestUtil.getString(request, "name");
         String info = RequestUtil.getString(request, "info");
         Long userId = RequestUtil.getLong(request, "userId");
+        String province = RequestUtil.getString(request, "province");
+        String city = RequestUtil.getString(request, "city");
         
-        if(isHasStation(userId)) {
+        if(isHasStation(userId, id)) {
         	throw ApplicationException.newInstance(ErrorCode.USER_HAS_STATION);
         }
         Station record = new Station();
@@ -209,18 +214,27 @@ public class StationController implements Constants {
         record.setAddress(address);
         record.setInfo(info);
         record.setUserId(userId);
+        record.setProvince(province);
+        record.setCity(city);
         stationService.updateByIdSelective(record);
         builder.setMsg("修改成功");
         return builder.build();
     }
     
-    private boolean isHasStation(Long userId) {
+    private boolean isHasStation(Long userId, Long stationId) {
         Criteria criteria = new Criteria();
         criteria.put("userId", userId);
         List<Station> list = stationService.findListByCriteria(criteria);
-        if(list != null && !list.isEmpty()) {
-        	return true;
+        if(stationId != null && stationId > 0) {
+        	if(list != null && !list.isEmpty() && list.get(0).getId().longValue() != stationId.longValue()) {
+            	return true;
+            }
+        } else {
+        	if(list != null && !list.isEmpty()) {
+            	return true;
+            }
         }
+        
         return false;
     }
     

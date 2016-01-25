@@ -1,6 +1,9 @@
 package com.manager.common.web.interceptors;
 
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,9 +41,19 @@ public class AppInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
 		String requestUrl = request.getRequestURI();
-		log.info("权限拦截，请求url：" + requestUrl);
-
+		Enumeration<String> enumes = request.getParameterNames();
+		Map<String, String> params = new HashMap<String, String>();
+		if(enumes != null) {
+			while(enumes.hasMoreElements()) {
+				String key = enumes.nextElement();
+				String value = request.getParameter(key);
+				params.put(key, value);
+			}
+		}
+		log.info("权限拦截，请求url={},params={}", requestUrl, params);
+		
 		request.setAttribute("reqMill", System.currentTimeMillis());
+		request.setAttribute("params", params);
 		if(!(ignoreUrl.contains(requestUrl))) {
 			if(!LoginVerify(request)) {
 				Message.Builder builder = Message.newBuilder();
@@ -66,13 +79,15 @@ public class AppInterceptor extends HandlerInterceptorAdapter {
 		}
 		return true;
 	}
+	@SuppressWarnings("unchecked")
 	public void afterCompletion(
 			HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
 		String requestUrl = request.getRequestURI();
 		long respMill = System.currentTimeMillis();
 		long reqMill = (Long)request.getAttribute("reqMill");
-		log.info("权限拦截，请求url：" + requestUrl + "，cost " + (respMill - reqMill));
+		Map<String, String> params = (Map<String, String>) request.getAttribute("params");
+		log.info("权限拦截，请求url={},params={} cost {}.", new Object[]{requestUrl, params, (respMill - reqMill)});
 	}
 
 }

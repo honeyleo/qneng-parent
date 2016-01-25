@@ -40,4 +40,9 @@ public class WeatherService {
 		}
 		
 	}
+	
+	public static void main(String[] args) {
+		WeatherService service = new WeatherService();
+		service.getWeatherByStationId(0L);
+	}
 }

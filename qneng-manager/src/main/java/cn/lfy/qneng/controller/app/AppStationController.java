@@ -16,6 +16,7 @@ import cn.lfy.qneng.model.Station;
 import cn.lfy.qneng.service.ModuleDataService;
 import cn.lfy.qneng.service.StationService;
 import cn.lfy.qneng.service.WeatherService;
+import cn.lfy.qneng.service.WeatherService.Weather;
 import cn.lfy.qneng.vo.DataInfo;
 
 @Controller
@@ -51,9 +52,9 @@ public class AppStationController {
 			builder.put("yearCapacity", year != null ? year : 0);
 			Double month = moduleDataService.getTotalForMonth(stationId, null, null);
 			builder.put("monthCapacity", month != null ? month : 0);
-			
-			builder.put("stationTemp", weatherService.getWeatherByStationId(stationId).getTemp());
-			builder.put("stationWeather", weatherService.getWeatherByStationId(stationId).getWeather());
+			Weather weather = weatherService.getWeatherByStationId(stationId == null ? 0L : stationId);
+			builder.put("stationTemp", weather.getTemp());
+			builder.put("stationWeather", weather.getWeather());
 			
 			DataInfo dataInfo = moduleDataService.getDataInfo(stationId, null);
 			if(dataInfo != null) {

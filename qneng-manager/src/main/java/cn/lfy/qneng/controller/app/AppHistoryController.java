@@ -14,6 +14,7 @@ import cn.lfy.common.utils.DateUtils;
 import cn.lfy.qneng.service.AlarmService;
 import cn.lfy.qneng.service.ModuleDataService;
 import cn.lfy.qneng.service.WeatherService;
+import cn.lfy.qneng.service.WeatherService.Weather;
 import cn.lfy.qneng.vo.AlarmQuery;
 
 @Controller
@@ -77,8 +78,9 @@ public class AppHistoryController {
 			double[] day = moduleDataService.getPowerForDate(DateUtils.date2String3(new Date(date)), stationId, bunchId, moduleId);
 			builder.put("dayPower", day);
 			//TODO 当前温度暂时不填，等确定再说
-			builder.put("curTemp", weatherService.getWeatherByStationId(stationId).getTemp());
-			builder.put("dayWeather", weatherService.getWeatherByStationId(stationId).getWeather());
+			Weather weather = weatherService.getWeatherByStationId(stationId == null ? 0L : stationId);
+			builder.put("curTemp", weather.getTemp());
+			builder.put("dayWeather", weather.getWeather());
 			
 			alarmQuery.setDate(DateUtils.date2String3(new Date(date)));
 			

@@ -65,8 +65,8 @@
 						<td class='center' style="width: 30px;">${var.index+1}</td>
 						<td>${entity.id }</td>
 						<td><a>${entity.name }</a></td>
-						<td>${entity.address }</td>
 						<td>${entity.province }${entity.city }</td>
+						<td>${entity.address }</td>
 						<td>${funcs:getUserName(entity.userId)}</td>
 						<td>${funcs:formatDateTime(entity.createTime,'yyyy-MM-dd HH:mm:ss')}</td>
 						<td style="width: 60px;">

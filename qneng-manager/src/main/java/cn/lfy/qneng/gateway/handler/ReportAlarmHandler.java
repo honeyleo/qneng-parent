@@ -29,17 +29,16 @@ public class ReportAlarmHandler implements Handler {
 		NodeAlarmReq nodeAlarmReq = req.readXML(NodeAlarmReq.class);
 		LogUtil.LOG.info("上报告警请求：{}", nodeAlarmReq);
 		NodeAlarmResp nodeAlarmResp = new NodeAlarmResp();
-		nodeAlarmResp.setNo(req.node().getNo());
+		String no = nodeAlarmReq.getNo();
+		nodeAlarmResp.setNo(no);
+		nodeAlarmResp.setStatus("1");
 		if(nodeAlarmReq != null) {
 			Alarm alarm = new Alarm();
 			BeanUtils.copyProperties(nodeAlarmReq, alarm);
 			alarm.setCreateTime(new Date());
 			alarmService.add(alarm);
 			nodeAlarmResp.setStatus("0");
-			resp.write(nodeAlarmResp);
-			return;
 		}
-		nodeAlarmResp.setStatus("1");
 		resp.write(nodeAlarmResp);
 	}
 

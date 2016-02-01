@@ -13,7 +13,7 @@
 <title></title>
 <link href="<%=basePath %>resources/css/bootstrap.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="<%=basePath %>resources/css/font-awesome.min.css" />
-<link type="text/css" rel="stylesheet" href="<%=basePath %>plugins/zTree/2.6/zTreeStyle.css"/>
+<link type="text/css" rel="stylesheet" href="<%=basePath %>resources/plugins/zTree/2.6/zTreeStyle.css"/>
 <link rel="stylesheet" href="<%=basePath %>resources/css/ace.min.css" />
 <link rel="stylesheet" href="<%=basePath %>resources/css/ace-responsive.min.css" />
 <link rel="stylesheet" href="<%=basePath %>resources/css/ace-skins.min.css" />
@@ -30,7 +30,7 @@ footer{height:50px;position:fixed;bottom:0px;left:0px;width:100%;text-align: cen
 	
 	
 	<script type="text/javascript" src="<%=basePath %>resources/js/jquery-1.5.1.min.js"></script>
-	<script type="text/javascript" src="<%=basePath %>plugins//zTree/2.6/jquery.ztree-2.6.min.js"></script>
+	<script type="text/javascript" src="<%=basePath %>resources/plugins//zTree/2.6/jquery.ztree-2.6.min.js"></script>
 	
 	<script type="text/javascript">
 	top.hangge();

@@ -71,7 +71,7 @@
 							</c:if>
 						</td>
 						<td>
-							<div class='hidden-phone visible-desktop btn-group'>
+							<div class='btn-group'>
 								<a class='btn btn-mini btn-info' title="更新任务表达式" onclick="updateCron('${entity.jobId }','${entity.cronExpression }');">更新表达式</a>
 								<a class='btn btn-mini btn-danger' title="马上运行一次任务" onclick="runOne('${entity.jobId }');">马上运行</a>
 								<c:if test="${entity.jobStatus eq 'PAUSED' }">

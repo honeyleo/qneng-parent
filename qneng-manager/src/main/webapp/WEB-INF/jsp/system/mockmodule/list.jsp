@@ -85,7 +85,7 @@
 							</c:if>
 						</td>
 						<td>
-							<div class='hidden-phone visible-desktop btn-group'>
+							<div class='btn-group'>
 								<c:if test="${entity.online == true }">
 								<a class='btn btn-mini btn-success' title="上报配置" onclick="reportConfig('${entity.id }');">配置</a>
 								<c:if test="${entity.online == true and entity.mock == true }">

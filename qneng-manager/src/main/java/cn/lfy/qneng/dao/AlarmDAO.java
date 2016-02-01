@@ -7,7 +7,11 @@ import cn.lfy.qneng.vo.AlarmQuery;
 import cn.lfy.qneng.vo.AlarmVo;
 
 import com.manager.model.Criteria;
-
+/**
+ * 数据库操作告警相关接口
+ * @author leo.liao
+ *
+ */
 public interface AlarmDAO {
 
 	/**

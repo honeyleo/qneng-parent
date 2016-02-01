@@ -22,7 +22,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
 import com.manager.model.Criteria;
-
+/**
+ * 终端组件API
+ * @author leo.liao
+ *
+ */
 @Controller
 @RequestMapping("/app")
 public class AppModuleController {
@@ -34,6 +38,13 @@ public class AppModuleController {
 	@Resource
 	private AlarmService alarmService;
 	
+	/**
+	 * 根据条件查询组件列表
+	 * @param bunchId
+	 * @param search
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/moduleList")
 	@ResponseBody
 	public Object list(@RequestParam(value = "bunchId", required = false, defaultValue = "0") Long bunchId, 

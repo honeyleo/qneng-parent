@@ -6,7 +6,11 @@ import org.apache.ibatis.annotations.Param;
 
 import cn.lfy.qneng.vo.ModuleQuery;
 import cn.lfy.qneng.vo.PowerDataInfo;
-
+/**
+ * 数据库操作组件发电数据统计相关接口
+ * @author leo.liao
+ *
+ */
 public interface ModuleDataDayDAO {
 
     /**

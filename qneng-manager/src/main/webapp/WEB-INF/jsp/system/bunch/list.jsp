@@ -72,7 +72,7 @@
 						<td>${funcs:getStationName(entity.stationId)}</td>
 						<td>${funcs:formatDateTime(entity.createTime,'yyyy-MM-dd HH:mm:ss')}</td>
 						<td style="width: 60px;">
-							<div class='hidden-phone visible-desktop btn-group'>
+							<div class='btn-group'>
 								<a class='btn btn-mini btn-info' title="编辑" onclick="editUser('${entity.id }');">修改</a>
 								<a class='btn btn-mini btn-danger' title="删除" onclick="delUser('${entity.id }','${entity.name }');">删除</a>
 							</div>

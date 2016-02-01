@@ -5,7 +5,11 @@ import java.util.List;
 import cn.lfy.qneng.model.Bunch;
 
 import com.manager.model.Criteria;
-
+/**
+ * 数据库操作组串相关接口
+ * @author leo.liao
+ *
+ */
 public interface BunchDAO {
 
 	/**

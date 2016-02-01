@@ -27,6 +27,9 @@
 		<script type="text/javascript" src="<%=basePath %>resources/js/bootbox.min.js"></script>
 		
 <script type="text/javascript">
+$(document).ready(function(){
+	init("${entity.province }", "${entity.city }");
+});
 	$(top.hangge());
 	//保存
 	function save(){
@@ -240,7 +243,7 @@ cities['辽宁省']=new Array('沈阳', '朝阳', '阜新', '铁岭', '抚顺', 
 
 cities['吉林省']=new Array('长春', '白城', '松原', '吉林', '四平', '辽源', '通化', '白山', '延边'); 
 
-cities['黑龙江省']=new Array('哈尔滨', '齐齐哈尔', '黑河', '大庆', '伊春', '鹤岗', '佳木斯', '双鸭山', '七台河', '鸡西', '牡丹江', '绥化', '大兴安'); 
+cities['黑龙江省']=new Array('哈尔滨', '齐齐哈尔', '黑河', '大庆', '伊春', '鹤岗', '佳木斯', '双鸭山', '七台河', '鸡西', '牡丹江', '绥化', '大兴安岭'); 
 
 cities['江苏省']=new Array('南京', '徐州', '连云港', '宿迁', '淮阴', '盐城', '扬州', '泰州', '南通', '镇江', '常州', '无锡', '苏州'); 
 
@@ -350,7 +353,6 @@ function init(provinceValue, cityValue) {
 		}
 	} 
 }
-init("${entity.province }", "${entity.city }");
 </script> 
 </body>
 </html>

@@ -16,7 +16,11 @@ import cn.lfy.qneng.service.ModuleDataService;
 import cn.lfy.qneng.service.WeatherService;
 import cn.lfy.qneng.service.WeatherService.Weather;
 import cn.lfy.qneng.vo.AlarmQuery;
-
+/**
+ * 终端发电历史数据相关API
+ * @author leo.liao
+ *
+ */
 @Controller
 @RequestMapping("/app")
 public class AppHistoryController {
@@ -30,7 +34,7 @@ public class AppHistoryController {
 	@Resource
 	private WeatherService weatherService;
 	/**
-	 * 获取电站概览数据
+	 * 根据条件获取历史曲线数据
 	 * @param stationId
 	 * @return
 	 * @throws Exception

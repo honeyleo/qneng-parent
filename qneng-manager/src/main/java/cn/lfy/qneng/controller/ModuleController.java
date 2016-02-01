@@ -28,7 +28,11 @@ import com.manager.common.web.Funcs;
 import com.manager.model.Criteria;
 import com.manager.model.LoginAccount;
 import com.manager.model.PageInfo;
-
+/**
+ * 组件前端控制器
+ * @author leo.liao
+ *
+ */
 @Controller
 @RequestMapping("/manager/module")
 public class ModuleController implements Constants {

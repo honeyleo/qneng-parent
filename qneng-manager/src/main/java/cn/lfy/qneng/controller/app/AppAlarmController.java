@@ -17,7 +17,11 @@ import cn.lfy.qneng.vo.AlarmQuery;
 import cn.lfy.qneng.vo.AlarmVo;
 
 import com.manager.common.util.RequestUtil;
-
+/**
+ * 终端告警API
+ * @author leo.liao
+ *
+ */
 @Controller
 @RequestMapping("/app")
 public class AppAlarmController {

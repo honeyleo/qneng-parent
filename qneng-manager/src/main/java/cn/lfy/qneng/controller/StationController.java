@@ -29,7 +29,11 @@ import com.manager.model.Criteria;
 import com.manager.model.LoginAccount;
 import com.manager.model.PageInfo;
 import com.manager.service.AdminService;
-
+/**
+ * 电站前端控制器
+ * @author leo.liao
+ *
+ */
 @Controller
 @RequestMapping("/manager/station")
 public class StationController implements Constants {

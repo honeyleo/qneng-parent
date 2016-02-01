@@ -7,7 +7,11 @@ import cn.lfy.qneng.vo.ModuleQuery;
 import cn.lfy.qneng.vo.PowerDataInfo;
 
 import com.manager.model.Criteria;
-
+/**
+ * 数据库操作组件数据相关接口
+ * @author leo.liao
+ *
+ */
 public interface ModuleDataDAO {
 
 	/**

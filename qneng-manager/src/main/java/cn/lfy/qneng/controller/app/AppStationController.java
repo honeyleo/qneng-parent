@@ -18,7 +18,11 @@ import cn.lfy.qneng.service.StationService;
 import cn.lfy.qneng.service.WeatherService;
 import cn.lfy.qneng.service.WeatherService.Weather;
 import cn.lfy.qneng.vo.DataInfo;
-
+/**
+ * 终端电站相关API
+ * @author leo.liao
+ *
+ */
 @Controller
 @RequestMapping("/app")
 public class AppStationController {

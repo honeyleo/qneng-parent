@@ -20,7 +20,11 @@ import com.manager.common.util.PageData;
 import com.manager.common.util.RequestUtil;
 import com.manager.model.Criteria;
 import com.manager.model.PageInfo;
-
+/**
+ * 建议前端控制器
+ * @author leo.liao
+ *
+ */
 @Controller
 @RequestMapping("/manager/suggest")
 public class SuggestController implements Constants {

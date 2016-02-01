@@ -37,12 +37,12 @@ public class MessageWorker{
     private final CheckSumStream checkSumStream;
     
     /**
-     * 玩家对象
+     * 节点对象
      */
     private volatile Node node;
     
     /**
-     * 玩家线性线程
+     * 节点线性线程
      */
     private volatile DisruptorEvent taskExec;
 	

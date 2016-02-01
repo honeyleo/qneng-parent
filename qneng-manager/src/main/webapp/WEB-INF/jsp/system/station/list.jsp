@@ -70,7 +70,7 @@
 						<td>${funcs:getUserName(entity.userId)}</td>
 						<td>${funcs:formatDateTime(entity.createTime,'yyyy-MM-dd HH:mm:ss')}</td>
 						<td style="width: 60px;">
-							<div class='hidden-phone visible-desktop btn-group'>
+							<div class='btn-group'>
 								<a class='btn btn-mini btn-info' title="编辑" onclick="editUser('${entity.id }');">修改</a>
 								<a class='btn btn-mini btn-danger' title="删除" onclick="delUser('${entity.id }','${entity.name }');">删除</a>
 							</div>
@@ -138,7 +138,7 @@
 			 diag.Title ="新增";
 			 diag.URL = '<%=basePath%>manager/station/goadd';
 			 diag.Width = 320;
-			 diag.Height = 430;
+			 diag.Height = 450;
 			 diag.CancelEvent = function(){ //关闭事件
 				 self.location=self.location;
 				diag.close();
@@ -153,7 +153,7 @@
 			 diag.Title ="资料";
 			 diag.URL = '<%=basePath%>manager/station/detail?id='+id;
 			 diag.Width = 320;
-			 diag.Height = 430;
+			 diag.Height = 450;
 			 diag.CancelEvent = function(){ //关闭事件
 				 self.location=self.location;
 				diag.close();

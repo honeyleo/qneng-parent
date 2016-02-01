@@ -70,9 +70,9 @@
 					<tr>
 						<td class='center' style="width: 30px;">${var.index+1}</td>
 						<td>${entity.id }</td>
-						<td><a>${entity.no }</a></td>
-						<td><a>${entity.appSecret }</a></td>
-						<td><a>${entity.name }</a></td>
+						<td>${entity.no }</td>
+						<td>${entity.appSecret }</td>
+						<td>${entity.name }</td>
 						<td>${entity.model }</td>
 						<td>${entity.manufactory }</td>
 						<td>${entity.installdate }</td>
@@ -82,7 +82,7 @@
 						<td>${funcs:getBunchName(entity.bunchId)}</td>
 						<td>${funcs:formatDateTime(entity.createTime,'yyyy-MM-dd HH:mm:ss')}</td>
 						<td style="width: 60px;">
-							<div class='hidden-phone visible-desktop btn-group'>
+							<div class='btn-group'>
 								<a class='btn btn-mini btn-info' title="编辑" onclick="editUser('${entity.id }');">修改</a>
 								<a class='btn btn-mini btn-danger' title="删除" onclick="delUser('${entity.id }','${entity.name }');">删除</a>
 							</div>

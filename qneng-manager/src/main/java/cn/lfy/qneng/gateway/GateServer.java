@@ -26,7 +26,11 @@ import cn.lfy.qneng.gateway.netty.SimpleServerEncoder;
 import cn.lfy.qneng.gateway.netty.SingleDecoderHandler;
 
 import com.google.common.collect.Maps;
-
+/**
+ * 网关服务器类：用于启动网关服务器
+ * @author leo.liao
+ *
+ */
 public class GateServer {
 
 	private int bossThread;

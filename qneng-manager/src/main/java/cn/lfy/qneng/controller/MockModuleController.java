@@ -47,7 +47,11 @@ import com.manager.common.util.Page;
 import com.manager.common.util.RequestUtil;
 import com.manager.model.Criteria;
 import com.manager.model.PageInfo;
-
+/**
+ * 模拟组件发电前端控制器
+ * @author leo.liao
+ *
+ */
 @Controller
 @RequestMapping("/manager/mockmodule")
 public class MockModuleController implements Constants {

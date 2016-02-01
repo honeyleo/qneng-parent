@@ -26,7 +26,11 @@ import com.manager.model.Criteria;
 import com.manager.model.LoginAccount;
 import com.manager.model.type.StateType;
 import com.manager.service.AdminService;
-
+/**
+ * 终端登录验证API
+ * @author leo.liao
+ *
+ */
 @Controller
 @RequestMapping("/app")
 public class AppLoginController implements Constants {
@@ -36,6 +40,12 @@ public class AppLoginController implements Constants {
 	@Autowired
 	private StationService stationService;
 	
+	/**
+	 * 登录验证
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/login")
 	@ResponseBody
 	public Object login(HttpServletRequest request) throws Exception {

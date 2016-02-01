@@ -10,7 +10,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.common.collect.Maps;
 import com.manager.common.ErrorCode;
 import com.manager.common.exception.ApplicationException;
-
+/**
+ * 登录页
+ * @author leo.liao
+ *
+ */
 @Controller
 @RequestMapping("/manager")
 public class LoginController {

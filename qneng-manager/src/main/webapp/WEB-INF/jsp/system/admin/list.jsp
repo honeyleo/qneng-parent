@@ -78,7 +78,7 @@
 						<td>${funcs:getRoleName(user.roleId)}</td>
 						<td>${funcs:formatDateTime(user.createTime,'yyyy-MM-dd HH:mm:ss')}</td>
 						<td style="width: 60px;">
-							<div class='hidden-phone visible-desktop btn-group'>
+							<div class='btn-group'>
 								<funcs:permission privilege="20" module="用戶管理_编辑">
 									<a class='btn btn-mini btn-info' title="编辑" onclick="editUser('${user.id }');">修改</i></a>
 								</funcs:permission>

@@ -24,6 +24,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
 import com.manager.model.Criteria;
 
+/**
+ * 终端组串相关API类
+ * @author leo.liao
+ *
+ */
 @Controller
 @RequestMapping("/app")
 public class AppBunchController {
@@ -36,6 +41,13 @@ public class AppBunchController {
 	@Resource
 	private AlarmService alarmService;
 	
+	/**
+	 * 组串列表
+	 * @param stationId
+	 * @param search
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/bunchList")
 	@ResponseBody
 	public Object list(@RequestParam(value = "stationId", required = false, defaultValue = "0") Long stationId, 

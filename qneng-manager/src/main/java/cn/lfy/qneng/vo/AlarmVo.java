@@ -68,6 +68,7 @@ public class AlarmVo implements Serializable {
 	}
 
 	public long getTime() {
+		time = createTime.getTime();
 		return time;
 	}
 

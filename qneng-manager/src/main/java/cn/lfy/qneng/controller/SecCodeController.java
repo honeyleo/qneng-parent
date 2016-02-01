@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /** 
  * 类名称：SecCodeController
- * 类描述： 
+ * 类描述： 登录验证码
  * 作者单位： 
  * 联系方式：
  * @version

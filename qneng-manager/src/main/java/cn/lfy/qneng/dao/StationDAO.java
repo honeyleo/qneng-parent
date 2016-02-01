@@ -5,7 +5,11 @@ import java.util.List;
 import cn.lfy.qneng.model.Station;
 
 import com.manager.model.Criteria;
-
+/**
+ * 数据库操作电站相关接口
+ * @author leo.liao
+ *
+ */
 public interface StationDAO {
 
 	/**

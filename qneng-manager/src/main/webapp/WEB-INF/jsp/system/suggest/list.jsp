@@ -52,7 +52,7 @@
 						<td>${entity.content }</td>
 						<td>${funcs:formatDateTime(entity.createTime,'yyyy-MM-dd HH:mm:ss')}</td>
 						<td style="width: 60px;">
-							<div class='hidden-phone visible-desktop btn-group'>
+							<div class='btn-group'>
 								<a class='btn btn-mini btn-danger' title="删除" onclick="delUser('${entity.id }');">删除</a>
 							</div>
 						</td>

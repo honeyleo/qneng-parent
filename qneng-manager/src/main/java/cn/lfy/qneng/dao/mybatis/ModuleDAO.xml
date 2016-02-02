@@ -136,6 +136,9 @@
       <if test="lastCapacity != null" >
         lastCapacity = #{lastCapacity},
       </if>
+      <if test="id != null" >
+        lastUpdateTime = NOW(),
+      </if>
     </set>
     where id = #{id}
   </update>

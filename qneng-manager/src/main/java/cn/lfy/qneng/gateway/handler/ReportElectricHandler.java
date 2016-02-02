@@ -50,7 +50,7 @@ public class ReportElectricHandler implements Handler {
 			tmp.setCurVlot(nodeDataReq.getOutvolt());
 			tmp.setCurCurr(nodeDataReq.getCurr());
 			tmp.setCurTemp(nodeDataReq.getTemp());
-			tmp.setLastCapacity(nodeDataReq.getCapacity());
+			tmp.setLastCapacity(nodeDataReq.getCapacity()*1000);
 			moduleService.updateByIdSelective(tmp);
 			Bunch bunch = bunchService.findById(module.getBunchId());
 			if(bunch != null) {
@@ -61,10 +61,14 @@ public class ReportElectricHandler implements Handler {
 						moduleData.setCapacity(0D);
 						moduleData.setPrevCapacity(0D);
 					} else {
-						moduleData.setCapacity(nodeDataReq.getCapacity() - module.getLastCapacity());
+						Double capacity = nodeDataReq.getCapacity()*1000 - module.getLastCapacity();
+						if(capacity.doubleValue() < 0D) {
+							capacity = 0D;
+						}
+						moduleData.setCapacity(capacity);
 						moduleData.setPrevCapacity(module.getLastCapacity());
 					}
-					moduleData.setCurCapacity(nodeDataReq.getCapacity());
+					moduleData.setCurCapacity(nodeDataReq.getCapacity()*1000);
 				}
 				moduleData.setStationId(bunch.getStationId());
 				moduleData.setBunchId(bunch.getId());

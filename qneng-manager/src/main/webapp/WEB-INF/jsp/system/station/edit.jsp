@@ -28,6 +28,7 @@
 		
 <script type="text/javascript">
 $(document).ready(function(){
+	city = document.getElementById('city');
 	init("${entity.province }", "${entity.city }");
 });
 	$(top.hangge());
@@ -221,7 +222,7 @@ $(document).ready(function(){
 		<script src="<%=basePath %>resources/js/ace-elements.min.js"></script>
 		<script src="<%=basePath %>resources/js/ace.min.js"></script>
 		<script type="text/javascript" src="<%=basePath %>resources/js/chosen.jquery.min.js"></script><!-- 下拉框 -->
-		<script language=javascript> 
+<script type="text/javascript"> 
 
 cities = new Object(); 
 

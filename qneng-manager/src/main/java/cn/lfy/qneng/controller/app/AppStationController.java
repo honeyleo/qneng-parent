@@ -50,7 +50,7 @@ public class AppStationController {
 			Double total = moduleDataService.getTotal(stationId, null, null);
 			builder.put("allCapacity", total != null ? total : 0);
 			if(total != null) {
-				builder.put("displacement", NumberUtil.get2Double(total * 0.785));
+				builder.put("displacement", NumberUtil.get2Double(total/1000 * 0.785));
 			}
 			Double year = moduleDataService.getTotalForYear(stationId, null, null);
 			builder.put("yearCapacity", year != null ? year : 0);

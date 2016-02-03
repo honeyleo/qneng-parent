@@ -44,6 +44,8 @@ public class GateServer {
 	private static Map<String, Node> ONLINE_MODULE = Maps.newConcurrentMap();
 	
 	public void start() {
+		port = Integer.parseInt(System.getProperty("gate.server.port", "9000"));
+		logger.info("获取到网关服务器端口：{}，开始启动网关服务器...", port);
 		// Configure the server.
 		EventLoopGroup bossGroup = new NioEventLoopGroup(bossThread, new DefaultThreadFactory("BOSS"));
 		EventLoopGroup workerGroup = new NioEventLoopGroup(workerThread, new DefaultThreadFactory("NETTY_WORKER"));

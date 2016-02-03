@@ -47,6 +47,7 @@ public class ReportElectricHandler implements Handler {
 		if(module != null) {
 			Module tmp = new Module();
 			tmp.setId(module.getId());
+			tmp.setInputVolt(nodeDataReq.getInputVolt());
 			tmp.setCurVlot(nodeDataReq.getOutvolt());
 			tmp.setCurCurr(nodeDataReq.getCurr());
 			tmp.setCurTemp(nodeDataReq.getTemp());

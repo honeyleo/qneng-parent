@@ -6,6 +6,11 @@ import com.manager.model.Admin;
 import com.manager.model.Criteria;
 import com.manager.model.PageInfo;
 
+/**
+ * 管理系统用户相关服务接口
+ * @author liaopeng
+ *
+ */
 public interface AdminService {
     /**
      * 根据条件查询记录总数

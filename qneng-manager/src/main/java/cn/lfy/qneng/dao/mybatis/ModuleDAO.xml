@@ -124,6 +124,9 @@
       <if test="BunchId != null" >
         BunchId = #{BunchId},
       </if>
+      <if test="inputVolt != null" >
+        inputVolt = #{inputVolt},
+      </if>
       <if test="curVlot != null" >
         curVlot = #{curVlot},
       </if>
@@ -151,6 +154,7 @@
   
   <select id="getDataInfo" parameterType="cn.lfy.qneng.vo.ModuleQuery" resultType="cn.lfy.qneng.vo.DataInfo">
     select 
+    sum(m.inputVolt) as inputVolt,
     sum(m.curVlot) as curVlot,
     sum(m.curCurr) as curCurr,
     SUM(truncate(m.curVlot*m.curCurr/1000,2))*1000 as curPower

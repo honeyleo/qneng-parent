@@ -61,7 +61,10 @@ public class Module implements Serializable {
 	private Date createTime;
 	
 	private Long lastUpdateTime;
-
+	/**
+	 * 输入电压
+	 */
+	private Double inputVolt;
 	/**
 	 * 当前电压
 	 */
@@ -185,6 +188,14 @@ public class Module implements Serializable {
 
 	public void setLastUpdateTime(Long lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
+	}
+
+	public Double getInputVolt() {
+		return inputVolt;
+	}
+
+	public void setInputVolt(Double inputVolt) {
+		this.inputVolt = inputVolt;
 	}
 
 	public Double getCurVlot() {

@@ -115,6 +115,7 @@ public class AppBunchController {
 			if(dataInfo != null) {
 				//TODO 当前温度暂时不填，等确定再说
 				builder.put("curTemp", 40);
+				builder.put("inputVolt", dataInfo.getInputVolt());
 				builder.put("curPower", dataInfo.getCurPower());
 				builder.put("curVlot", dataInfo.getCurVlot());
 				builder.put("curCurr", dataInfo.getCurCurr());

@@ -111,6 +111,7 @@ public class AppModuleController {
 			builder.put("manufactory", module.getManufactory());
 			builder.put("curTemp", module.getCurTemp());
 			builder.put("curPower", module.getCurVlot() * module.getCurCurr());
+			builder.put("inputVolt", module.getInputVolt());
 			builder.put("curVlot", module.getCurVlot());
 			builder.put("curCurr", module.getCurCurr());
 			AlarmQuery alarmQuery = new AlarmQuery();

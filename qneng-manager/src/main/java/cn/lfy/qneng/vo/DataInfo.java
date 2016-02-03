@@ -2,11 +2,21 @@ package cn.lfy.qneng.vo;
 
 public class DataInfo {
 
+	private Double inputVolt;
+	
 	private Double curVlot;
 
 	private Double curPower;
 	
 	private Double curCurr;
+
+	public Double getInputVolt() {
+		return inputVolt;
+	}
+
+	public void setInputVolt(Double inputVolt) {
+		this.inputVolt = inputVolt;
+	}
 
 	public Double getCurVlot() {
 		return curVlot;

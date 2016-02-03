@@ -5,6 +5,11 @@ import java.util.List;
 import com.manager.model.Admin;
 import com.manager.model.Criteria;
 
+/**
+ * 账号相关DAO接口定义
+ * @author liaopeng
+ *
+ */
 public interface AdminDAO {
     /**
      * 根据条件查询记录总数

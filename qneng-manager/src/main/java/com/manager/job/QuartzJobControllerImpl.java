@@ -40,7 +40,7 @@ import com.manager.dao.ScheduleJobDAO;
  * 本类实现了InitializingBean, <br>
  * 在Spring 初始化后就会自动加载DB中配置好的Task并部署
  *
- * @author jianbin
+ * @author leo.liao
  * @date 2014-12-8 下午4:39:51
  */
 @Service

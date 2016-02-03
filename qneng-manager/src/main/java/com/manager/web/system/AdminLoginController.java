@@ -32,6 +32,11 @@ import com.manager.service.AdminService;
 import com.manager.service.MenuService;
 import com.manager.service.RoleDefaultMenuService;
 
+/**
+ * 后台管理登录和主界面逻辑
+ * @author liaopeng
+ *
+ */
 @Controller
 public class AdminLoginController implements Constants {
 
@@ -55,6 +60,12 @@ public class AdminLoginController implements Constants {
     @Autowired
 	private StationService stationService;
     
+    /**
+     * 管理后台主界面：根据session中的用户查询出该用户的权限菜单
+     * @param request
+     * @return
+     * @throws ApplicationException
+     */
     @RequestMapping("/manager/index")
     public String index(HttpServletRequest request) throws ApplicationException {
         LoginAccount account = Funcs.getSessionLoginAccount(request.getSession());
@@ -88,16 +99,32 @@ public class AdminLoginController implements Constants {
         return INDEX;
     }
 
+    /**
+     * 跳转登录页
+     * @return
+     * @throws ApplicationException
+     */
     @RequestMapping("/")
     public String manager() throws ApplicationException {
         return ADMIN_LOGIN;
     }
-    
+    /**
+     * 跳转登录页
+     * @return
+     * @throws ApplicationException
+     */
     @RequestMapping("/login")
     public String login() throws ApplicationException {
         return ADMIN_LOGIN;
     }
 
+    /**
+     * 登录验证接口
+     * @param request
+     * @param response
+     * @return
+     * @throws ApplicationException
+     */
     @RequestMapping("/dologin")
     @ResponseBody
     public Object login(HttpServletRequest request, HttpServletResponse response) throws ApplicationException {

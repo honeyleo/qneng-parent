@@ -38,6 +38,7 @@ public class NioClient2 extends Thread {
 	
 	public NioClient2(String no) {
 		this.no = no;
+		setDaemon(true);
 	}
 	public void connect(String host, int port, ConnectFuture future) throws IOException {
 		channel = SocketChannel.open();
@@ -261,6 +262,10 @@ public class NioClient2 extends Thread {
 		}
 		sum = sum & 0XFF;
 		return sum;
+	}
+	
+	public static void shutdown() {
+		scheduled.shutdownNow();
 	}
 	public static void main(String[] args) {
 		try {

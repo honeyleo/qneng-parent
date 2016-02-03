@@ -40,6 +40,7 @@ public class DisruptorEvent {
 					threadName = threadName + INDEX ++;
 				}
 				Thread thread = new Thread(r, threadName);
+				thread.setDaemon(true);
 				return thread;
 			}
 		});

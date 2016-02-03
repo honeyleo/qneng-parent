@@ -11,6 +11,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -209,6 +210,12 @@ public class MockModuleController implements Constants {
 				randomAlarm();
 			}
 		}, 60, 60, TimeUnit.MINUTES);
+    }
+    
+    @PreDestroy
+    public void shutdown() {
+    	scheduled.shutdownNow();
+    	NioClient2.shutdown();
     }
     
     static Map<String, ScheduledFuture<?>> MAP_SCHEDULED = Maps.newConcurrentMap();

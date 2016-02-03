@@ -2,6 +2,7 @@ package cn.lfy.qneng.controller.app;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Resource;
 
@@ -113,12 +114,19 @@ public class AppBunchController {
 			builder.put("monthCapacity", month);
 			DataInfo dataInfo = moduleDataService.getDataInfo(null, bunchId);
 			if(dataInfo != null) {
+				Random r = new Random(System.currentTimeMillis());
 				//TODO 当前温度暂时不填，等确定再说
-				builder.put("curTemp", 40);
+				builder.put("curTemp", r.nextInt(40));
 				builder.put("inputVolt", dataInfo.getInputVolt());
 				builder.put("curPower", dataInfo.getCurPower());
 				builder.put("curVlot", dataInfo.getCurVlot());
 				builder.put("curCurr", dataInfo.getCurCurr());
+			} else {
+				builder.put("curTemp", 0);
+				builder.put("inputVolt", 0);
+				builder.put("curPower", 0);
+				builder.put("curVlot", 0);
+				builder.put("curCurr", 0);
 			}
 			AlarmQuery alarmQuery = new AlarmQuery();
 			alarmQuery.setBunchId(bunchId);

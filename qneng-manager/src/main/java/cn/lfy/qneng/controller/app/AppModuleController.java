@@ -110,10 +110,18 @@ public class AppModuleController {
 			builder.put("installdate", module.getInstalldate());
 			builder.put("manufactory", module.getManufactory());
 			builder.put("curTemp", module.getCurTemp());
-			builder.put("curPower", module.getCurVlot() * module.getCurCurr());
-			builder.put("inputVolt", module.getInputVolt());
-			builder.put("curVlot", module.getCurVlot());
-			builder.put("curCurr", module.getCurCurr());
+			if(module.getLastUpdateTime() > (System.currentTimeMillis()/1000 - 2400)) {
+				builder.put("curPower", module.getCurVlot() * module.getCurCurr());
+				builder.put("inputVolt", module.getInputVolt());
+				builder.put("curVlot", module.getCurVlot());
+				builder.put("curCurr", module.getCurCurr());
+			} else {
+				builder.put("curPower", 0);
+				builder.put("inputVolt", 0);
+				builder.put("curVlot", 0);
+				builder.put("curCurr", 0);
+			}
+			
 			AlarmQuery alarmQuery = new AlarmQuery();
 			alarmQuery.setModuleId(moduleId);
 			String date = DateUtils.getCurrentDate();

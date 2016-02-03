@@ -6,6 +6,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.ChannelGroupFuture;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -38,6 +39,9 @@ public class GateServer {
 	private int port;
 	static ServerBootstrap serverBootstrap;
 
+	EventLoopGroup bossGroup;
+	EventLoopGroup workerGroup;
+	
 	private static ChannelGroup allChannels = new DefaultChannelGroup(new DefaultEventExecutorGroup(1).next());
 	private static Logger logger = LoggerFactory.getLogger(GateServer.class);
 	
@@ -47,12 +51,11 @@ public class GateServer {
 		port = Integer.parseInt(System.getProperty("gate.server.port", "9000"));
 		logger.info("获取到网关服务器端口：{}，开始启动网关服务器...", port);
 		// Configure the server.
-		EventLoopGroup bossGroup = new NioEventLoopGroup(bossThread, new DefaultThreadFactory("BOSS"));
-		EventLoopGroup workerGroup = new NioEventLoopGroup(workerThread, new DefaultThreadFactory("NETTY_WORKER"));
+		bossGroup = new NioEventLoopGroup(bossThread, new DefaultThreadFactory("BOSS"));
+		workerGroup = new NioEventLoopGroup(workerThread, new DefaultThreadFactory("NETTY_WORKER"));
 		
 		try {
 			serverBootstrap = new ServerBootstrap();
-			
 			serverBootstrap.group(bossGroup, workerGroup)
 				.channel(NioServerSocketChannel.class)
 				.option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
@@ -81,10 +84,19 @@ public class GateServer {
 	}
 	
 	public void shutdown() {
-		for (int i = 0; i < 4; i++) {
-			workers[i].shutdown();
+		logger.info("停止网关服务器...");
+		try {
+			ChannelGroupFuture future = allChannels.close();
+			future.awaitUninterruptibly();// 阻塞，直到服务器关闭
+			DISRUPTOR_LOGIN.shutdown();
+			for (int i = 0; i < 4; i++) {
+				workers[i].shutdown();
+			}
+			logger.info("停止网关服务器成功...");
+		} catch(Throwable e) {
+			logger.error(e.getMessage(), e);
 		}
-		allChannels.close();
+		logger.info("停止网关服务器结束...");
 	}
 	
 	private DisruptorEvent[] workers;
@@ -93,7 +105,7 @@ public class GateServer {
 		// ------------- 初始化业务线程(线性执行) -----------------
 		workers = new DisruptorEvent[4];
 		for (int i = 0; i < 4; i++) {
-			workers[i] = new DisruptorEvent("GAME_WORKER_" + i, 1);
+			workers[i] = new DisruptorEvent("MODULE_WORKER_" + i, 1);
 		}
 	}
 	public void setPort(int port) {

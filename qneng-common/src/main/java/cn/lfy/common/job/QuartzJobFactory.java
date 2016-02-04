@@ -14,7 +14,7 @@ import cn.lfy.common.job.model.ScheduleJob;
  * 本类用于运行指定的JOB，并在通过GameCenterTaskInterface在execute的前后增加before(), after()方法
  * <br/>
  * StatefulJob接口已经不推荐使用了，换成了注解的方式，只需要给你实现的Job类加上注解@DisallowConcurrentExecution即可实现有状态
- * @author jianbin
+ * @author liao.leo
  * @date 2014-12-8 下午4:38:55
  */
 @DisallowConcurrentExecution

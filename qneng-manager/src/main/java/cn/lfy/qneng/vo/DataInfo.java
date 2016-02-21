@@ -9,6 +9,8 @@ public class DataInfo {
 	private Double curPower;
 	
 	private Double curCurr;
+	
+	private Double curTemp;
 
 	public Double getInputVolt() {
 		return inputVolt;
@@ -40,5 +42,13 @@ public class DataInfo {
 
 	public void setCurCurr(Double curCurr) {
 		this.curCurr = curCurr;
+	}
+
+	public Double getCurTemp() {
+		return curTemp;
+	}
+
+	public void setCurTemp(Double curTemp) {
+		this.curTemp = curTemp;
 	}
 }

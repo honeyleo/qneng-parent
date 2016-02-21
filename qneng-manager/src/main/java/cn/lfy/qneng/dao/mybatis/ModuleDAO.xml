@@ -14,7 +14,7 @@
     <result column="maxCurr" property="maxCurr" jdbcType="DOUBLE" />
     <result column="bunchId" property="bunchId" jdbcType="BIGINT" />
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="lastUpdateTime" property="lastUpdateTime" jdbcType="BIGINT" />
+    <result column="lastUpdateTime" property="lastUpdateTime" jdbcType="INTEGER" />
     <result column="curVlot" property="curVlot" jdbcType="DOUBLE" />
     <result column="curCurr" property="curCurr" jdbcType="DOUBLE" />
     <result column="curTemp" property="curTemp" jdbcType="DOUBLE" />
@@ -49,7 +49,23 @@
   </sql>
   
   <sql id="Base_Column_List" >
-    m.*
+    m.id as id,
+    m.name as name,
+    m.no as no,
+    m.appSecret as appSecret,
+    m.model as model,
+    m.manufactory as manufactory,
+    m.installdate as installdate,
+    m.power as power,
+    m.maxVolt as maxVolt,
+    m.maxCurr as maxCurr,
+    m.bunchId as bunchId,
+    m.createTime as createTime,
+    UNIX_TIMESTAMP(m.lastUpdateTime) as lastUpdateTime,
+    m.curVlot as curVlot,
+    m.curCurr as curCurr,
+    m.curTemp as curTemp,
+    m.lastCapacity as lastCapacity
   </sql>
   
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.manager.model.Criteria" >
@@ -157,7 +173,8 @@
     sum(m.inputVolt) as inputVolt,
     sum(m.curVlot) as curVlot,
     sum(m.curCurr) as curCurr,
-    SUM(truncate(m.curVlot*m.curCurr/1000,2))*1000 as curPower
+    SUM(truncate(m.curVlot*m.curCurr/1000,2))*1000 as curPower,
+    SUM(m.curTemp) as curTemp
     from t_module m
     left join t_bunch b
     on m.bunchId = b.id

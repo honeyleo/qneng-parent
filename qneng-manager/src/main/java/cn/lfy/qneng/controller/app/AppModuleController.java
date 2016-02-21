@@ -31,6 +31,8 @@ import com.manager.model.Criteria;
 @RequestMapping("/app")
 public class AppModuleController {
 
+	private final static int ONLINE = 2400;
+	
 	@Resource
 	private ModuleService moduleService;
 	@Resource
@@ -63,9 +65,12 @@ public class AppModuleController {
 				obj.put("moduleId", module.getId());
 				obj.put("name", module.getName());
 				obj.put("serial", module.getNo());
+				
 				Double curPower = 0D;
-				if(module.getCurCurr() != null && module.getCurVlot() != null) {
-					curPower = module.getCurVlot()*module.getCurCurr();
+				if(module.getLastUpdateTime() > (System.currentTimeMillis()/1000 - ONLINE)) {
+					if(module.getCurCurr() != null && module.getCurVlot() != null) {
+						curPower = module.getCurVlot()*module.getCurCurr();
+					}
 				}
 				
 				obj.put("curPower", curPower);
@@ -109,18 +114,20 @@ public class AppModuleController {
 			builder.put("serial", module.getNo());
 			builder.put("installdate", module.getInstalldate());
 			builder.put("manufactory", module.getManufactory());
-			builder.put("curTemp", module.getCurTemp());
-			if(module.getLastUpdateTime() > (System.currentTimeMillis()/1000 - 2400)) {
-				builder.put("curPower", module.getCurVlot() * module.getCurCurr());
-				builder.put("inputVolt", module.getInputVolt());
-				builder.put("curVlot", module.getCurVlot());
-				builder.put("curCurr", module.getCurCurr());
-			} else {
-				builder.put("curPower", 0);
-				builder.put("inputVolt", 0);
-				builder.put("curVlot", 0);
-				builder.put("curCurr", 0);
-			}
+			
+			Double curTemp = 0D, inputVolt = 0D,curPower = 0D,curVlot = 0D,curCurr = 0D;
+			if(module.getLastUpdateTime() > (System.currentTimeMillis()/1000 - ONLINE)) {
+				curTemp = module.getCurTemp() != null ? module.getCurTemp() : 0;
+				inputVolt = module.getInputVolt() != null ? module.getInputVolt() : 0;
+				curVlot = module.getCurVlot() != null ? module.getCurVlot() : 0;
+				curCurr = module.getCurCurr() != null ? module.getCurCurr() : 0;
+				curPower = curVlot*curCurr;
+			} 
+			builder.put("curTemp", curTemp);
+			builder.put("curPower", curPower);
+			builder.put("inputVolt", inputVolt);
+			builder.put("curVlot", curVlot);
+			builder.put("curCurr", curCurr);
 			
 			AlarmQuery alarmQuery = new AlarmQuery();
 			alarmQuery.setModuleId(moduleId);

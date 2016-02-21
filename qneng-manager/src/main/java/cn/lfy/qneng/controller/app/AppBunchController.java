@@ -2,7 +2,6 @@ package cn.lfy.qneng.controller.app;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import javax.annotation.Resource;
 
@@ -113,21 +112,19 @@ public class AppBunchController {
 			Double month = moduleDataService.getTotalForMonth(null, bunchId, null);
 			builder.put("monthCapacity", month);
 			DataInfo dataInfo = moduleDataService.getDataInfo(null, bunchId);
+			Double curTemp = 0D, inputVolt = 0D,curPower = 0D,curVlot = 0D,curCurr = 0D;
 			if(dataInfo != null) {
-				Random r = new Random(System.currentTimeMillis());
-				//TODO 当前温度暂时不填，等确定再说
-				builder.put("curTemp", r.nextInt(40));
-				builder.put("inputVolt", dataInfo.getInputVolt());
-				builder.put("curPower", dataInfo.getCurPower());
-				builder.put("curVlot", dataInfo.getCurVlot());
-				builder.put("curCurr", dataInfo.getCurCurr());
-			} else {
-				builder.put("curTemp", 0);
-				builder.put("inputVolt", 0);
-				builder.put("curPower", 0);
-				builder.put("curVlot", 0);
-				builder.put("curCurr", 0);
+				curTemp = dataInfo.getCurTemp() != null ? dataInfo.getCurTemp() : 0;
+				inputVolt = dataInfo.getInputVolt() != null ? dataInfo.getInputVolt() : 0;
+				curPower = dataInfo.getCurPower() != null ? dataInfo.getCurPower() : 0;
+				curVlot = dataInfo.getCurVlot() != null ? dataInfo.getCurVlot() : 0;
+				curCurr = dataInfo.getCurCurr() != null ? dataInfo.getCurCurr() : 0;
 			}
+			builder.put("curTemp", curTemp);
+			builder.put("inputVolt", inputVolt);
+			builder.put("curPower", curPower);
+			builder.put("curVlot", curVlot);
+			builder.put("curCurr", curCurr);
 			AlarmQuery alarmQuery = new AlarmQuery();
 			alarmQuery.setBunchId(bunchId);
 			String date = DateUtils.getCurrentDate();

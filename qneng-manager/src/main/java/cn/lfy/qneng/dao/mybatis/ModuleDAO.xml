@@ -15,6 +15,7 @@
     <result column="bunchId" property="bunchId" jdbcType="BIGINT" />
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
     <result column="lastUpdateTime" property="lastUpdateTime" jdbcType="INTEGER" />
+    <result column="inputVlot" property="inputVlot" jdbcType="DOUBLE" />
     <result column="curVlot" property="curVlot" jdbcType="DOUBLE" />
     <result column="curCurr" property="curCurr" jdbcType="DOUBLE" />
     <result column="curTemp" property="curTemp" jdbcType="DOUBLE" />
@@ -62,6 +63,7 @@
     m.bunchId as bunchId,
     m.createTime as createTime,
     UNIX_TIMESTAMP(m.lastUpdateTime) as lastUpdateTime,
+    m.inputVlot as inputVlot,
     m.curVlot as curVlot,
     m.curCurr as curCurr,
     m.curTemp as curTemp,

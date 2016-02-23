@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.manager.common.ErrorCode;
+import com.manager.common.exception.ApplicationException;
+
 import cn.lfy.common.model.Message;
 import cn.lfy.common.utils.DateUtils;
 import cn.lfy.qneng.service.AlarmService;
@@ -50,6 +53,9 @@ public class AppHistoryController {
 		stationId = stationId == 0L ? null : stationId;
 		bunchId = bunchId == 0L ? null : bunchId;
 		moduleId = moduleId == 0L ? null : moduleId;
+		if(!(stationId != null || bunchId != null || moduleId != null)) {
+			throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "stationId或bunchId或moduleId");
+		}
 		if(date == 0) {
 			date = System.currentTimeMillis();
 		}

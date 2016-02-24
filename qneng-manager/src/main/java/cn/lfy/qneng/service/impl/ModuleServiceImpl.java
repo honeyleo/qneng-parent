@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import cn.lfy.qneng.dao.ModuleDAO;
 import cn.lfy.qneng.model.Module;
 import cn.lfy.qneng.service.ModuleService;
+import cn.lfy.qneng.vo.DataInfo;
 
 import com.manager.model.Criteria;
 import com.manager.model.PageInfo;
@@ -67,4 +68,12 @@ public class ModuleServiceImpl implements ModuleService {
 		return dao.deleteByPrimaryKey(id);
 	}
     
+	@Override
+	public DataInfo getBunchDataInfo(Long bunchId) {
+		return dao.getBunchDataInfo(bunchId);
+	}
+	@Override
+	public Double getStationPower(Long stationId) {
+		return dao.getStationPower(stationId);
+	}
 }

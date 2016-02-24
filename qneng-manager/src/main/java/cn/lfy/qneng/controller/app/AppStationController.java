@@ -14,10 +14,10 @@ import cn.lfy.common.utils.DateUtils;
 import cn.lfy.common.utils.NumberUtil;
 import cn.lfy.qneng.model.Station;
 import cn.lfy.qneng.service.ModuleDataService;
+import cn.lfy.qneng.service.ModuleService;
 import cn.lfy.qneng.service.StationService;
 import cn.lfy.qneng.service.WeatherService;
 import cn.lfy.qneng.service.WeatherService.Weather;
-import cn.lfy.qneng.vo.DataInfo;
 /**
  * 终端电站相关API
  * @author leo.liao
@@ -33,6 +33,8 @@ public class AppStationController {
 	private ModuleDataService moduleDataService;
 	@Resource
 	private WeatherService weatherService;
+	@Resource
+	private ModuleService moduleService;
 	/**
 	 * 获取电站概览
 	 * @param stationId
@@ -60,11 +62,8 @@ public class AppStationController {
 			builder.put("stationTemp", weather.getTemp());
 			builder.put("stationWeather", weather.getWeather());
 			
-			DataInfo dataInfo = moduleDataService.getDataInfo(stationId, null);
-			if(dataInfo != null) {
-				Double curPower = dataInfo.getCurPower();
-				builder.put("curPower", curPower != null ? curPower : 0);
-			}
+			Double curPower = moduleService.getStationPower(stationId);
+			builder.put("curPower", curPower != null ? curPower : 0);
 		}
 		return builder.build();
 	}

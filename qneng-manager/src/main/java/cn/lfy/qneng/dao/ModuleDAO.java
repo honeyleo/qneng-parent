@@ -4,7 +4,6 @@ import java.util.List;
 
 import cn.lfy.qneng.model.Module;
 import cn.lfy.qneng.vo.DataInfo;
-import cn.lfy.qneng.vo.ModuleQuery;
 
 import com.manager.model.Criteria;
 /**
@@ -50,9 +49,15 @@ public interface ModuleDAO {
      */
     Module selectByNo(String no);
     /**
-     * 查询电站/组串/组件电压和电流
+     * 查询组串电压、电流、功率、平均温度
+     * @param bunchId
+     * @return
+     */
+    DataInfo getBunchDataInfo(Long bunchId);
+    /**
+     * 查询电站总功率
      * @param query
      * @return
      */
-    DataInfo getDataInfo(ModuleQuery query);
+    Double getStationPower(Long stationId);
 }

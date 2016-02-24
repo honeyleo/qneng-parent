@@ -119,7 +119,7 @@
     <if test="startTime != null and endTime != null">
     	and createTime between #{startTime} and #{endTime}
     </if>
-    group by date_format(createTime, '%H')
+    group by moduleId,date_format(createTime, '%H')
     order by date_format(createTime, '%H') asc
   </select>
   <select id="getMonthCapacityData" parameterType="cn.lfy.qneng.vo.ModuleQuery" resultType="cn.lfy.qneng.vo.PowerDataInfo">

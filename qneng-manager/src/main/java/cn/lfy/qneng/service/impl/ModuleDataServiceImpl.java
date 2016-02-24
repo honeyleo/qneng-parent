@@ -15,7 +15,6 @@ import cn.lfy.qneng.dao.ModuleDataDAO;
 import cn.lfy.qneng.dao.ModuleDataDayDAO;
 import cn.lfy.qneng.model.ModuleData;
 import cn.lfy.qneng.service.ModuleDataService;
-import cn.lfy.qneng.vo.DataInfo;
 import cn.lfy.qneng.vo.ModuleQuery;
 import cn.lfy.qneng.vo.PowerDataInfo;
 
@@ -103,14 +102,6 @@ public class ModuleDataServiceImpl implements ModuleDataService {
 	}
 
 	@Override
-	public DataInfo getDataInfo(Long stationId, Long bunchId) {
-		ModuleQuery query = new ModuleQuery();
-		query.setStationId(stationId);
-		query.setBunchId(bunchId);
-		return moduleDao.getDataInfo(query);
-	}
-
-	@Override
 	public double[] getPowerForDate(String date, Long stationId, Long bunchId, Long moduleId) {
 		ModuleQuery query = new ModuleQuery();
 		query.setStationId(stationId);
@@ -126,8 +117,7 @@ public class ModuleDataServiceImpl implements ModuleDataService {
 		for(int i = 0; i < 24; i++) {
 			for(PowerDataInfo info : list) {
 				if(info.getValue() == i) {
-					data[i] = info.getCurPower();
-					break;
+					data[i] += info.getCurPower();
 				}
 			}
 		}

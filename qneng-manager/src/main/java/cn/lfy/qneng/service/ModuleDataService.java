@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import cn.lfy.qneng.model.ModuleData;
-import cn.lfy.qneng.vo.DataInfo;
 
 import com.manager.model.Criteria;
 import com.manager.model.PageInfo;
@@ -53,12 +52,6 @@ public interface ModuleDataService {
      * @return
      */
     Double  getTotalForMonth(Long stationId, Long bunchId, Long moduleId);
-    /**
-     * 获取当前电站信息
-     * @param stationId
-     * @return
-     */
-    DataInfo getDataInfo(Long stationId, Long bunchId);
     /**
      * 获取某一天的发电功率数据
      * @param date yyyy-MM-dd

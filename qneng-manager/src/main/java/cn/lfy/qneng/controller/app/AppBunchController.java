@@ -16,6 +16,7 @@ import cn.lfy.qneng.model.Bunch;
 import cn.lfy.qneng.service.AlarmService;
 import cn.lfy.qneng.service.BunchService;
 import cn.lfy.qneng.service.ModuleDataService;
+import cn.lfy.qneng.service.ModuleService;
 import cn.lfy.qneng.vo.AlarmQuery;
 import cn.lfy.qneng.vo.DataInfo;
 
@@ -40,6 +41,8 @@ public class AppBunchController {
 	
 	@Resource
 	private AlarmService alarmService;
+	@Resource
+	private ModuleService moduleService;
 	
 	/**
 	 * 组串列表
@@ -68,7 +71,7 @@ public class AppBunchController {
 				obj.put("element", bunch.getElement());
 				obj.put("line", bunch.getLine());
 				obj.put("row", bunch.getRow());
-				DataInfo dataInfo = moduleDataService.getDataInfo(null, bunch.getId());
+				DataInfo dataInfo = moduleService.getBunchDataInfo(bunch.getId());
 				Double curPower = null;
 				if(dataInfo != null) {
 					curPower = dataInfo.getCurPower();
@@ -111,7 +114,7 @@ public class AppBunchController {
 			builder.put("yearCapacity", year);
 			Double month = moduleDataService.getTotalForMonth(null, bunchId, null);
 			builder.put("monthCapacity", month);
-			DataInfo dataInfo = moduleDataService.getDataInfo(null, bunchId);
+			DataInfo dataInfo = moduleService.getBunchDataInfo(bunchId);
 			Double curTemp = 0D, inputVolt = 0D,curPower = 0D,curVlot = 0D,curCurr = 0D;
 			if(dataInfo != null) {
 				curTemp = dataInfo.getCurTemp() != null ? dataInfo.getCurTemp() : 0;

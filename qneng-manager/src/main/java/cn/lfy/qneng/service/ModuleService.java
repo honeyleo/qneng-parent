@@ -3,6 +3,7 @@ package cn.lfy.qneng.service;
 import java.util.List;
 
 import cn.lfy.qneng.model.Module;
+import cn.lfy.qneng.vo.DataInfo;
 
 import com.manager.model.Criteria;
 import com.manager.model.PageInfo;
@@ -49,5 +50,17 @@ public interface ModuleService {
      * @param no 设备唯一码
      */
     Module findByNo(String no);
+    /**
+     * 获取组串电压、电流、功率、平均温度
+     * @param bunchId
+     * @return
+     */
+    DataInfo getBunchDataInfo(Long bunchId);
+    /**
+     * 获取电站总功率
+     * @param stationId
+     * @return
+     */
+    Double getStationPower(Long stationId);
     
 }

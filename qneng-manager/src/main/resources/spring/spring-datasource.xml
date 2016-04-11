@@ -20,9 +20,9 @@
  	<bean id="dataSource-admin" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <!-- 基本属性 url、user、password -->
         <property name="driverClassName" value="com.mysql.jdbc.Driver"></property> 
-        <property name="url" value="${payAdminUrl}" />
-        <property name="username" value="${payAdminUsername}" />
-        <property name="password" value="${payAdminPassword}" />
+        <property name="url" value="${dbUrl}" />
+        <property name="username" value="${dbUsername}" />
+        <property name="password" value="${dbPassword}" />
         
         <!-- 配置初始化大小、最小、最大 -->
         <property name="initialSize" value="2"/>

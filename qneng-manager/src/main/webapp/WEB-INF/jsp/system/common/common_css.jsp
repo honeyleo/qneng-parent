@@ -36,3 +36,5 @@
 <script src="<%=request.getContextPath() %>/resources/ace/assets/js/html5shiv.js"></script>
 <script src="<%=request.getContextPath() %>/resources/ace/assets/js/respond.js"></script>
 <![endif]-->
+
+<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/plugins/bootstrap-dialog/bootstrap-dialog.css" />

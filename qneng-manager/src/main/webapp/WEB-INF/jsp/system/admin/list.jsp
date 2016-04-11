@@ -11,6 +11,7 @@
 	<head>
 	<base href="<%=basePath%>">
 	<%@ include file="../common/common_css.jsp"%>
+	<%@ include file="../common/common_js.jsp"%>
 	</head> 
 <body>
 		
@@ -99,7 +100,7 @@
 			<tr>
 				<td style="vertical-align:top;">
 					<funcs:permission privilege="18" module="用戶管理_新增">
-						<a class="btn btn-small btn-success" onclick="add();">新增</a>
+						<a class="btn btn-small btn-success" onclick="add2();">新增</a>
 					</funcs:permission>
 					<funcs:permission privilege="23" module="用戶管理_批量删除">
 						<a title="批量删除" class="btn btn-small btn-danger" onclick="makeAll('确定要删除选中的数据吗?');" ><i class='icon-trash'></i></a>
@@ -165,6 +166,25 @@
 			 diag.show();
 		}
 		
+		function add2() {
+			BootstrapDialog.show({
+				title:'添加用户',
+				message: $('<div></div>').load('<%=basePath%>manager/admin/goadd'),
+	            buttons: [{
+	                label: '关闭',
+	                action: function(dialog) {
+	                	dialog.close();
+	                }
+	            }, {
+	                label: '保存',
+	                cssClass: 'btn-primary',
+	                action: function(dialog) {
+	                	dialog.close();
+	                }
+	            }]
+	            
+	        });
+		}
 		//修改
 		function editUser(user_id){
 			 top.jzts();
@@ -288,7 +308,50 @@
 		});
 		
 		</script>
+	<div id="modal" style="display: none;">
+		<form action="<%=basePath %>manager/admin/${uri}" name="userForm" id="userForm" method="post">
+		<input type="hidden" name="id" id="user_id" value="${admin.id }"/>
+		<div id="zhongxin">
+		<table>
+			
+			<tr class="info">
+				<td>
+				<select name="roleId" id="role_id" data-placeholder="请选择角色" style="vertical-align:top;">
+				<option value=""></option>
+				<c:forEach items="${roles}" var="role">
+					<option value="${role.id }" <c:if test="${role.id == admin.roleId }">selected</c:if>>${role.name }</option>
+				</c:forEach>
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td><input type="text" name="username" id="username" value="${admin.username }" maxlength="32" placeholder="这里输入用户名" title="用户名"/></td>
+			</tr>
+			<tr>
+				<td><input type="text" name="realName" id="realName" value="${admin.realName }" maxlength="32" placeholder="这里输入姓名" title="姓名"/></td>
+			</tr>
+			<tr>
+				<td><input type="password" name="password" id="password"  maxlength="32" placeholder="输入密码" title="密码"/></td>
+			</tr>
+			<tr>
+				<td><input type="password" name="chkpwd" id="chkpwd"  maxlength="32" placeholder="确认密码" title="确认密码" /></td>
+			</tr>
+			<tr>
+				<td><input type="number" name="phone" id="phone"  value="${admin.phone }"  maxlength="32" placeholder="这里输入手机号" title="手机号"/></td>
+			</tr>
+			<tr>
+				<td style="text-align: center;">
+					<a class="btn btn-mini btn-primary" onclick="save();">保存</a>
+					<a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
+				</td>
+			</tr>
+		</table>
+		</div>
 		
+		<div id="zhongxin2" class="center" style="display:none"><br/><br/><br/><br/><img src="<%=basePath %>resources/images/jiazai.gif" /><br/><h4 class="lighter block green"></h4></div>
+		
+	</form>
+	</div>
 	</body>
 </html>
 

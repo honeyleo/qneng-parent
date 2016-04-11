@@ -83,7 +83,7 @@ public class AdminController implements Constants {
         page.setEntityOrField(true);
         page.getCurrentResult();
         request.setAttribute("pd", pd);
-        return new ModelAndView("/system/admin/list-new");
+        return new ModelAndView("/system/admin/list");
     }
     
     /**

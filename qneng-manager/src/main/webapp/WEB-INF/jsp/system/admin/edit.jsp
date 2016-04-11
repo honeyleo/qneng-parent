@@ -5,196 +5,39 @@
 	String path = request.getContextPath();
 	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<base href="<%=basePath%>">
+		<%@ include file="../common/common_css.jsp"%>
+		<%@ include file="../common/common_js.jsp"%>
 		<meta charset="utf-8" />
 		<title></title>
 		<meta name="description" content="overview & stats" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link href="<%=basePath %>resources/css/bootstrap.min.css" rel="stylesheet" />
-		<link href="<%=basePath %>resources/css/bootstrap-responsive.min.css" rel="stylesheet" />
-		<link rel="stylesheet" href="<%=basePath %>resources/css/font-awesome.min.css" />
-		<!-- 下拉框 -->
-		<link rel="stylesheet" href="<%=basePath %>resources/css/chosen.css" />
-		<link rel="stylesheet" href="<%=basePath %>resources/css/ace.min.css" />
-		<link rel="stylesheet" href="<%=basePath %>resources/css/ace-responsive.min.css" />
-		<link rel="stylesheet" href="<%=basePath %>resources/css/ace-skins.min.css" />
-		<script type="text/javascript" src="<%=basePath %>resources/js/jquery-1.7.2.js"></script>
-		<!--提示框-->
-		<script type="text/javascript" src="<%=basePath %>resources/js/jquery.tips.js"></script>
 		
-<script type="text/javascript">
-	$(top.hangge());
-	$(document).ready(function(){
-		if($("#user_id").val()!=""){
-			$("#username").attr("readonly","readonly");
-			$("#username").css("color","gray");
-		}
-	});
-	
-	//保存
-	function save(){
-		if($("#role_id").val()==""){
-			
-			$("#role_id").tips({
-				side:3,
-	            msg:'选择角色',
-	            bg:'#AE81FF',
-	            time:2
-	        });
-			
-			$("#role_id").focus();
-			return false;
-		}
-		if($("#username").val()==""){
-			
-			$("#username").tips({
-				side:3,
-	            msg:'输入用户名',
-	            bg:'#AE81FF',
-	            time:2
-	        });
-			
-			$("#username").focus();
-			$("#username").val('');
-			$("#username").css("background-color","white");
-			return false;
-		}else{
-			$("#username").val(jQuery.trim($('#username').val()));
-		}
-		
-		if($("#user_id").val()=="" && $("#password").val()==""){
-			
-			$("#password").tips({
-				side:3,
-	            msg:'输入密码',
-	            bg:'#AE81FF',
-	            time:2
-	        });
-			
-			$("#password").focus();
-			return false;
-		}
-		if($("#password").val()!=$("#chkpwd").val()){
-			
-			$("#chkpwd").tips({
-				side:3,
-	            msg:'两次密码不相同',
-	            bg:'#AE81FF',
-	            time:3
-	        });
-			
-			$("#chkpwd").focus();
-			return false;
-		}
-		if($("#realName").val()==""){
-			
-			$("#realName").tips({
-				side:3,
-	            msg:'输入姓名',
-	            bg:'#AE81FF',
-	            time:3
-	        });
-			$("#realName").focus();
-			return false;
-		}
-		
-		var myreg = /^(((13[0-9]{1})|159)+\d{8})$/;
-		if($("#phone").val()==""){
-			
-			$("#phone").tips({
-				side:3,
-	            msg:'输入手机号',
-	            bg:'#AE81FF',
-	            time:3
-	        });
-			$("#phone").focus();
-			return false;
-		}else if($("#phone").val().length != 11 && !myreg.test($("#phone").val())){
-			$("#phone").tips({
-				side:3,
-	            msg:'手机号格式不正确',
-	            bg:'#AE81FF',
-	            time:3
-	        });
-			$("#phone").focus();
-			return false;
-		}
-		
-		$("#userForm").submit();
-		$("#zhongxin").hide();
-		$("#zhongxin2").show();
-	}
-	
-</script>
 	</head>
 <body>
-	<form action="<%=basePath %>manager/admin/${uri}" name="userForm" id="userForm" method="post">
-		<input type="hidden" name="id" id="user_id" value="${admin.id }"/>
-		<div id="zhongxin">
-		<table>
-			
-			<tr class="info">
-				<td>
-				<select name="roleId" id="role_id" data-placeholder="请选择角色" style="vertical-align:top;">
-				<option value=""></option>
-				<c:forEach items="${roles}" var="role">
-					<option value="${role.id }" <c:if test="${role.id == admin.roleId }">selected</c:if>>${role.name }</option>
-				</c:forEach>
-				</select>
-				</td>
-			</tr>
-			<tr>
-				<td><input type="text" name="username" id="username" value="${admin.username }" maxlength="32" placeholder="这里输入用户名" title="用户名"/></td>
-			</tr>
-			<tr>
-				<td><input type="text" name="realName" id="realName" value="${admin.realName }" maxlength="32" placeholder="这里输入姓名" title="姓名"/></td>
-			</tr>
-			<tr>
-				<td><input type="password" name="password" id="password"  maxlength="32" placeholder="输入密码" title="密码"/></td>
-			</tr>
-			<tr>
-				<td><input type="password" name="chkpwd" id="chkpwd"  maxlength="32" placeholder="确认密码" title="确认密码" /></td>
-			</tr>
-			<tr>
-				<td><input type="number" name="phone" id="phone"  value="${admin.phone }"  maxlength="32" placeholder="这里输入手机号" title="手机号"/></td>
-			</tr>
-			<tr>
-				<td style="text-align: center;">
-					<a class="btn btn-mini btn-primary" onclick="save();">保存</a>
-					<a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
-				</td>
-			</tr>
-		</table>
-		</div>
-		
-		<div id="zhongxin2" class="center" style="display:none"><br/><br/><br/><br/><img src="<%=basePath %>resources/images/jiazai.gif" /><br/><h4 class="lighter block green"></h4></div>
-		
-	</form>
-	
-		<!-- 引入 -->
-		<script type="text/javascript">window.jQuery || document.write("<script src='<%=basePath %>resources/js/jquery-1.9.1.min.js'>\x3C/script>");</script>
-		<script src="<%=basePath %>resources/js/bootstrap.min.js"></script>
-		<script src="<%=basePath %>resources/js/ace-elements.min.js"></script>
-		<script src="<%=basePath %>resources/js/ace.min.js"></script>
-		<script type="text/javascript" src="<%=basePath %>resources/js/chosen.jquery.min.js"></script><!-- 下拉框 -->
-		
-		<script type="text/javascript">
-		
-		$(function() {
-			
-			//单选框
-			$(".chzn-select").chosen(); 
-			$(".chzn-select-deselect").chosen({allow_single_deselect:true}); 
-			
-			//日期框
-			//$('.date-picker').datepicker();
-			
-		});
-		
-		</script>
-	
+	<form>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputFile">File input</label>
+    <input type="file" id="exampleInputFile">
+    <p class="help-block">Example block-level help text here.</p>
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox"> Check me out
+    </label>
+  </div>
+</form>
 </body>
 </html>

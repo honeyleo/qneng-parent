@@ -212,5 +212,6 @@
   <module>qneng-manager</module>
   <module>qneng-common</module>
   <module>qneng-client</module>
+  <module>wx-dev</module>
   </modules>
 </project>

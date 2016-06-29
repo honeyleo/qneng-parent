@@ -21,7 +21,7 @@ public class ApplicationExceptionResolver implements HandlerExceptionResolver
 	private static Logger logger = LoggerFactory.getLogger(ApplicationExceptionResolver.class);
 	private MessageSource messageSource;
 
-	private static final String VIEW_ERROR = "error";
+	private static final String VIEW_ERROR = "/WEB-INF/jsp/error.jsp";
 	
 	public void setMessageSource(MessageSource messageSource)
 	{
@@ -68,6 +68,6 @@ public class ApplicationExceptionResolver implements HandlerExceptionResolver
 		}
 		model.put("ret", errorcode);
 		model.put("msg", errorMessage);
-		return new ModelAndView("/WEB-INF/jsp/" + VIEW_ERROR + ".jsp", model);
+		return new ModelAndView(VIEW_ERROR, model);
 	}
 }

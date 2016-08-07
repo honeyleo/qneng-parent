@@ -81,5 +81,5 @@ public interface BaseErrorCode
 
 	// error code 使用>=100000 && <=999999范围，其中server error code 使用>=100000 && <=199999范围
 	// server服务端错务码定义
-	static final int SERVER_UNKNOW = SERVER_ERROR + 0; // 100000 表示为服务端未知错误unknow，可视为无定义时的默认值undefine
+	static final int ERROR = SERVER_ERROR + 0; // 100000 表示为服务端未知错误unknow，可视为无定义时的默认值undefine
 }

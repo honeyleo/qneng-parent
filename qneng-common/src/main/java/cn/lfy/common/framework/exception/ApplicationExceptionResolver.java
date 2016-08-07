@@ -39,14 +39,14 @@ public class ApplicationExceptionResolver implements HandlerExceptionResolver
 		String requestUrl = request.getRequestURI() + "|" + ( null == p || p.isEmpty() ? "{}" : params );
 		
 		Map<String, Object> model = new HashMap<String, Object>();
-		int errorcode = ErrorCode.SERVER_UNKNOW;
+		int errorcode = ErrorCode.ERROR;
 		String errorMessage = "";
 		if (e instanceof ApplicationException)
 		{
 			ApplicationException ae = (ApplicationException) e;
 			errorcode = ae.getErrorCode();
 			try {
-				errorMessage = messageSource.getMessage(ErrorKey.getKey(ae.getErrorCode(), ErrorCode.SERVER_UNKNOW), ae.getMessageParams(), request.getLocale());
+				errorMessage = messageSource.getMessage(ErrorKey.getKey(ae.getErrorCode(), ErrorCode.ERROR), ae.getMessageParams(), request.getLocale());
 			} catch(Throwable e2) {
 				logger.error("MessageSource getMessage error.errorCode=" + errorcode + ",msg=" + ae.getDetailMessage(), e2);
 				errorMessage = ae.getDetailMessage();
@@ -63,7 +63,7 @@ public class ApplicationExceptionResolver implements HandlerExceptionResolver
 		} 
 		else 
 		{
-			errorMessage = messageSource.getMessage(ErrorKey.getKey(ErrorCode.SERVER_UNKNOW), null, request.getLocale());
+			errorMessage = messageSource.getMessage(ErrorKey.getKey(ErrorCode.ERROR), null, request.getLocale());
 			logger.error("SERVER_ERROR_" + e.getMessage() + requestUrl, e);
 		}
 		model.put("ret", errorcode);

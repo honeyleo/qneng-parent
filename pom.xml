@@ -213,5 +213,6 @@
   <module>qneng-common</module>
   <module>qneng-client</module>
   <module>wx-dev</module>
+  <module>base-manager</module>
   </modules>
 </project>

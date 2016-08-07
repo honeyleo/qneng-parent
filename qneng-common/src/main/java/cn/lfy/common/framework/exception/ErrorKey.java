@@ -46,6 +46,6 @@ public class ErrorKey
 
 	public static String getKey(int errorCode)
 	{
-		return getKey(new Integer(errorCode), ErrorCode.SERVER_UNKNOW);
+		return getKey(new Integer(errorCode), ErrorCode.ERROR);
 	}
 }

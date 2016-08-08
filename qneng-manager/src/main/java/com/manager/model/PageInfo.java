@@ -40,7 +40,7 @@ public class PageInfo<T> {
 		if (nowPage < 1) {
 			this.nowPage = 1;
 		} else {
-			this.nowPage = nowPage;
+			this.nowPage = nowPage + 1;
 		}
 		this.pageSize = pageSize;
 		this.offset = (this.nowPage - 1) * this.pageSize;

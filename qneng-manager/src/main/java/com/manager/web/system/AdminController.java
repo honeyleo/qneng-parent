@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -59,7 +60,7 @@ public class AdminController implements Constants {
      * @return ModelAndView
      * @throws AdminException
      */
-    @RequestMapping("/list")
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ModelAndView list(HttpServletRequest request, Page page) throws ApplicationException {
     	PageData pd = new PageData(request);
         String realName = RequestUtil.getString(request, "realName");
@@ -83,7 +84,29 @@ public class AdminController implements Constants {
         page.setEntityOrField(true);
         page.getCurrentResult();
         request.setAttribute("pd", pd);
-        return new ModelAndView("/system/admin/list");
+        return new ModelAndView("/system/admin/admin-list");
+    }
+    
+    @RequestMapping(value = "/api/list")
+    @ResponseBody
+    public Object api_list(HttpServletRequest request, Page page) throws ApplicationException {
+        String realName = RequestUtil.getString(request, "realName");
+        String username = RequestUtil.getString(request, "username");
+//        Integer pageNum = RequestUtil.getInteger(request, "pageNum");
+        Integer pageNum = RequestUtil.getInteger(request, "currentPage");
+        Criteria criteria = new Criteria();
+        if (StringUtils.isNotBlank(username)) {
+            criteria.put("usernameLike", username);
+        }
+        if (StringUtils.isNotBlank(realName)) {
+            criteria.put("realNameLike", realName);
+        }
+        PageInfo<Admin> result = adminService.findListByCriteria(criteria, pageNum, page.getShowCount());
+        JSONObject json = new JSONObject();
+        json.put("code", 200);
+        json.put("total", result.getTotal());
+        json.put("value", result.getData());
+        return json;
     }
     
     /**

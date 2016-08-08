@@ -705,7 +705,7 @@ var util = {
         });
     },
 };
-var PAGE_SIZE = 10;
+var PAGE_SIZE = 1;
 var oTable = {
     ooTable: null,
     dataTable: function (action, argument, insertResultFun, otherSetting) {

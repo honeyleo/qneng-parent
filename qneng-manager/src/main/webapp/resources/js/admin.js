@@ -97,7 +97,7 @@ var admins = {
         // editor
         $("#table").on("click", ".dialog-editor", function(){
             $('#myModalLabel').text("编辑公告");
-            notices.pickerLoaded = false;
+            admins.pickerLoaded = false;
             var sure = $('.modal-footer .btn-primary');
             sure.addClass("none");
             $(".J_sure").removeClass("none");

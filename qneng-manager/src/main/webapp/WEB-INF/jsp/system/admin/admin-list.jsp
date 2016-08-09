@@ -12,6 +12,7 @@
     <meta name="description" content="" />
     <link href="<%=basePath%>resources/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="<%=basePath%>resources/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+    <link href="<%=basePath%>resources/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="<%=basePath%>resources/css/common.css" rel="stylesheet" type="text/css" />
     <link href="<%=basePath%>resources/css/jquery-ui.css" rel="stylesheet" type="text/css" />
     <link href="<%=basePath%>resources/css/asyncbox.css" rel="stylesheet" type="text/css" />
@@ -73,7 +74,7 @@
             </form>
 
         </div>
-        <table id="example" class="display custom-table fixed_table" cellspacing="0" width="100%">
+        <table id="example" class="display custom-table fixed_table" cellspacing="0" >
             <thead>
             <tr>
                 <th width="40px">序号</th>
@@ -87,7 +88,7 @@
                 <th width="140px">操作</th>
             </tr>
             </thead>
-            <tbody id="table"></tbody>
+            <tbody id="table" style="margin-left:15px;border:1px solid #000;"></tbody>
         </table>
     </div>
 </div>
@@ -116,116 +117,51 @@
         <div class="modal-content" id="editorModal">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">编辑公告</h4>
+                <h4 class="modal-title">编辑用户</h4>
             </div>
             <div class="modal-body1" style="padding: 20px;">
                 <table cellspacing="0" width="100%" class="modifyTable">
-                	<tr>
-						<th>全局公告：</th>
-				        <td>
-				            <label class="radio-inline">
-				              <input type="radio" name="inlineRadioOptions" id="inlineRadioOptions1" value="0"> 否
-				            </label>
-				            <label class="radio-inline">
-				              <input type="radio" name="inlineRadioOptions" id="inlineRadioOptions2" value="1"> 是
-				            </label>
-				        </td>
-				    </tr>
                     <tr>
-                        <th>游戏名称：</th>
-                        <td>
-                            <div class="edit-input">
-                                <input type="text" id="gameName2" class="form-control searchName input_common300" data-id="" placeholder="填写并选中结果">
-                            </div>
-                            <div class="edit-input"><!-- jianbin: 不显示APPID, 改为在APP_NAME中下拉时显示 -->
-                               <input type="text" id="appId2" class="form-control searchName input_common" value="" placeholder="选中结果后展示ID" readonly />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                    <th>公告标题：</th>
+                    <th>用户名：</th>
                     <td>
-                        <input type="text" class="form-control input_common300" id="strategyTitle" placeholder="公告标题">
-                        <input type="hidden" class="form-control input_common" id="strategyId">
+                        <input type="text" class="form-control input_common300" placeholder="用户名">
                     </td>
                 </tr>
                     <tr>
-                        <th>跳转链接：</th>
+                        <th>密码：</th>
                         <td>
-                            <input type="text" class="form-control" id="noticeLink" placeholder="公告链接">
+                            <input type="text" class="form-control input_common300" id="noticeLink" placeholder="用户密码">
                         </td>
                     </tr>
                     <tr>
-                        <th>游戏状态：</th>
+	                    <th>姓名：</th>
+	                    <td>
+	                        <input type="text" class="form-control input_common300" placeholder="用户姓名">
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <th>手机号：</th>
+	                    <td>
+	                        <input type="text" class="form-control input_common300" placeholder="手机号">
+	                    </td>
+	                </tr>
+                    <tr>
+                        <th>状态：</th>
                         <td>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default btn-default-disable dropDown-style"><i
-                                        id="search_dropDown-status1" value="1">上线</i></button>
+                                        id="search_dropDown-status1" value="1">有效</i></button>
                                 <button type="button"
                                         class="btn btn-default dropdown-toggle  btn-default-disable search_status_list"
                                         data-toggle="dropdown">
                                     <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <ul class="dropdown-menu modify_search_status1 scrollBar" role="menu">
-                                    <li role='presentation'><a role='menuitem' tabindex='-1' href='javascript:void(0);' value="1">上线</a></li>
-                                    <li role='presentation'><a role='menuitem' tabindex='-1' href='javascript:void(0);' value="0">下线</a></li>
+                                    <li role='presentation'><a role='menuitem' tabindex='-1' href='javascript:void(0);' value="1">有效</a></li>
+                                    <li role='presentation'><a role='menuitem' tabindex='-1' href='javascript:void(0);' value="0">禁用</a></li>
                                 </ul>
                             </div>
                             <input type="hidden" value="50" name="status1" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>横屏图片：</th>
-                        <td class="vertical">
-                            <!--<div class="modify_icon">-->
-                                <!--<img src="{{= icon}}" alt="logo" class="icon_img img_style" />-->
-                                <!--<input type="hidden" value="" id="iconImg" name="iconM">-->
-                                <!--<a class="del_img J_del_img" href="javascript:;">x</a>-->
-                            <!--</div>-->
-                            <div id="uploadPortrait" class="icon browse_file"></div>
-                            <span class="ver_tips none" id="icon_name"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>竖屏图片：</th>
-                        <td class="landscape">
-                            <!--<div class="modify_icon">-->
-                                <!--<img src="{{= icon}}" alt="logo" class="icon_img1 img_style" />-->
-                                <!--<input type="hidden" value="" id="iconImg1" name="iconM1">-->
-                                <!--<a class="del_img J_del_img" href="javascript:;">x</a>-->
-                            <!--</div>-->
-                            <div id="uploadLandscape" class="icon browse_file"></div>
-                            <span class="ver_tips none" id="icon_name1"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>公告时间：</th>
-                        <td>
-                                <div class="form-group drop_com edit-input date_time">
-                                    <input type="text" id="startTime1" class="form-control " placeholder="开始时间">
-                                </div>
-
-                                <div class="form-group drop_com edit-input date_time">
-                                    <input type="text" id="endTime1" class="form-control" placeholder="结束时间">
-                                </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="strategyGray">公告内容：</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div class="edit_text" tabindex="0" id="editText">
-                            <textarea name="content" style="width:745px;height:200px;visibility:hidden;"></textarea>
-                            <input type="hidden" id="contentAppId" name="contentAppId"/>
-                            <!--<div id='editorUpload'></div>-->
-                            <div style="margin-top: 20px;">
-<!--                                 <span>是否启用</span> 
-                                <input type="radio" name="editorShow" value="1" style="margin-left: 30px;" id="showY"/>是
-                                <input type="radio" name="editorShow" value="0" style="margin-left: 30px;" id="showN"/>否-->
-                                <button type="button" class="btn btn-primary right" id="showPreview">预览内容</button>
-                            </div>
-                            </div>
                         </td>
                     </tr>
                 </table>
@@ -288,46 +224,7 @@
   </table>
   </div>
 </script>
-<script id="modeDialog" type="text/x-jquery-tmpl">
-  <div class="modify">
-  <table cellspacing="0" width="100%" class="modifyTable">
-    <tr>
-     <th>游戏名称：</th>
-    <td>
-            <input type="text" id="gameName2" class="form-control searchName input_common" data-id="" placeholder="填写并选中结果">
-            <input type="text" id="appId2" class="form-control searchName input_common margin_top" value="" placeholder="选中结果后展示ID" readonly />
-        </td>
-         </tr>
-          <tr>
-      <th>公告标题：</th>
-     <td>
-        <input type="text" class="form-control input_common" id="strategyTitle" placeholder="公告标题">
-    </td>
-          </tr>
-          <tr>
-    <td colspan="2">公告内容：</td>
-    </tr>
-    <tr>
-        <td colspan="2">
-        </td>
-    </tr>
-  </table>
-  </div>
-</script>
-<script id="iconTemplate" type="text/x-jquery-tmpl">
-    <div class="modify_icon">
-        <img src="{{= url}}" alt="logo" class="icon_img img_style" />
-        <input type="hidden" value="{{= url}}" id="iconM" name="iconM">
-        <a class="del_img J_del_img del_img_style" href="javascript:;">x</a>
-    </div>
-</script>
-<script id="iconTemplate1" type="text/x-jquery-tmpl">
-    <div class="modify_icon">
-        <img src="{{= url}}" alt="logo" class="icon_img1 img_style" />
-        <input type="hidden" value="{{= url}}" id="iconM1" name="iconM1">
-        <a class="del_img J_del_img del_img_style" href="javascript:;">x</a>
-    </div>
-</script>
+
 <script src="<%=basePath%>resources/js/common/common.js"></script>
 <script src="<%=basePath%>resources/js/common/bootstrap.js"></script>
 <script src="<%=basePath%>resources/js/common/bootstrap-typeahead.js"></script>

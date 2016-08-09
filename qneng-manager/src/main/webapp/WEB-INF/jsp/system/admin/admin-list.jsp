@@ -12,7 +12,6 @@
     <meta name="description" content="" />
     <link href="<%=basePath%>resources/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="<%=basePath%>resources/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
-    <link href="<%=basePath%>resources/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="<%=basePath%>resources/css/common.css" rel="stylesheet" type="text/css" />
     <link href="<%=basePath%>resources/css/jquery-ui.css" rel="stylesheet" type="text/css" />
     <link href="<%=basePath%>resources/css/asyncbox.css" rel="stylesheet" type="text/css" />

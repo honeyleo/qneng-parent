@@ -124,25 +124,26 @@
                     <tr>
                     <th>用户名：</th>
                     <td>
-                        <input type="text" class="form-control input_common300" placeholder="用户名">
+                        <input type="text" class="form-control input_common300" id="username" placeholder="用户名">
+                        <input type="hidden" class="form-control input_common" id="id">
                     </td>
                 </tr>
                     <tr>
                         <th>密码：</th>
                         <td>
-                            <input type="text" class="form-control input_common300" id="noticeLink" placeholder="用户密码">
+                            <input type="text" class="form-control input_common300" id="password" placeholder="用户密码">
                         </td>
                     </tr>
                     <tr>
 	                    <th>姓名：</th>
 	                    <td>
-	                        <input type="text" class="form-control input_common300" placeholder="用户姓名">
+	                        <input type="text" class="form-control input_common300" id="realName" placeholder="用户姓名">
 	                    </td>
 	                </tr>
 	                <tr>
 	                    <th>手机号：</th>
 	                    <td>
-	                        <input type="text" class="form-control input_common300" placeholder="手机号">
+	                        <input type="text" class="form-control input_common300" id="phone" placeholder="手机号">
 	                    </td>
 	                </tr>
                     <tr>
@@ -180,52 +181,28 @@
   <div class="modify">
   <table cellspacing="0" width="100%" class="modifyTable">
     <tr>
-    <th>游戏ID：</th>
-     <td><span class="gameIdText"></span></td>
-     <th>游戏名称：</th>
-     <td><span class="gameNameText"></span></td>
+    <th>用户ID：</th>
+     <td><span class="idText"></span></td>
+     <th>用户名：</th>
+     <td><span class="usernameText"></span></td>
     </tr>
    <tr>
-        <th>公告ID</th>
-        <td><span class="strategyId"></span></td>
-        <th>公告标题：</th>
-        <td><span class="strategyIdText"></span></td>
+        <th>姓名</th>
+        <td><span class="realNameText"></span></td>
+        <th>手机号：</th>
+        <td><span class="phoneText"></span></td>
   </tr>
    <tr>
         <th>状态：</th>
-        <td><span class="statusText"></span></td>
-        <th>开始时间：</th>
-        <td><span class="startTimeText"></span></td>
-    </tr>
-     <tr>
-        <th>结束时间：</th>
-        <td><span class="endTimeText"></span></td>
-        <th>更新时间：</th>
-        <td><span class="updateTime"></span></td>
-    </tr>
-     <tr>
-        <th>横屏图片：</th>
-        <td>
-            <img src="" class="landscapeText imgCommon" />
-        </td>
-        <th>竖屏图片：</th>
-        <td>
-            <img src="" class="verticalText imgCommon" />
-        </td>
-    </tr>
-    <tr>
-        <th>跳转链接：</th>
-        <td colspan="3"><a href="" class="urlText"></a></td>
-    </tr>
-    <tr>
-        <th>内容：</th>
-        <td colspan="3"><div class="contentText"></div></td>
+        <td><span class="stateText"></span></td>
+        <th>创建时间：</th>
+        <td><span class="createTimeText"></span></td>
     </tr>
   </table>
   </div>
 </script>
 
-<script src="<%=basePath%>resources/js/common/common.js"></script>
+<script src="<%=basePath%>resources/ace/assets/js/jquery.min.js"></script>
 <script src="<%=basePath%>resources/js/common/bootstrap.js"></script>
 <script src="<%=basePath%>resources/js/common/bootstrap-typeahead.js"></script>
 <script src="<%=basePath%>resources/js/common/jquery.dataTables.js"></script>

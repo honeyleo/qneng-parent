@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.lfy.common.model.Message;
+
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Splitter;
 import com.manager.common.Constants;
@@ -92,7 +94,6 @@ public class AdminController implements Constants {
     public Object api_list(HttpServletRequest request, Page page) throws ApplicationException {
         String realName = RequestUtil.getString(request, "realName");
         String username = RequestUtil.getString(request, "username");
-//        Integer pageNum = RequestUtil.getInteger(request, "pageNum");
         Integer pageNum = RequestUtil.getInteger(request, "currentPage");
         Criteria criteria = new Criteria();
         if (StringUtils.isNotBlank(username)) {
@@ -117,16 +118,15 @@ public class AdminController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/del")
-    public ModelAndView del(HttpServletRequest request) throws ApplicationException {
+    @ResponseBody
+    public Object del(HttpServletRequest request) throws ApplicationException {
         Long id = RequestUtil.getLong(request, "id");
         Admin record = new Admin();
         record.setId(id);
-        record.setState(StateType.INACTIVE.getId());
+        record.setState(StateType.DELETED.getId());
         adminService.updateByIdSelective(record);
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("msg","success");
-		mv.setViewName("common/save_result");
-        return mv;
+        Message.Builder builder = Message.newBuilder();
+        return builder.build();
     }
     
     /**
@@ -175,27 +175,28 @@ public class AdminController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/detail")
-    public ModelAndView detail(HttpServletRequest request) throws ApplicationException {
+    @ResponseBody
+    public Object detail(HttpServletRequest request) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
         Long id = RequestUtil.getLong(request, "id");
         Admin admin = adminService.findById(id);
-        request.setAttribute("admin", admin);
-        request.setAttribute("operatorId", admin.getOperatorId());
-
+        builder.data(admin);
         List<Role> roles = roleService.getByCriteria(new Criteria());
         request.setAttribute("roles", roles);
         request.setAttribute("uri", "update");
-        return new ModelAndView(UPDATE_ADMIN);
+        return builder.build();
     }
 
     /**
      * 添加
      * 
      * @param request
-     * @return ModelAndView
      * @throws AdminException
      */
     @RequestMapping("/add")
-    public ModelAndView add(HttpServletRequest request) throws ApplicationException {
+    @ResponseBody
+    public Object add(Admin admin, HttpServletRequest request) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
         String username = RequestUtil.getString(request, "username");
         Admin extAdmin = adminService.findByUsername(username);
         if (extAdmin != null) {
@@ -207,33 +208,13 @@ public class AdminController implements Constants {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String realName = RequestUtil.getString(request, "realName");
-        String email = RequestUtil.getString(request, "email");
-        String phone = RequestUtil.getString(request, "phone");
-        String address = RequestUtil.getString(request, "address");
-        Long roleId = RequestUtil.getLong(request, "roleId");
-        Long newOperatorId = RequestUtil.getLong(request, "operator.id");
-
-        Admin record = new Admin();
-        record.setUsername(username);
-        record.setPassword(password);
-        record.setRealName(realName);
-        record.setEmail(email);
-        record.setPhone(phone);
-        record.setAddress(address);
-        record.setRoleId(roleId);
-        record.setState(1);
-        if (roleId > 2) {
-        	record.setOperatorId(newOperatorId);
-        }
-        Long adminId=adminService.add(record);
-        
-        // 根据角色添加默认权限
-        adminMenuService.addAdminDefaultMenu(adminId, roleId);
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("msg","success");
-		mv.setViewName("common/save_result");
-        return mv;
+        admin.setPassword(password);
+        admin.setEmail("");
+        admin.setAddress("");
+        admin.setRoleId(1L);
+        admin.setState(1);
+        adminService.add(admin);
+        return builder.build();
     }
 
     /**
@@ -244,40 +225,20 @@ public class AdminController implements Constants {
      * @throws AdminException
      */
     @RequestMapping("/update")
-    public ModelAndView update(HttpServletRequest request,
+    @ResponseBody
+    public Object update(Admin admin, HttpServletRequest request,
             HttpServletResponse response) throws ApplicationException {
-        Long id = RequestUtil.getLong(request, "id");
-        String password = RequestUtil.getString(request, "password");
-        String realName = RequestUtil.getString(request, "realName");
-        String email = RequestUtil.getString(request, "email");
-        String phone = RequestUtil.getString(request, "phone");
-        String address = RequestUtil.getString(request, "address");
-        Long roleId = RequestUtil.getLong(request, "roleId");
-        Integer state = RequestUtil.getInteger(request, "state");
-
-        Admin record = new Admin();
-        record.setId(id);
-        if (StringUtils.isNotBlank(password)) {// 判断password是否为空
+    	Message.Builder builder = Message.newBuilder();
+        if (StringUtils.isNotBlank(admin.getPassword())) {// 判断password是否为空
             try {
-                password = MessageDigestUtil.getSHA256(password).toUpperCase();
+                String password = MessageDigestUtil.getSHA256(admin.getPassword()).toUpperCase();
+                admin.setPassword(password);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            record.setPassword(password);
         }
-        if (StringUtils.isNotBlank(realName)) {// 判断realname是否为空
-            record.setRealName(realName);
-        }
-        record.setEmail(email);
-        record.setPhone(phone);
-        record.setAddress(address);
-        record.setRoleId(roleId);
-        record.setState(state);
-        adminService.updateByIdSelective(record);
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("msg","success");
-		mv.setViewName("common/save_result");
-        return mv;
+        adminService.updateByIdSelective(admin);
+        return builder.build();
     }
     
     

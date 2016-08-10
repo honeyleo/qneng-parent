@@ -1,7 +1,7 @@
 package com.manager.model.type;
 
 public enum StateType {
-    ACTIVE(1, "有效"), INACTIVE(0, "停用");
+    ACTIVE(1, "有效"), INACTIVE(0, "停用"),DELETED(-1, "已删除"),;
 
     private Integer id;
 

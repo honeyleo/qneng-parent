@@ -57,11 +57,6 @@ public class Admin implements Serializable {
     private Date createTime;
     
     /**
-     * 对应的客户ID
-     */
-    private Long operatorId;
-
-    /**
      * @return 主键
      */
     public Long getId() {
@@ -211,13 +206,4 @@ public class Admin implements Serializable {
         this.createTime = createTime;
     }
 
-	public Long getOperatorId() {
-		return operatorId;
-	}
-
-	public void setOperatorId(Long operatorId) {
-		this.operatorId = operatorId;
-	}
-    
-    
 }

@@ -42,7 +42,7 @@ var admins = {
     query: function (refresh) {
         var action = "/manager/admin/api/list", argument;
             argument = [
-                
+                {test:"test"}
             ];
         this.load(action, argument, refresh);
     },
@@ -78,62 +78,72 @@ var admins = {
             $('.modal-dialog .modal-body').css({'overflow':"auto",'height':''});
             $('.modal-dialog .modal-content').css({'width':'800px'});
             var id = $(this).attr("data-value");
-            $.get("/console/notice/detail",{"id":id}, function (result) {
-                if (result.code == 200) {
+            $.get("/manager/admin/detail",{"id":id}, function (result) {
+                if (result.ret == 0) {
                     self.insertInfo(result);
                 }
             });
         }).delegate(".J_delete","click",function(){
-            //删除
+        	//删除
             $('.modal-body').empty().html("确定要删除吗？");
-            $('#myModalLabel').text("删除");
+            $('#myModalLabel').text("删除用户");
             var sure = $('.modal-footer .btn-primary');
             sure.addClass("none");
             $(".J_delete_sure").removeClass("none");
             $('.modal-dialog .modal-body').css({'overflow':"auto",'height':''});
             $('.modal-dialog .modal-content').css({'width':'auto'});
             var id = $(this).attr("data-value");
+            self.deleteSure(id);
         });
         // editor
         $("#table").on("click", ".dialog-editor", function(){
-            $('#myModalLabel').text("编辑公告");
+            $('#myModalLabel').text("编辑用户");
             admins.pickerLoaded = false;
             var sure = $('.modal-footer .btn-primary');
             sure.addClass("none");
             $(".J_sure").removeClass("none");
-            notices.gameNameFunc();
             $("#updContent").show();
-            var appId = $(this).attr("data-value");
+            var id = $(this).attr("data-value");
             $("#contentAppId").val(appId);
-            $.getJSON("/console/notice/detail", {id: appId}, function(data){
-                
+            $.getJSON("/manager/admin/detail", {id: id}, function(result){
+            	if (result.ret == 0) {
+                    if (result.data.state == 1) {
+                        $('#search_dropDown-status1').attr("value", '1').text("有效");
+                    } else {
+                        $('#search_dropDown-status1').attr("value",'0').text("禁止");
+                    }
+                    $("#id").val(result.data.id);
+                    $("#username").val(result.data.username);
+                    $("#realName").val(result.data.realName);
+                    $("#phone").val(result.data.phone);
+            	}
             });
         });
         $("#updContent").click(function(){
             var param = {
-                id: $("#strategyId").val(),
-                appId: $("#appId2").val(),
-                title: $("#strategyTitle").val(),
-                url: $("#noticeLink").val(),
-                content: self.editor.html(),
-                status:$("#search_dropDown-status1").attr("value"),
-                startTime:$("#startTime1").val(),
-                endTime:$("#endTime1").val(),
-                portraitImg:portraitImg,
-                landscapeImg:landscapeImg
+                id: $("#id").val(),
+                username: $("#username").val(),
+                password: $("#password").val(),
+                realName: $("#realName").val(),
+                phone: $("#phone").val(),
+                state:$("#search_dropDown-status1").attr("value")
             };
-            $.post("/console/notice/modify", param, function(data){
-                if ( data.code == 200 ) {
+            $.post("/manager/admin/update", param, function(result){
+                if ( result.ret == 0 ) {
                     self.query();
                     $(".btn-default").trigger("click");
                 } else {
-                    asyncbox.alert(data.message,"提示");
+                    asyncbox.alert(result.msg,"提示");
                 }
             });
 
         });
         //新建
         $(".add_dialog").click(function () {
+        	var sure = $('.modal-footer .btn-primary');
+            sure.addClass("none");
+            $(".J_add_sure").removeClass("none");
+            self.clearData();
         	self.addSure();
         });
 
@@ -142,59 +152,61 @@ var admins = {
         });
     },
     insertInfo: function (result) {
-        
+    	var data = result.data;
+    	$(".idText").text(data.id);
+        $(".usernameText").text(data.username);
+        $(".realNameText").text(data.realName);
+        $(".phoneText").text(data.phone);
+        var statusText = "";
+        if (data.state == 0) {
+            statusText = "禁用";
+        } else {
+            statusText = "有效";
+        }
+        $(".stateText").text(statusText);
+        var createTime = new Date(data.createTime);
+        data.createTime = createTime.format("yyyy-MM-dd hh:mm:ss");
+        $(".createTimeText").text(data.createTime);
     },
     addSure: function () {
-    	$("input[type='radio'][name='inlineRadioOptions'][value='0']").attr('checked', 'checked');// 设置
         var self = this;
         $(".J_add_sure").unbind('click').click(function () {
-        	if($('#appId2').val() == '0') {
-        		asyncbox.confirm("确认新增全局公告吗？","全局公告确认",function(result) {
-            		if(!(result == 'cancel' || result == '取消')) {
-            			self.confirmSubmit();
-                	}
-            	});
-        	} else {
-        		self.confirmSubmit();
-        	}
+        	self.confirmSubmit();
         });
     },
     confirmSubmit:function(){
     	var self = this;
     	var param = {
-                appId: $("#appId2").val(),
-                url: $("#noticeLink").val(),
-                title: $("#strategyTitle").val(),
-                content: self.editor.html(),
-                status:$("#search_dropDown-status1").attr("value"),
-                startTime:$("#startTime1").val(),
-                endTime:$("#endTime1").val(),
-                portraitImg:$(".vertical .modify_icon .icon_img").attr("src"),
-                landscapeImg:$(".landscape .modify_icon .icon_img1").attr("src")
+                username: $("#username").val(),
+                password: $("#password").val(),
+                realName: $("#realName").val(),
+                phone: $("#phone").val(),
+                state:$("#search_dropDown-status1").attr("value")
             };
-            $.post("/console/notice/create", param, function(data){
-                if ( data.code == 200 ) {
+            $.post("/manager/admin/add", param, function(result){
+                if ( result.ret == 0 ) {
                     self.query();
                     $(".btn-default").trigger("click");
                 } else {
-                    asyncbox.alert(data.message,"提示");
+                    asyncbox.alert(result.msg,"提示");
                 }
             });
     },
-    deleteSure:function(verId){
+    deleteSure:function(id){
         var self =this;
         $(".J_delete_sure").unbind('click');
         $(".J_delete_sure").click(function () {
-            $.get("/console/notice/delete",{"id":verId},function(result){
-                if (result.code == 200) {
+            $.get("/manager/admin/del",{"id":id},function(result){
+                if (result.ret == 0) {
                     $('#myModal').modal('hide');
-                    self.query(true);
+                    self.query();
                 } else {
-                    asyncbox.alert("删除失败！\n"+result.message,"提示");
+                    asyncbox.alert("删除失败！\n"+result.msg,"提示");
                     $('#myModal').modal('hide');
                 }
             });
         });
+        $('#myModal').modal('show');
     },
     dropDown: function (id, text, inp) {
         $('.' + id).delegate('li a', 'click', function () {
@@ -205,7 +217,10 @@ var admins = {
         });
     },
     clearData:function(){
-        
+    	username: $("#username").val("");
+        password: $("#password").val("");
+        realName: $("#realName").val("");
+        phone: $("#phone").val("");
     },
 };
 $(function () {

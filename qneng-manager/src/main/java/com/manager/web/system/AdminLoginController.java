@@ -158,7 +158,6 @@ public class AdminLoginController implements Constants {
         user.setEmail(admin.getEmail());
         user.setRoleId(admin.getRoleId());
         user.setState(admin.getState());
-        user.setOperatorId(admin.getOperatorId());
         account.setUser(user);
 
         return account;

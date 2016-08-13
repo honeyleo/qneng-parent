@@ -53,14 +53,16 @@
 
 	<servlet-mapping>
         <servlet-name>dispatcherServlet</servlet-name>
-        <url-pattern>/api/*</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>dispatcherServlet</servlet-name>
-        <url-pattern>*.htm</url-pattern>
-    </servlet-mapping> 
-
+	<filter>
+		<filter-name>loginFilter</filter-name>
+		<filter-class>cn.lfy.base.web.filter.LoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>loginFilter</filter-name>
+		<url-pattern>/manager/*</url-pattern>
+	</filter-mapping>
 	<session-config>
 		<session-timeout>120</session-timeout>
 	</session-config>

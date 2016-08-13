@@ -39,4 +39,8 @@ public interface ErrorCode extends BaseErrorCode
      * 账户包含敏感词汇
      */
     static final int USERNAME_CONTAIN_SENSITIVE = SERVER_ERROR + ACCOUNT + 13;
+    
+    static final int EXIST = SERVER_ERROR + 12;
+    
+    static final int NOT_EXIST = SERVER_ERROR + 13;
 }

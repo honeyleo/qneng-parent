@@ -3,13 +3,8 @@ package cn.lfy.base.dao;
 import java.util.List;
 
 import cn.lfy.base.model.Admin;
-import cn.lfy.common.model.Criteria;
+import cn.lfy.base.model.Criteria;
 
-/**
- * 账号相关DAO接口定义
- * @author liaopeng
- *
- */
 public interface AdminDAO {
     /**
      * 根据条件查询记录总数

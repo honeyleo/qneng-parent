@@ -64,7 +64,7 @@
     id, username, password, realName, email, phone, address, roleId, state, createTime
   </sql>
   
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.lfy.common.model.Criteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.lfy.base.model.Criteria" >
     select
     <include refid="Base_Column_List" />
     from admin
@@ -95,7 +95,7 @@
     values (#{username}, #{password}, #{realName}, #{email}, #{phone}, #{address}, #{roleId}, #{state})
   </insert>
   
-  <select id="countByExample" parameterType="cn.lfy.common.model.Criteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="cn.lfy.base.model.Criteria" resultType="java.lang.Integer" >
     select count(*) from admin
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />

@@ -171,4 +171,12 @@ public class ApplicationException extends RuntimeException implements Serializab
 		this.sendRedirectURL = null;
 		this.detailMessage = message;
 	}
+	public static ApplicationException newInstance(int errorCode) {
+		ApplicationException ae = new ApplicationException(errorCode, null);
+		return ae;
+	}
+	public static ApplicationException newInstance(int errorCode, String ...messageParams) {
+		ApplicationException ae = new ApplicationException(errorCode, "", messageParams);
+		return ae;
+	}
 }

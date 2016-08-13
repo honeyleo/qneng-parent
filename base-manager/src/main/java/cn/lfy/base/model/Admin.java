@@ -24,37 +24,37 @@ public class Admin implements Serializable {
     /**
      * 真实姓名
      */
-    private String realName = "";
+    private String realName;
 
     /**
      * 公司的个人邮箱，邮件提醒功能
      */
-    private String email = "";
+    private String email;
 
     /**
      * 联系电话
      */
-    private String phone = "";
+    private String phone;
 
     /**
      * 地址
      */
-    private String address = "";
+    private String address;
 
     /**
      * 角色ID
      */
-    private Long roleId = 0L;
+    private Long roleId;
 
     /**
      * 数据状态
      */
-    private Integer state = 1;
+    private Integer state;
 
     /**
      * 创建时间
      */
-    private Date createTime = new Date();
+    private Date createTime;
     
     /**
      * @return 主键
@@ -205,5 +205,5 @@ public class Admin implements Serializable {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-    
+
 }

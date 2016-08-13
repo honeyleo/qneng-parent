@@ -31,7 +31,7 @@
 	</bean>
 		
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources/ directory -->
-	<mvc:resources mapping="/assets/**" location="/assets/" cache-period="31536000"/>
+	<mvc:resources mapping="/resources/**" location="/resources/" />
 	
 	<!-- ②：启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
 	<mvc:annotation-driven>
@@ -61,21 +61,8 @@
 	</mvc:annotation-driven> 
 
 	<!-- ③：对模型视图名称的解析，即在模型视图名称添加前后缀 -->
-	<bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
-        <property name="configLocation" value="/WEB-INF/views/velocity.properties"/>
-    </bean>
-    <bean id="viewResolver"
-          class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
-        <property name="cache" value="false"/>
-        <property name="prefix" value="/templates/"/>
-        <property name="layoutUrl" value="/layout/main.htm"/>
-        <property name="suffix" value=".htm"/>
-        <property name="exposeSpringMacroHelpers" value="true" />
-        <property name="contentType" value="text/html;charset=UTF-8" />
-        <property name="viewClass"
-                  value="org.springframework.web.servlet.view.velocity.VelocityLayoutView" />
-    </bean>
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
 	</bean>
 </beans>

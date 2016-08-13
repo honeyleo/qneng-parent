@@ -3,14 +3,13 @@ package cn.lfy.base.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import cn.lfy.base.dao.AdminDAO;
 import cn.lfy.base.model.Admin;
+import cn.lfy.base.model.Criteria;
+import cn.lfy.base.model.PageInfo;
 import cn.lfy.base.service.AdminService;
-import cn.lfy.common.model.Criteria;
-import cn.lfy.common.model.PageInfo;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -50,27 +49,16 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public PageInfo<Admin> findListByCriteria(Criteria criteria, int start, int limit) {
-        PageInfo<Admin> res = new PageInfo<Admin>();
+    public PageInfo<Admin> findListByCriteria(Criteria criteria, int pageNo, int pageSize) {
+        PageInfo<Admin> res = new PageInfo<Admin>(pageNo, pageSize);
         int total=this.countByCriteria(criteria);
         res.setTotal(total);
         
-        criteria.setOffset(start);
-        criteria.setRows(limit);
+        criteria.setOffset(res.getOffset());
+        criteria.setRows(pageSize);
         List<Admin> list = this.findListByCriteria(criteria);
         res.setData(list);
         return res;
     }
-    
-    @Cacheable(value = "commonCache", key = "'user_id_' + #id")
-    @Override
-    public Admin getByIdInCache(Long id) {
-        return adminDAO.selectByPrimaryKey(id);
-    }
-
-	@Override
-	public int deleteByPrimaryKey(Long id) {
-		return adminDAO.deleteByPrimaryKey(id);
-	}
     
 }

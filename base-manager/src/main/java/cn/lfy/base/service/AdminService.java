@@ -3,14 +3,9 @@ package cn.lfy.base.service;
 import java.util.List;
 
 import cn.lfy.base.model.Admin;
-import cn.lfy.common.model.Criteria;
-import cn.lfy.common.model.PageInfo;
+import cn.lfy.base.model.Criteria;
+import cn.lfy.base.model.PageInfo;
 
-/**
- * 管理系统用户相关服务接口
- * @author liaopeng
- *
- */
 public interface AdminService {
     /**
      * 根据条件查询记录总数
@@ -48,16 +43,5 @@ public interface AdminService {
      * @return
      */
     Admin findByUsername(String username);
-    /**
-     * 缓存
-     * @param id
-     * @return
-     */
-    Admin getByIdInCache(Long id);
-    
-    /**
-     * 根据主键删除记录
-     */
-    int deleteByPrimaryKey(Long id);
     
 }

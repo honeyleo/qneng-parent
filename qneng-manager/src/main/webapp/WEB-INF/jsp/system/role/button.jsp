@@ -42,10 +42,13 @@ footer{height:50px;position:fixed;bottom:0px;left:0px;width:100%;text-align: cen
 			    checkable: true,
 			    showIcon :false
 			};
-			var zn = '${zTreeNodes}';
-			var zTreeNodes = eval(zn);
-			zTree = $("#tree").zTree(setting, zTreeNodes);
-			zTree.expandAll(true);
+			$.post("/manager/menu/api/list",function(result){
+				if(result.ret == 0) {
+					var zTreeNodes = result.data;
+					zTree = $("#tree").zTree(setting, zTreeNodes);
+					zTree.expandAll(true);
+				}
+			});
 			
 		});
 	</script>

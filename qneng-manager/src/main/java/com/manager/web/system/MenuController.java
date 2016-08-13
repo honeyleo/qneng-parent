@@ -1,6 +1,7 @@
 package com.manager.web.system;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -12,13 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.lfy.common.model.Message;
+
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.manager.common.Constants;
 import com.manager.common.ErrorCode;
 import com.manager.common.exception.ApplicationException;
 import com.manager.common.util.RequestUtil;
 import com.manager.model.Menu;
+import com.manager.model.TreeNode;
 import com.manager.service.MenuService;
 
 
@@ -31,31 +37,24 @@ public class MenuController implements Constants {
 
     @RequestMapping("/list")
     public String list(HttpServletRequest request) throws ApplicationException {
+        return "/system/menu/list-menu";
+    }
+    
+    @RequestMapping("/api/list")
+    @ResponseBody
+    public Object api_list() {
     	List<Menu> menus = menuService.findMenuList();
-    	List<Menu> menuList = Lists.newArrayList();
-        for(Menu menu : menus) {
-        	if(menu.getParentId() == -1) {
-        		continue;
-        	}
-        	else if(menu.getParentId() == 1) {
-        		menuList.add(menu);
-        	} else if(menu.getOnMenu() == 1) {
-        		Menu parent = null;
-        		for(Menu m : menuList) {
-        			if(m.getId() == menu.getParentId()) {
-        				parent = m;
-        				break;
-        			}
-        		}
-        		if(parent.getChildList() == null) {
-        			 List<Menu> childList = new ArrayList<Menu>();
-        			 parent.setChildList(childList);
-        		}
-        		parent.getChildList().add(menu);
-        	}
-        }
-        request.setAttribute("menuList", menuList);
-        return "/system/menu/list";
+		List<TreeNode> treeList = Lists.newArrayList();
+		for(Menu menu : menus) {
+			treeList.add(new TreeNode(menu.getId(), menu.getName(), menu.getParentId(), false));
+		}
+		List<TreeNode> tree = Lists.newArrayList();
+		for(TreeNode node1 : treeList){  
+			tree.add(node1);   
+		}
+        Message.Builder builder = Message.newBuilder();
+        builder.data(tree);
+    	return builder.build();
     }
     
     @RequestMapping("/sub")
@@ -66,69 +65,51 @@ public class MenuController implements Constants {
         return menus;
     }
 
-    @RequestMapping("/goadd")
-    public String goAdd(HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
-        Long parentId=RequestUtil.getLong(request, "parentId");
-        Menu menu=menuService.getById(parentId);
-        request.setAttribute("parentId", parentId);
-        int onMenu=RequestUtil.getInteger(request, "onMenu");
-        request.setAttribute("onMenu", onMenu);
-        request.setAttribute("parentIdPath", menu.getParentIdPath() + menu.getId() + "$");
-        return "/system/menu/edit";
+    @RequestMapping("/update")
+    @ResponseBody
+    public Object update(Menu menu, HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
+        Long parentId=RequestUtil.getLong(request, "id");
+        Menu menuDb=menuService.getById(parentId);
+        
+        menuDb.setName(menu.getName());
+        menuDb.setUrl(menu.getUrl());
+        menuDb.setOrderNo(menu.getOrderNo());
+        menuDb.setOnMenu(menu.getOnMenu());
+        menuService.updateByIdSelective(menuDb);
+        return builder.build();
     }
     
-    @RequestMapping("/goedit")
-    public String goEditor(HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
+    @RequestMapping("/detail")
+    @ResponseBody
+    public Object detail(HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
         Long id=RequestUtil.getLong(request, "id");
         if(null != id) {
             Menu menu=menuService.getById(id);
-            request.setAttribute("menu", menu);
-            request.setAttribute("parentId", menu.getParentId());
-            request.setAttribute("onMenu", menu.getOnMenu());
+            builder.data(menu);
         }
-        return "/system/menu/edit";
+        return builder.build();
     }
 
-    @RequestMapping("/save")
-    public ModelAndView save(HttpServletRequest request) throws ApplicationException {
-        Long id=RequestUtil.getLong(request, "id");
-        String name=RequestUtil.getString(request, "name");
-        Integer type=RequestUtil.getInteger(request, "type");
-        Long parentId=RequestUtil.getLong(request, "parentId");
-        String lcode=RequestUtil.getString(request, "parentIdPath");
-        Integer orderNo=RequestUtil.getInteger(request, "orderNo");
-        String url=RequestUtil.getString(request, "url");
-        String remark=RequestUtil.getString(request, "remark");
-        Integer onMenu = RequestUtil.getInteger(request, "onMenu");
-        Menu record=new Menu();
-        record.setId(id);
-        record.setName(name);
-        record.setType(type);
-        record.setParentId(parentId);
-        record.setParentIdPath(lcode);
-        record.setOrderNo(orderNo);
-        record.setRemark(remark);
-        record.setUrl(url);
-        record.setState(1);
-        record.setOnMenu(onMenu);
-        menuService.save(record);
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("msg","success");
-		mv.setViewName("common/save_result");
-        return mv;
+    @RequestMapping("/add")
+    @ResponseBody
+    public Object add(Menu menu) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
+        menuService.save(menu);
+        return builder.build();
     }
 
     @RequestMapping("/del")
     @ResponseBody
     public Object deleteTreeNode(HttpServletRequest request) throws ApplicationException {
-        Long menuId =RequestUtil.getLong(request, "menuId");
+    	Message.Builder builder = Message.newBuilder();
+        Long menuId =RequestUtil.getLong(request, "id");
         if(null == menuId) {
             throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "menuId");
         }
         menuService.deleteById(menuId);
-        JSONObject json = new JSONObject();
-        json.put("code", 200);
-        return json;
+        return builder.build();
     }
     
     /**

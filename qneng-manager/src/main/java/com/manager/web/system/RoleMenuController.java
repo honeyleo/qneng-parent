@@ -12,7 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import cn.lfy.common.model.Message;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Splitter;
@@ -107,6 +110,32 @@ public class RoleMenuController implements Constants
         mv.addObject("roleId", roleId);
 		return mv;
 	}
+	
+	/**
+	 * 角色权限列表：角色拥有的权限默认选上
+	 * @date 2015-10-09
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/privileges")
+	@ResponseBody
+	public Object privileges(HttpServletRequest request) {
+		Long roleId = RequestUtil.getLong(request, "id");
+		List<Menu> menus = menuService.findMenuList();
+		List<Menu> roleMenus = roleDefaultMenuService.getMenuListByRoleId(roleId);
+		HashSet<Long> roleMenuIdSet = Sets.newHashSet();
+		for(Menu m : roleMenus) {
+			roleMenuIdSet.add(m.getId());
+		}
+		List<TreeNode> treeList = Lists.newArrayList();
+		for(Menu menu : menus) {
+			boolean checked = roleMenuIdSet.contains(menu.getId());
+			treeList.add(new TreeNode(menu.getId(), menu.getName(), menu.getParentId(), checked));
+		}
+		Message.Builder builder = Message.newBuilder();
+		builder.data(treeList);
+		return builder.build();
+	}
 	/**
 	 * 保存角色对应权限：做差集
 	 * 删除权限：（1，2，3，4）-（1，2，5）=3，4
@@ -116,7 +145,8 @@ public class RoleMenuController implements Constants
 	 * @throws AdminException
 	 */
 	@RequestMapping("/saveMenu")
-	public ModelAndView saveMenu(HttpServletRequest request) throws ApplicationException
+	@ResponseBody
+	public Object saveMenu(HttpServletRequest request) throws ApplicationException
 	{
 		Long roleId = RequestUtil.getLong(request, "roleId");
 		String menuIds = RequestUtil.getString(request, "menuIds");
@@ -140,6 +170,6 @@ public class RoleMenuController implements Constants
 		}
 		
 		roleDefaultMenuService.saveMenus(roleId, nowSet); // 更新权限菜单
-		return new ModelAndView(JSON_VIEW, JSON_ROOT, DwzJsonUtil.getOkStatusMsg(null));
+		return Message.newBuilder().build();
 	}
 }

@@ -709,7 +709,7 @@ var PAGE_SIZE = 1;
 var oTable = {
     ooTable: null,
     dataTable: function (action, argument, insertResultFun, otherSetting) {
-        util.request_begin();
+//        util.request_begin();
         otherSetting = otherSetting || {};
         otherSetting.tableId = otherSetting.tableId || "example";
         if (this.ooTable && otherSetting.refresh !== true) {
@@ -729,6 +729,7 @@ var oTable = {
                 sServerMethod: "POST",
                 sAjaxSource: action,
                 fnServerData: function (sUrl, aoData, fnCallback, oSettings) {
+                	util.request_begin();
                     var args = [{
                         name: "currentPage",
                         value: Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength )
@@ -745,6 +746,7 @@ var oTable = {
                             var currentPage= Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength );
                             insertResultFun(result,currentPage);
                             fnCallback(result);
+                            util.request_end();
                         }
                     });
                 },

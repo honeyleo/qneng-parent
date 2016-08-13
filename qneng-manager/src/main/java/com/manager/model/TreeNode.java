@@ -9,6 +9,7 @@ public class TreeNode {
     private long parentId;  
     private List<TreeNode> nodes;
     private boolean checked = false;
+    private boolean open = true;
     
     public TreeNode(long id,String name, long parentId, boolean checked) {
     	this.id = id;
@@ -45,6 +46,12 @@ public class TreeNode {
 	}
 	public void setChecked(boolean checked) {
 		this.checked = checked;
+	}
+	public boolean isOpen() {
+		return open;
+	}
+	public void setOpen(boolean open) {
+		this.open = open;
 	}
     
     

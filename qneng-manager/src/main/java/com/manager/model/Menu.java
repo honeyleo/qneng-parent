@@ -12,12 +12,12 @@ public class Menu implements Serializable {
     /**
      * 菜单名称
      */
-    private String name;
+    private String name = "";
 
     /**
      * 菜单所属分类，1为内勤人员功能菜单，2为外勤人员功能菜单
      */
-    private Integer type;
+    private Integer type = 1;
 
     /**
      * 父级菜单ID
@@ -27,39 +27,39 @@ public class Menu implements Serializable {
     /**
      * 父级菜单ID串联，便于查询，格式：$1$2$
      */
-    private String parentIdPath;
+    private String parentIdPath = "";
 
     /**
      * 菜单链接
      */
-    private String url;
+    private String url = "";
 
     /**
      * 排序
      */
-    private Integer orderNo;
+    private Integer orderNo = 0;
 
     /**
      * 备注
      */
-    private String remark;
+    private String remark = "";
 
     /**
      * 数据状态
      */
-    private Integer state;
+    private Integer state = 1;
 
     /**
      * 创建时间
      */
-    private Date createTime;
+    private Date createTime = new Date();
 
     /**
      * 菜单所有者，adminId或者operatorId或者roleId
      */
     private Long ownerId;
     
-    private Integer onMenu;
+    private Integer onMenu = 0;
     
     private String icon;
 

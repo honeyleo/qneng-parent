@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.lfy.common.model.Message;
+
 import com.alibaba.fastjson.JSONObject;
 import com.manager.common.Constants;
 import com.manager.common.exception.ApplicationException;
@@ -32,22 +34,18 @@ public class RoleController implements Constants {
 
     @RequestMapping("/list")
     public String list(HttpServletRequest request, Page page) throws ApplicationException {
-    	PageData pd = new PageData(request);
-        Integer typeId = RequestUtil.getInteger(request, "type");
-//        Integer pageNum = RequestUtil.getInteger(request, "pageNum");
+        return "/system/role/role-list";
+    }
+    @RequestMapping("/api/list")
+    @ResponseBody
+    public Object api_list(HttpServletRequest request, Page page) throws ApplicationException {
         Integer pageNum = RequestUtil.getInteger(request, "currentPage");
-        if (pageNum == null || pageNum <= 0) {// 判断页码是否为空
-            pageNum = 1;
-        }
         Criteria criteria = new Criteria();
         PageInfo<Role> result = roleService.getByCriteria(criteria, pageNum, page.getShowCount());
-        request.setAttribute("result", result);
-        request.setAttribute("type", typeId);
-        page.setTotalResult(result.getTotal());
-        page.setEntityOrField(true);
-        page.getCurrentResult();
-        request.setAttribute("pd", pd);
-        return "/system/role/list";
+        Message.Builder builder = Message.newBuilder();
+        builder.total(result.getTotal());
+        builder.data(result.getData());
+        return builder.build();
     }
 
     @RequestMapping("/del")
@@ -58,9 +56,7 @@ public class RoleController implements Constants {
         record.setId(id);
         record.setState(StateType.INACTIVE.getId());
         roleService.updateByIdSelective(record);
-        JSONObject json = new JSONObject();
-        json.put("result", "success");
-        return json;
+        return Message.newBuilder().build();
     }
 
     @RequestMapping("/goadd")
@@ -70,44 +66,27 @@ public class RoleController implements Constants {
     }
 
     @RequestMapping("/detail")
-    public String detail(HttpServletRequest request) throws ApplicationException {
+    @ResponseBody
+    public Object detail(HttpServletRequest request) throws ApplicationException {
+    	Message.Builder builder = Message.newBuilder();
         Long id = RequestUtil.getLong(request, "id");
         Role role = roleService.getById(id);
-        request.setAttribute("role", role);
-        request.setAttribute("uri", "update");
-        return "/system/role/edit";
+        builder.data(role);
+        return builder.build();
     }
 
     @RequestMapping("/add")
-    public ModelAndView add(HttpServletRequest request) throws ApplicationException {
-        String name=RequestUtil.getString(request, "name");
-        String desc=RequestUtil.getString(request, "desc");
-        Role record=new Role();
-        record.setName(name);
-        record.setType(1);
-        record.setDesc(desc);
-        record.setState(1);
-        roleService.insert(record);
-        return new ModelAndView("/common/save_result", "msg", "success");
+    @ResponseBody
+    public Object add(Role role, HttpServletRequest request) throws ApplicationException {
+        roleService.insert(role);
+        return Message.newBuilder().build();
     }
 
     @RequestMapping("/update")
-    public ModelAndView update(HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
-        Long id = RequestUtil.getLong(request, "id");
-        String name=RequestUtil.getString(request, "name");
-        Integer type=RequestUtil.getInteger(request, "type");
-        String desc=RequestUtil.getString(request, "desc");
-        Integer state = RequestUtil.getInteger(request, "state");
-        if(null != id){
-            Role record=new Role();
-            record.setId(id);
-            record.setName(name);
-            record.setType(type);
-            record.setDesc(desc);
-            record.setState(state);
-            roleService.updateByIdSelective(record);
-        }
-        return new ModelAndView("/common/save_result", "msg", "success");
+    @ResponseBody
+    public Object update(Role role, HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
+        roleService.updateByIdSelective(role);
+        return Message.newBuilder().build();
     }
 
 }

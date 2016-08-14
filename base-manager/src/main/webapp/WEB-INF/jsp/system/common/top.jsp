@@ -23,7 +23,7 @@
 			<a href="#" class="navbar-brand">
 				<small>
 					<i class="fa fa-globe"></i>
-					66 Internet
+					LFY管理平台
 				</small>
 			</a>
 
@@ -42,16 +42,28 @@
 					<a data-toggle="dropdown" href="#" class="dropdown-toggle">
 						<img class="nav-user-photo" src="<%=request.getContextPath() %>/resources/ace/assets/avatars/user.jpg" alt="Jason's Photo" />
 						<span class="user-info">
-							<small>Welcome,</small>
-							${loginUser.nickname }
+							<small>欢迎您，</small>
+							${realName }
 						</span>
 
 						<i class="ace-icon fa fa-caret-down"></i>
 					</a>
 
 					<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-						<li class="divider"></li>
+						<li>
+							<a href="<%=request.getContextPath() %>/admin/system/baseinfo" target="mainFrame">
+								<i class="ace-icon fa fa-cog"></i>
+								系统设置
+							</a>
+						</li>
 
+						<li>
+							<a href="<%=request.getContextPath()%>/admin/user/showSelf" target="mainFrame">
+								<i class="ace-icon fa fa-user"></i>
+								个人设置
+							</a>
+						</li>
+						<li class="divider"></li>
 						<li>
 							<a href="javascript:exitSystem()">
 								<i class="ace-icon fa fa-power-off"></i>

@@ -26,7 +26,6 @@
     <div class="current_position">
         <ol>
             <li class="glyphicon glyphicon-folder-open icon_home"></li>
-            <li>当前位置：</li>
             <li>系统管理&nbsp;&nbsp;&gt; </li>
             <li class="active">菜单管理</li>
         </ol>

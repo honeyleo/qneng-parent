@@ -32,7 +32,7 @@
 
 						欢迎使用
 						<strong class="green">
-							66 Internet
+							LFY管理平台
 							<small>(v1.1)</small>
 						</strong>,Rest服务架构平台
 					</div>

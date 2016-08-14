@@ -7,8 +7,8 @@
 				</script>
 
 				<ul class="nav nav-list">
-					<li class="active">
-						<a href="#">
+					<li class="active" id="homeMenu">
+						<a href="/manager/home" target="mainFrame" onclick="clickHome()">
 							<i class="menu-icon fa fa-desktop"></i>
 							<span class="menu-text"> 查看首页 </span>
 						</a>
@@ -17,14 +17,14 @@
 					</li>
 					<c:forEach items="${menuList}" var="menu">
 				<c:if test="${menu.onMenu == 1}">
-				<li class="active open" id="lm${menu.id }">
+				<li class="hsub open" id="lm${menu.id }">
 					  <a href="#" class="dropdown-toggle" >
-						<i class="menu-icon fa fa-desktop"></i>
+						<i class="menu-icon fa fa-cogs"></i>
 						<span class="menu-text">${menu.name }</span>
 						<b class="arrow fa fa-angle-down"></b>
 					  </a>
 					  <b class="arrow"></b>
-					  <ul class="submenu">
+					  <ul class="submenu nav-show" style="display: block;">
 							<c:forEach items="${menu.childList}" var="sub">
 								<c:if test="${sub.onMenu == 1}">
 								<c:choose>
@@ -55,7 +55,11 @@
 
 				<!-- /section:basics/sidebar.layout.minimize -->
 				<script type="text/javascript">
-					try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+					try {
+						ace.settings.check('sidebar' , 'collapsed');
+					}catch(e){
+						
+					}
 					var fmid = "fhindex";
 					var mid = "fhindex";
 					function siMenu(id,fid,MENU_NAME,MENU_URL){
@@ -69,6 +73,11 @@
 						}
 						$("#"+fid).attr("class","active open");
 						$("#"+id).attr("class","active");
+						$("#homeMenu").removeClass("active");
+					}
+					function clickHome() {
+						$(".active").removeClass("active");
+						$("#homeMenu").addClass("active");
 					}
 				</script>
 			</div>

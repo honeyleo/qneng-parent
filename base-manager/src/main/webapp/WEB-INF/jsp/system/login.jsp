@@ -16,10 +16,10 @@
 							<div class="center">
 								<h1>
 									<i class="ace-icon fa fa-leaf green"></i>
-									<span class="red">清能伏</span>
+									<span class="red">LFY</span>
 									<span class="white" id="id-text2">Technology</span>
 								</h1>
-								<h4 class="blue" id="id-company-text">&copy; 清能伏科技</h4>
+								<h4 class="blue" id="id-company-text">&copy; LFY科技</h4>
 							</div>
 
 							<div class="space-6"></div>

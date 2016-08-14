@@ -75,9 +75,15 @@ public class AdminLoginController {
         	}
         }
         request.setAttribute("menuList", menuList);
+        request.setAttribute("realName", account.getUser().getRealName());
         return INDEX;
     }
-
+    
+    @RequestMapping("/manager/home")
+    public String home() throws ApplicationException {
+        return "/system/common/home";
+    }
+    
     @RequestMapping("/")
     public String manager() throws ApplicationException {
         return ADMIN_LOGIN;
@@ -120,7 +126,7 @@ public class AdminLoginController {
         	throw ApplicationException.newInstance(ErrorCode.ERROR);
         }
         if (!password.equals(user.getPassword())) {
-        	throw ApplicationException.newInstance(ErrorCode.ERROR);
+        	throw ApplicationException.newInstance(ErrorCode.ERROR, "密码错误");
         }
         account.setId(user.getId());
         request.getSession().setAttribute(SESSION_LOGIN_USER, account);

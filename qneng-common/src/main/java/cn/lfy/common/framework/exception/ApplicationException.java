@@ -172,7 +172,11 @@ public class ApplicationException extends RuntimeException implements Serializab
 		this.detailMessage = message;
 	}
 	public static ApplicationException newInstance(int errorCode) {
-		ApplicationException ae = new ApplicationException(errorCode, null);
+		ApplicationException ae = new ApplicationException(errorCode, new Exception());
+		return ae;
+	}
+	public static ApplicationException newInstance(int errorCode, String message) {
+		ApplicationException ae = new ApplicationException(errorCode, message, null);
 		return ae;
 	}
 	public static ApplicationException newInstance(int errorCode, String ...messageParams) {

@@ -21,7 +21,7 @@ public class ApplicationExceptionResolver implements HandlerExceptionResolver
 	private static Logger logger = LoggerFactory.getLogger(ApplicationExceptionResolver.class);
 	private MessageSource messageSource;
 
-	private static final String VIEW_ERROR = "/WEB-INF/jsp/error.jsp";
+	private static final String VIEW_ERROR = "error";
 	
 	public void setMessageSource(MessageSource messageSource)
 	{
@@ -41,17 +41,21 @@ public class ApplicationExceptionResolver implements HandlerExceptionResolver
 		Map<String, Object> model = new HashMap<String, Object>();
 		int errorcode = ErrorCode.ERROR;
 		String errorMessage = "";
+		String detailMessage = "";
 		if (e instanceof ApplicationException)
 		{
 			ApplicationException ae = (ApplicationException) e;
 			errorcode = ae.getErrorCode();
+			if(ae.getDetailMessage() != null) {
+				detailMessage = ae.getDetailMessage();
+			}
 			try {
 				errorMessage = messageSource.getMessage(ErrorKey.getKey(ae.getErrorCode(), ErrorCode.ERROR), ae.getMessageParams(), request.getLocale());
 			} catch(Throwable e2) {
 				logger.error("MessageSource getMessage error.errorCode=" + errorcode + ",msg=" + ae.getDetailMessage(), e2);
 				errorMessage = ae.getDetailMessage();
 			}
-			String eMessage = String.format("%d  %s  %s %s", errorcode, errorMessage, ae.getContextParams(), requestUrl);
+			String eMessage = String.format("%d  %s %s  %s %s", errorcode, errorMessage, detailMessage, ae.getContextParams(), requestUrl);
 			if (ae.isLogged())
 			{
 				logger.error(eMessage, e);
@@ -60,6 +64,7 @@ public class ApplicationExceptionResolver implements HandlerExceptionResolver
 			{
 				logger.error(eMessage);
 			}
+			errorMessage = errorcode == ErrorCode.ERROR && ae.getDetailMessage() != null ? ae.getDetailMessage() : errorMessage;
 		} 
 		else 
 		{

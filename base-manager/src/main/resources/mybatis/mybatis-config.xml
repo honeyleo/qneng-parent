@@ -8,13 +8,4 @@
 		<setting name="useGeneratedKeys" value="true" />
 		<setting name="defaultExecutorType" value="REUSE" />
 	</settings>
-	<!--这里添加的是执行CRUD操作的接口对应的配置文件-->
-	<mappers>
-		<mapper resource="cn/lfy/base/dao/mybatis/common_SqlMap.xml" />
-		<mapper resource="cn/lfy/base/dao/mybatis/AdminDAO.xml" />
-		<mapper resource="cn/lfy/base/dao/mybatis/AdminMenuDAO.xml" />
-		<mapper resource="cn/lfy/base/dao/mybatis/MenuDAO.xml" />
-		<mapper resource="cn/lfy/base/dao/mybatis/RoleDAO.xml" />
-		<mapper resource="cn/lfy/base/dao/mybatis/RoleDefaultMenuDAO.xml" />
-	</mappers>
 </configuration>

@@ -54,6 +54,7 @@
 	<bean id="sqlSessionFactory-admin" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource-admin" />
 		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath:cn/lfy/base/dao/mybatis/*.xml"/>
 	</bean>
 	
 	<!-- 扫描basePackage下所有以@MyBatisRepository标识的 接口-->

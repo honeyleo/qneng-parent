@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.lfy.common.model.Message;
 import cn.lfyun.wx.form.LoginForm;
+import cn.lfyun.wx.form.UserBean;
 
 @Controller
 public class ValidatorController {
@@ -22,4 +23,9 @@ public class ValidatorController {
 		Message.Builder builder = Message.newBuilder();
 		return builder.build();
 	}
+	
+	@RequestMapping("/creanteUser")
+    public @ResponseBody UserBean creanteUser(@Valid UserBean userBean){
+     return userBean;
+ }
 }

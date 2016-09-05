@@ -11,7 +11,8 @@
        http://www.springframework.org/schema/tx/spring-tx-3.2.xsd    
        http://www.springframework.org/schema/aop     
        http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
-
+    	<context:component-scan base-package="cn.lfyun.wx"/>
+    	<aop:aspectj-autoproxy /> 
 	<bean id="executor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<property name="corePoolSize" value="5" />
 		<property name="maxPoolSize" value="200" />

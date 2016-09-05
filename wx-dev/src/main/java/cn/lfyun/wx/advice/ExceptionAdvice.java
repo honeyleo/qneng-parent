@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import cn.lfyun.wx.form.Response;
 
 @ControllerAdvice
-@ResponseBody
 public class ExceptionAdvice {
 
     private static Logger logger = LoggerFactory.getLogger(ExceptionAdvice.class);
@@ -22,6 +21,7 @@ public class ExceptionAdvice {
     /**
      * 400 - Bad Request
      */
+    @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Response handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {

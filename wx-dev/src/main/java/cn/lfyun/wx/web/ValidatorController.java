@@ -1,5 +1,8 @@
 package cn.lfyun.wx.web;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -10,10 +13,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.lfy.common.model.Message;
 import cn.lfyun.wx.form.LoginForm;
 import cn.lfyun.wx.form.UserBean;
+import cn.lfyun.wx.service.RandomBean;
 
 @Controller
 public class ValidatorController {
 
+	@Resource
+	private RandomBean randomBean;
+	
+	private AtomicInteger count = new AtomicInteger(0);
 	@RequestMapping("/login")
 	@ResponseBody
 	public Object login(@Valid LoginForm form, BindingResult result) {
@@ -23,9 +31,20 @@ public class ValidatorController {
 		Message.Builder builder = Message.newBuilder();
 		return builder.build();
 	}
-	
+
 	@RequestMapping("/creanteUser")
-    public @ResponseBody UserBean creanteUser(@Valid UserBean userBean){
-     return userBean;
- }
+	public @ResponseBody
+	UserBean creanteUser(@Valid UserBean userBean) {
+		return userBean;
+	}
+	
+	@RequestMapping("/random")
+	public @ResponseBody
+	Object random() {
+		int c = count.incrementAndGet();
+		long start = System.currentTimeMillis();
+		String content = randomBean.random();
+		System.out.println("count=" + c + " cost " + (System.currentTimeMillis() - start) + "ms " + content);
+		return Message.newBuilder().data(content).build();
+	}
 }

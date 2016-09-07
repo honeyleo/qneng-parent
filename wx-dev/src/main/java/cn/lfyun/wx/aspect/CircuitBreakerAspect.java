@@ -24,13 +24,27 @@ public class CircuitBreakerAspect {
                 HystrixCommand.Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(theShortName));
         theSetter = theSetter.andCommandKey(HystrixCommandKey.Factory.asKey(theShortName));
         
+        //线程池模式
         HystrixCommand.Setter setter2 = HystrixCommand.Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(theShortName))
         		.andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter().withCoreSize(52))
                 /* 配置依赖超时时间,500毫秒*/  
                 .andCommandPropertiesDefaults(HystrixCommandProperties.Setter().withExecutionIsolationThreadTimeoutInMilliseconds(1000)
                         );
         
-        HystrixCommand<Object> theCommand = new HystrixCommand<Object>(setter2) {
+        //信号量模式
+        HystrixCommand.Setter current =HystrixCommand.Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("wx-dev"))
+                .andCommandKey(HystrixCommandKey.Factory.asKey(theShortName))
+                .andCommandPropertiesDefaults(
+                        HystrixCommandProperties.Setter()
+                                .withExecutionIsolationThreadTimeoutInMilliseconds(17)
+                                .withExecutionIsolationSemaphoreMaxConcurrentRequests(50)
+                                .withFallbackIsolationSemaphoreMaxConcurrentRequests(50)
+                                .withCircuitBreakerEnabled(false)
+//                                .withExecutionTimeoutEnabled(false)
+                                .withFallbackEnabled(false)
+                                .withExecutionIsolationStrategy(HystrixCommandProperties.ExecutionIsolationStrategy.SEMAPHORE));
+        
+        HystrixCommand<Object> theCommand = new HystrixCommand<Object>(current) {
             @Override
             protected Object run() throws Exception {
                 try {

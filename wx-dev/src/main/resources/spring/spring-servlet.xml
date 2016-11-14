@@ -45,11 +45,13 @@
 	                    <value>application/json;charset=UTF-8</value>
 	                </list>
 	            </property>
+	            <!--  
 	            <property name="features">
 	                <list>
 	                    <value>QuoteFieldNames</value>
 	                </list>
 	            </property>
+	            -->
 	        </bean>
     	</mvc:message-converters>
 	</mvc:annotation-driven> 

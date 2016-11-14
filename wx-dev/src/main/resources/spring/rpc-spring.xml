@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:kiev="http://www.lfyun.com/kiev/schema/service"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.lfyun.com/kiev/schema/service
+       http://www.lfyun.com/kiev/schema/service.xsd">
+
+    <kiev:application appName="wx-dev" phones="18028763997"/>
+    <kiev:registry url="zookeeper://127.0.0.1:2181" />
+    <kiev:client workThread="4" loadbalancer="roundrobin"
+		timeout="300" retry="0" protocol="hessian" />
+	<kiev:stub id="helloService" interface="com.nettyrpc.test.client.HelloService" node="/soa/game/hello" ver="1"/>
+</beans>

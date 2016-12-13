@@ -1,5 +1,7 @@
 package cn.lfyun.wx.web;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.Resource;
@@ -54,10 +56,33 @@ public class ValidatorController {
 	}
 	@RequestMapping("/hello")
 	public @ResponseBody
-	Object hello() {
+	Object hello(int size) {
 		long start = System.currentTimeMillis();
 		String content = helloService.hello("廖鹏");
 		System.out.println("invoke cost " + (System.currentTimeMillis() - start) + "ms " + content);
+		for(int i = 0; i < size; i ++) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			final int tmp = i;
+			excutor.submit(new Runnable() {
+				
+				@Override
+				public void run() {
+					try {
+						String result = helloService.hello("auto-" + tmp);
+						System.out.println(result);
+					} catch(RuntimeException e) {
+						e.printStackTrace();
+					}
+					
+				}
+			});
+		}
 		return Message.newBuilder().data(content).build();
 	}
+	
+	ExecutorService excutor = Executors.newFixedThreadPool(100);
 }

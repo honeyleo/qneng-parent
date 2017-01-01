@@ -155,22 +155,4 @@ public class AdminController {
         adminService.updateByIdSelective(admin);
         return builder.build();
     }
-    
-    /**
-     * 详情
-     * 
-     * @param request
-     * @return
-     * @throws AdminException
-     */
-    @RequestMapping("/personal")
-    @ResponseBody
-    public Object personal(HttpServletRequest request) throws ApplicationException {
-        Long id = RequestUtil.getLong(request, "id");
-        Admin admin = adminService.findById(id);
-        Message.Builder message = Message.newBuilder();
-        message.data(admin);
-        return message;
-    }
-
 }

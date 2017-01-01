@@ -34,3 +34,4 @@
 		<script src="<%=request.getContextPath() %>/resources/ace/assets/js/ace-elements.min.js"></script>
 		<script src="<%=request.getContextPath() %>/resources/ace/assets/js/ace.min.js"></script>
 		<script src="<%=request.getContextPath() %>/resources/plugins/bootstrap-dialog/bootstrap-dialog.js"></script>
+		

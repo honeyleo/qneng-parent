@@ -16,6 +16,13 @@ public interface RoleDefaultMenuService {
     List<Menu> getMenuListByRoleId(Long roleId);
     
     /**
+     * 根据角色查询默认的菜单列表
+     * @param operatorId
+     * @return
+     */
+    List<Menu> selectMenuListByRoleIds(List<Long> list);
+    
+    /**
      * 添加角色默认菜单
      * @param record
      */

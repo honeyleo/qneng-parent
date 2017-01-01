@@ -9,6 +9,7 @@ public class TreeNode {
     private long parentId;  
     private List<TreeNode> nodes;
     private boolean checked = false;
+    private boolean chkDisabled = false;
     private boolean open = true;
     
     public TreeNode(long id,String name, long parentId, boolean checked) {
@@ -52,6 +53,12 @@ public class TreeNode {
 	}
 	public void setOpen(boolean open) {
 		this.open = open;
+	}
+	public boolean isChkDisabled() {
+		return chkDisabled;
+	}
+	public void setChkDisabled(boolean chkDisabled) {
+		this.chkDisabled = chkDisabled;
 	}
     
     

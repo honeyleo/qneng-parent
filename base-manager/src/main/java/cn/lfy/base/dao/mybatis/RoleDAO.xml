@@ -3,6 +3,7 @@
 <mapper namespace="cn.lfy.base.dao.RoleDAO" >
   <resultMap id="BaseResultMap" type="cn.lfy.base.model.Role" >
     <id column="id" property="id" jdbcType="BIGINT" />
+    <id column="parentId" property="parentId" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="desc" property="desc" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="INTEGER" />
@@ -17,6 +18,9 @@
       <if test="condition.state != null" >
          and state = #{condition.state}
       </if>
+      <if test="condition.parentId != null" >
+         and parentId = #{condition.parentId}
+      </if>
     </trim>
   </sql>
   
@@ -29,7 +33,7 @@
   </sql>
   
   <sql id="Base_Column_List" >
-    id, name, `desc`, state, createTime
+    id, parentId, name, `desc`, state, createTime
   </sql>
   
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.lfy.base.model.Criteria" >
@@ -59,7 +63,7 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into role (name,`desc`, state) values (#{name}, #{desc}, #{state})
+    insert into role (parentId, name,`desc`, state) values (#{parentId}, #{name}, #{desc}, #{state})
   </insert>
   
   <select id="countByExample" parameterType="cn.lfy.base.model.Criteria" resultType="java.lang.Integer" >

@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
+
 import cn.lfy.base.model.Admin;
 import cn.lfy.base.model.Criteria;
 import cn.lfy.base.model.PageInfo;
 import cn.lfy.base.model.Role;
 import cn.lfy.base.model.type.StateType;
-import cn.lfy.base.service.AdminMenuService;
 import cn.lfy.base.service.AdminService;
 import cn.lfy.base.service.RoleService;
 import cn.lfy.common.framework.exception.ApplicationException;
@@ -26,8 +27,6 @@ import cn.lfy.common.framework.exception.ErrorCode;
 import cn.lfy.common.model.Message;
 import cn.lfy.common.utils.MessageDigestUtil;
 import cn.lfy.common.utils.RequestUtil;
-
-import com.alibaba.fastjson.JSONObject;
 
 @Controller
 @RequestMapping("/manager/admin")
@@ -39,9 +38,6 @@ public class AdminController {
     @Autowired
     private RoleService roleService;
     
-    @Autowired
-    private AdminMenuService adminMenuService;
-
     /**
      * 用户详情列表
      * 
@@ -131,7 +127,6 @@ public class AdminController {
         admin.setPassword(password);
         admin.setEmail("");
         admin.setAddress("");
-        admin.setRoleId(1L);
         admin.setState(1);
         adminService.add(admin);
         return builder.build();
@@ -161,6 +156,21 @@ public class AdminController {
         return builder.build();
     }
     
-    
+    /**
+     * 详情
+     * 
+     * @param request
+     * @return
+     * @throws AdminException
+     */
+    @RequestMapping("/personal")
+    @ResponseBody
+    public Object personal(HttpServletRequest request) throws ApplicationException {
+        Long id = RequestUtil.getLong(request, "id");
+        Admin admin = adminService.findById(id);
+        Message.Builder message = Message.newBuilder();
+        message.data(admin);
+        return message;
+    }
 
 }

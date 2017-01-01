@@ -30,8 +30,10 @@ var admins = {
             admins.sunNum = (i+1)+(currentPage*PAGE_SIZE);
             $opera = '<a href="javascript:void(0);" class="operation J_delete" data-toggle="modal" data-target="#myModal" data-value=' + value[i].id + '>删除</a>' + 
             	'<a href="javascript:void(0);" class="operation J_strategyInfo" data-toggle="modal" data-target="#myModal" data-value=' + value[i].id + '>详情</a>'+
-                '<a href="#" class="operation dialog-editor" data-toggle="modal" data-target="#editorDialog"  data-value=' + value[i].id + '>编辑</a></td>';
-            arr.push([admins.sunNum,value[i].id,value[i].username,value[i].realName, '<div class="text_l">'+ value[i].phone +'</div>', value[i].state,value[i].createTime,value[i].roleId, $opera]);
+                '<a href="#" class="operation dialog-editor" data-toggle="modal" data-target="#editorDialog"  data-value=' + value[i].id + '>编辑</a>' + 
+                '<a href="#" class="operation dialog-roles" data-toggle="modal" data-target="#rolesDialog"  data-value=' + value[i].id + '>分配角色</a>' +
+                '</td>';
+            arr.push([admins.sunNum,value[i].id,value[i].username,value[i].realName, '<div class="text_l">'+ value[i].phone +'</div>', value[i].state,value[i].createTime, $opera]);
         }
         self.num++;
         result.draw = self.num;
@@ -118,7 +120,61 @@ var admins = {
                     $("#phone").val(result.data.phone);
             	}
             });
-        });
+        }).on("click", ".dialog-roles", function(){
+            var sure = $('.modal-footer .btn-primary');
+            sure.addClass("none");
+            $(".J_roles_sure").removeClass("none");
+            var id = $(this).attr("data-value");
+            $(".J_roles_sure").unbind().click(function () {
+            	var treeObj=$.fn.zTree.getZTreeObj("roleTree");
+                var nodes=treeObj.getCheckedNodes(true);
+                
+                var menuIds = [];
+                for(var i = 0; i < nodes.length; i++) {
+                	tmpNode = nodes[i];
+					if(i!=nodes.length-1){
+						menuIds= tmpNode.id+",";
+					}else{
+						menuIds += tmpNode.id;
+					}
+                }
+                $.get("/manager/admin_role/save",{adminId:id, menuIds : menuIds},function(result){
+                    if (result.ret == 0) {
+                        $('#roles').modal('hide');
+                        roles.query();
+                    } else {
+                        asyncbox.alert("分配权限失败！\n"+result.msg,"提示");
+                        $('#roles').modal('hide');
+                    }
+                });
+            });
+            $.getJSON("/manager/admin_role/api/tree", {id: id}, function(result){
+            	if (result.ret == 0) {
+            		var setting = {
+        				check: {
+        	        		chkboxType : { "Y" : "", "N" : "" },
+        	        		enable: true
+        	        	},
+        	            view: {
+        	                selectedMulti: false
+        	            },
+        	            data: {
+        	                simpleData: {
+        	                    enable: true,
+        	                    idKey: "id",
+        	    				pIdKey: "parentId",
+        	                }
+        	            },
+        	            callback: {
+        	            	
+        	            }
+        	        };
+            		var zNodes = result.data;
+        			$.fn.zTree.init($("#roleTree"), setting, zNodes);
+        			$('#roles').modal('show');
+            	}
+            });
+        });;
         $("#updContent").click(function(){
             var param = {
                 id: $("#id").val(),

@@ -2,7 +2,10 @@ package cn.lfy.common.framework.exception;
 
 public interface ErrorCode extends BaseErrorCode
 {
-
+	/**
+     * 权限拒绝
+     */
+    static final int PERMISSION_DENIED = SERVER_ERROR + SECURITY + 1;
     /**
      * 访问令牌无效
      */

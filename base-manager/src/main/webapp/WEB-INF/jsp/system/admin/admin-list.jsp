@@ -17,6 +17,7 @@
     <link href="<%=basePath%>resources/css/jquery-ui.css" rel="stylesheet" type="text/css" />
     <link href="<%=basePath%>resources/css/asyncbox.css" rel="stylesheet" type="text/css" />
     <link href="<%=basePath%>resources/css/box.css" rel="stylesheet" type="text/css" />
+    <link type="text/css" rel="stylesheet" href="<%=basePath %>resources/plugins/zTree/metroStyle.css"/>
 </head>
 <body>
 <div class="panel_con main_con">
@@ -63,7 +64,7 @@
                 <div class="col-width">
                     <span class="label_style">手机号：</span>
                     <div class="form-group drop_com">
-                        <input type="text" id="strategyName" class="form-control searchName" placeholder="公告标题">
+                        <input type="text" id="strategyName" class="form-control searchName" placeholder="手机号">
                     </div>
                 </div>
                 <div class="col-width">
@@ -83,8 +84,7 @@
                 <th width="140px">手机号</th>
                 <th>状态</th>
                 <th width="180px">创建时间</th>
-                <th >角色</th>
-                <th width="140px">操作</th>
+                <th width="220px">操作</th>
             </tr>
             </thead>
             <tbody id="table" style="margin-left:15px;border:1px solid #000;"></tbody>
@@ -177,6 +177,27 @@
         </div>
     </div>
 </div>
+
+<!-- 弹出框 -->
+<div class="modal fade" id="roles" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">分配角色</h4>
+            </div>
+            <div class="modal-body">
+				<div class="zTreeDemoBackground">
+		        	<ul id="roleTree" class="ztree"></ul>
+		    	</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary J_roles_sure none">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script id="infoDialog" type="text/x-jquery-tmpl">
   <div class="modify">
   <table cellspacing="0" width="100%" class="modifyTable">
@@ -204,6 +225,7 @@
 
 <script src="<%=basePath%>resources/js/common/common.js"></script>
 <script src="<%=basePath%>resources/js/common/bootstrap.js"></script>
+<script src="<%=basePath%>resources/plugins/zTree/jquery.ztree.all.js"></script>
 <script src="<%=basePath%>resources/js/common/bootstrap-typeahead.js"></script>
 <script src="<%=basePath%>resources/js/common/jquery.dataTables.js"></script>
 <script src="<%=basePath%>resources/js/common/dataTables.bootstrap.js"></script>

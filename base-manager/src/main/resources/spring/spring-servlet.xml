@@ -65,4 +65,11 @@
 		<property name="prefix" value="/WEB-INF/jsp/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
+	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+		<mvc:interceptor>
+			<mvc:mapping path="/manager/**"/>
+			<bean class="cn.lfy.base.web.filter.PermissionInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors> 
 </beans>

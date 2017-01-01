@@ -24,6 +24,16 @@
     order by m.parentIdPath, m.orderNo
   </select>
   
+  <select id="selectMenuListByRoleIds" resultMap="MenuResultMap" parameterType="java.lang.Long" >
+    select m.id, m.name, m.parentId, m.parentIdPath, m.url, rm.roleId as ownerId,m.onMenu as onMenu, m.icon as icon 
+    from menu m inner join role_menu rm on m.id = rm.menuId 
+    where m.state = 1 and rm.roleId in
+    <foreach collection="list" separator="," item="roleId" open="(" close=")">
+    	#{roleId}
+    </foreach>
+    order by m.parentIdPath, m.orderNo
+  </select>
+  
   <insert id="insert" parameterType="cn.lfy.base.model.RoleDefaultMenu" >
     insert into role_menu (menuId, roleId) values (#{menuId}, #{roleId})
   </insert>

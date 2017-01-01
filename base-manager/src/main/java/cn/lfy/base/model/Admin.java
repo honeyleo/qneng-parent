@@ -42,11 +42,6 @@ public class Admin implements Serializable {
     private String address;
 
     /**
-     * 角色ID
-     */
-    private Long roleId;
-
-    /**
      * 数据状态
      */
     private Integer state;
@@ -159,21 +154,6 @@ public class Admin implements Serializable {
      */
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    /**
-     * @return 角色ID
-     */
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    /**
-     * @param roleid 
-	 *            角色ID
-     */
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
     }
 
     /**

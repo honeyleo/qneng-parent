@@ -51,14 +51,7 @@
 
 					<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 						<li>
-							<a href="<%=request.getContextPath() %>/admin/system/baseinfo" target="mainFrame">
-								<i class="ace-icon fa fa-cog"></i>
-								系统设置
-							</a>
-						</li>
-
-						<li>
-							<a href="<%=request.getContextPath()%>/admin/user/showSelf" target="mainFrame">
+							<a href="#" data-toggle="modal" data-target="#personal">
 								<i class="ace-icon fa fa-user"></i>
 								个人设置
 							</a>
@@ -80,9 +73,48 @@
 		<!-- /section:basics/navbar.dropdown -->
 	</div><!-- /.navbar-container -->
 </div>
+<div class="modal fade" id="personal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog application_dialog">
+        <div class="modal-content" id="editorModal">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">个人信息</h4>
+            </div>
+            <div class="modal-body1" style="padding: 20px;">
+                <table cellspacing="0" width="100%" class="modifyTable">
+                    <tr>
+                        <th>密码：</th>
+                        <td>
+                            <input type="text" class="form-control input_common300" id="password" placeholder="用户密码">
+                        </td>
+                    </tr>
+                    <tr>
+	                    <th>姓名：</th>
+	                    <td>
+	                        <input type="text" class="form-control input_common300" id="realName" placeholder="用户姓名">
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <th>手机号：</th>
+	                    <td>
+	                        <input type="text" class="form-control input_common300" id="phone" placeholder="手机号">
+	                    </td>
+	                </tr>
+                </table>
+            </div>
+            <div id="strategyTextView" style="display:none;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary J_sure" id="updContent">确定</button>
+                <button type="button" class="btn btn-primary J_add_sure none">确定</button>
+                <button type="button" class="btn btn-default J_close_sure" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
 function exitSystem() {
-	window.parent.location.href = $("#contextPath").val()+ "/admin/logout";
+	window.parent.location.href = $("#contextPath").val()+ "/manager/logout";
 }
 </script>
 <!-- /section:basics/navbar.layout -->

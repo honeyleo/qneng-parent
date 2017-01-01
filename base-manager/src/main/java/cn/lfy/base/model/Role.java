@@ -7,6 +7,10 @@ public class Role implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
+    /**
+     * 父角色ID
+     */
+    private Long parentId;
 
     /**
      * 员工管理角色名称
@@ -46,7 +50,15 @@ public class Role implements Serializable {
         this.id = id;
     }
 
-    /**
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
+
+	/**
      * @return 内勤管理角色名称
      */
     public String getName() {

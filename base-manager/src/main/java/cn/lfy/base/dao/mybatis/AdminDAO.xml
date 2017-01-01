@@ -9,7 +9,6 @@
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="address" property="address" jdbcType="VARCHAR" />
-    <result column="roleId" property="roleId" jdbcType="BIGINT" />
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -54,14 +53,11 @@
   		<if test="orderMap.username != null">
   			,id #{orderMap.userName}
   		</if>
-  		<if test="orderMap.roleId != null" >
-         and roleId #{orderMap.roleId}
-      </if>
   	</trim>
   </sql>
   
   <sql id="Base_Column_List" >
-    id, username, password, realName, email, phone, address, roleId, state, createTime
+    id, username, password, realName, email, phone, address, state, createTime
   </sql>
   
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.lfy.base.model.Criteria" >
@@ -91,8 +87,8 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into admin (username, password, realName, email, phone, address, roleId, state)
-    values (#{username}, #{password}, #{realName}, #{email}, #{phone}, #{address}, #{roleId}, #{state})
+    insert into admin (username, password, realName, email, phone, address, state)
+    values (#{username}, #{password}, #{realName}, #{email}, #{phone}, #{address}, #{state})
   </insert>
   
   <select id="countByExample" parameterType="cn.lfy.base.model.Criteria" resultType="java.lang.Integer" >
@@ -119,9 +115,6 @@
       </if>
       <if test="address != null" >
         address = #{address},
-      </if>
-      <if test="roleId != null" >
-        roleId = #{roleId},
       </if>
       <if test="state != null" >
         state = #{state},

@@ -1,6 +1,8 @@
 package cn.lfy.base.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class LoginAccount extends BaseEntity {
 	
@@ -8,10 +10,14 @@ public class LoginAccount extends BaseEntity {
 
 	private Admin user;
 	
-	private List<Role> roles;
+	private List<Role> roles = new ArrayList<Role>();
+	
+	private List<Long> roleIdList;
 	
 	private List<Menu> menus;
 
+	private Set<String> uriSet;
+	
 	public Admin getUser() {
 		return user;
 	}
@@ -35,7 +41,28 @@ public class LoginAccount extends BaseEntity {
 	public void setMenus(List<Menu> menus) {
 		this.menus = menus;
 	}
-	
+
+	public List<Long> getRoleIdList() {
+		if(roleIdList == null) {
+			roleIdList = new ArrayList<Long>();
+			for(Role role : roles) {
+				roleIdList.add(role.getId());
+			}
+		}
+		return roleIdList;
+	}
+
+	public Set<String> getUriSet() {
+		return uriSet;
+	}
+
+	public void setUriSet(Set<String> uriSet) {
+		this.uriSet = uriSet;
+	}
+
+	public void setRoleIdList(List<Long> roleIdList) {
+		this.roleIdList = roleIdList;
+	}
 	
 
 }

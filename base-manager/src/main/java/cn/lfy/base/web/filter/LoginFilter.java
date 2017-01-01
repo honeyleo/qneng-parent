@@ -21,9 +21,8 @@ public class LoginFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+		long start = System.currentTimeMillis();
 		String requestUri = request.getRequestURI();
-		
-		log.info("登录会话拦截，请求URL："+requestUri);
 		
 		if(!LoginVerify(request)) {
 			String httpAjax=request.getHeader("X-Requested-With");
@@ -37,6 +36,7 @@ public class LoginFilter extends OncePerRequestFilter {
 			return;
 		}
 		filterChain.doFilter(request, response);
+		log.info("登录会话拦截，请求URL："+requestUri + " cost " + (System.currentTimeMillis() - start) + "ms");
 	}
 
 	

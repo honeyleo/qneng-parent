@@ -71,4 +71,9 @@ public class RoleDefaultMenuServiceImpl implements RoleDefaultMenuService {
 		
     }
 
+	@Override
+	public List<Menu> selectMenuListByRoleIds(List<Long> list) {
+		return roleDefaultMenuDAO.selectMenuListByRoleIds(list);
+	}
+
 }

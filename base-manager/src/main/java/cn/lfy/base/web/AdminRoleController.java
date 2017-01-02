@@ -17,7 +17,6 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import cn.lfy.base.Constants;
 import cn.lfy.base.model.Admin;
 import cn.lfy.base.model.Criteria;
 import cn.lfy.base.model.LoginAccount;
@@ -47,7 +46,7 @@ public class AdminRoleController
 
     @RequestMapping("/api/tree")
     @ResponseBody
-    public Object api_tree(HttpServletRequest request) {
+    public Object api_tree(HttpServletRequest request, LoginAccount account) {
     	List<Role> roleTree = new ArrayList<Role>();
     	Long adminId = RequestUtil.getLong(request, "id");
     	List<Role> list = adminMenuService.getRoleListByAdminId(adminId);
@@ -55,7 +54,6 @@ public class AdminRoleController
     	for(Role role : list) {
     		roleSet.add(role.getId());
     	}
-    	LoginAccount account = (LoginAccount) request.getSession().getAttribute(Constants.SESSION_LOGIN_USER);
     	List<Role> roles = account.getRoles();
     	roleTree.addAll(roles);
     	while(!roles.isEmpty()) {

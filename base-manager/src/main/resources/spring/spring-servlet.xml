@@ -36,6 +36,7 @@
 	<!-- ②：启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
 	<mvc:annotation-driven>
 		<mvc:argument-resolvers>
+			<bean class="cn.lfy.base.web.core.LoginAccountArgumentResolver" />
 			<bean class="cn.lfy.common.binder.RenamingProcessor">
 				<constructor-arg name="annotationNotRequired" value="true" />
 			</bean>

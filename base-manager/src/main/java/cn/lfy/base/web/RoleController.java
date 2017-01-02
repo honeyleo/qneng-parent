@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.common.collect.Lists;
 
-import cn.lfy.base.Constants;
 import cn.lfy.base.model.Criteria;
 import cn.lfy.base.model.LoginAccount;
 import cn.lfy.base.model.Role;
@@ -40,9 +39,8 @@ public class RoleController {
     
     @RequestMapping("/api/tree")
     @ResponseBody
-    public Object api_tree(HttpServletRequest request) {
+    public Object api_tree(HttpServletRequest request, LoginAccount account) {
     	List<Role> roleTree = new ArrayList<Role>();
-    	LoginAccount account = (LoginAccount) request.getSession().getAttribute(Constants.SESSION_LOGIN_USER);
     	Role curRole = account.getRoles().get(0);
     	roleTree.add(curRole);
     	Criteria criteria = new Criteria();

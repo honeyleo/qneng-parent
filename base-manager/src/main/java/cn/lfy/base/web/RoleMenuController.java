@@ -16,7 +16,6 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import cn.lfy.base.Constants;
 import cn.lfy.base.model.LoginAccount;
 import cn.lfy.base.model.Menu;
 import cn.lfy.base.model.Role;
@@ -51,10 +50,9 @@ public class RoleMenuController
 	 */
 	@RequestMapping("/privileges")
 	@ResponseBody
-	public Object privileges(HttpServletRequest request) {
+	public Object privileges(HttpServletRequest request, LoginAccount account) {
 		Long roleId = RequestUtil.getLong(request, "id");
 		Role role = roleService.getById(roleId);
-		LoginAccount account = (LoginAccount) request.getSession().getAttribute(Constants.SESSION_LOGIN_USER);
 		List<Menu> menus = null;
 		if(account.getRoles().get(0).getId() == 1) {
 			if(role.getId() == 1) {

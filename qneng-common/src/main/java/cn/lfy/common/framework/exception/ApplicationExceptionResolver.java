@@ -36,7 +36,8 @@ public class ApplicationExceptionResolver implements HandlerExceptionResolver
 		 */
 		Map<String, String[]> p = request.getParameterMap();
 		String params = ParamUtil.concatAll(p);
-		String requestUrl = request.getRequestURI() + "|" + ( null == p || p.isEmpty() ? "{}" : params );
+		
+		String requestUrl = request.getRequestURI() + ( null == p || p.isEmpty() ? "" : "?" + params );
 		
 		Map<String, Object> model = new HashMap<String, Object>();
 		int errorcode = ErrorCode.ERROR;

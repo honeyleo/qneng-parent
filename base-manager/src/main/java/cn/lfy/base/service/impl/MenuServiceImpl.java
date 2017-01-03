@@ -7,10 +7,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import cn.lfy.base.dao.MenuDAO;
-import cn.lfy.base.dao.RoleDefaultMenuDAO;
+import cn.lfy.base.dao.RoleMenuDAO;
 import cn.lfy.base.model.Criteria;
 import cn.lfy.base.model.Menu;
-import cn.lfy.base.model.RoleDefaultMenu;
+import cn.lfy.base.model.RoleMenu;
 import cn.lfy.base.service.MenuService;
 
 @Service
@@ -20,13 +20,13 @@ public class MenuServiceImpl implements MenuService {
     private MenuDAO menuDAO;
     
     @Autowired
-    private RoleDefaultMenuDAO roleDefaultMenuDAO;
+    private RoleMenuDAO roleDefaultMenuDAO;
     
     @Override
     public int save(Menu record) {
         if(record.getId() == null || record.getId().intValue() < 1){
         	int ret = menuDAO.insert(record);
-        	RoleDefaultMenu roleMenu = new RoleDefaultMenu();
+        	RoleMenu roleMenu = new RoleMenu();
             roleMenu.setRoleId(1L);
             roleMenu.setMenuId(record.getId());
         	roleDefaultMenuDAO.insert(roleMenu);

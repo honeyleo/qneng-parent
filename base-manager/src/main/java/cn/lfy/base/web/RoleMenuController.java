@@ -21,7 +21,7 @@ import cn.lfy.base.model.Menu;
 import cn.lfy.base.model.Role;
 import cn.lfy.base.model.TreeNode;
 import cn.lfy.base.service.MenuService;
-import cn.lfy.base.service.RoleDefaultMenuService;
+import cn.lfy.base.service.RoleMenuService;
 import cn.lfy.base.service.RoleService;
 import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
@@ -40,7 +40,7 @@ public class RoleMenuController
 	private RoleService roleService;
 	
     @Autowired
-	private RoleDefaultMenuService roleDefaultMenuService;
+	private RoleMenuService roleDefaultMenuService;
 
 	/**
 	 * 角色权限列表：角色拥有的权限默认选上

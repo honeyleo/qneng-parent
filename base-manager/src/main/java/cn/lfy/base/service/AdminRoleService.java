@@ -2,7 +2,6 @@ package cn.lfy.base.service;
 
 import java.util.List;
 
-import cn.lfy.base.model.Admin;
 import cn.lfy.base.model.Role;
 
 public interface AdminRoleService
@@ -21,13 +20,6 @@ public interface AdminRoleService
     void add(Long adminId, Long menuId);
     
     /**
-     * 保存管理的权限菜单
-     * @param admin
-     * @param roleIds
-     */
-    void saveAdminRoles(Admin admin, List<Long> roleIds);
-    
-    /**
      * 删除内勤人员ID的菜单 
      * @param adminId
      */
@@ -38,5 +30,10 @@ public interface AdminRoleService
      * @param role
      */
     void deleteByRoleId(Long  roleId);
-
+    /**
+     * 保存用戶角色列表
+     * @param userId
+     * @param roleIds
+     */
+    void saveRoles(Long userId, List<Long> roleIds);
 }

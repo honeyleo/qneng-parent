@@ -129,19 +129,18 @@ var admins = {
             	var treeObj=$.fn.zTree.getZTreeObj("roleTree");
                 var nodes=treeObj.getCheckedNodes(true);
                 
-                var menuIds = [];
+                var roleIds = [];
                 for(var i = 0; i < nodes.length; i++) {
                 	tmpNode = nodes[i];
 					if(i!=nodes.length-1){
-						menuIds= tmpNode.id+",";
+						roleIds += tmpNode.id+",";
 					}else{
-						menuIds += tmpNode.id;
+						roleIds += tmpNode.id;
 					}
                 }
-                $.get("/manager/admin_role/save",{adminId:id, menuIds : menuIds},function(result){
+                $.get("/manager/admin_role/save",{adminId:id, roleIds : roleIds},function(result){
                     if (result.ret == 0) {
                         $('#roles').modal('hide');
-                        roles.query();
                     } else {
                         asyncbox.alert("分配权限失败！\n"+result.msg,"提示");
                         $('#roles').modal('hide');

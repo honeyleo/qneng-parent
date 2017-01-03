@@ -2,6 +2,8 @@ package cn.lfy.base.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import cn.lfy.base.model.AdminRole;
 import cn.lfy.base.model.Role;
 
@@ -31,5 +33,12 @@ public interface AdminRoleDAO {
      * @param menuId
      */
     void deleteByRoleId(Long  roleId);
+    
+    /**
+     * 删除某菜单 
+     * @param adminId
+     * @param roleId
+     */
+    void delete(@Param("adminId")Long adminId, @Param("roleId")Long roleId);
     
 }

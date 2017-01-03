@@ -34,5 +34,7 @@
   <delete id="deleteByMenuId" parameterType="java.lang.Long" >
     delete from admin_role where roleId = #{roleId}
   </delete>
-  
+  <delete id="delete" parameterType="java.lang.Long" >
+    delete from admin_role where adminId = #{adminId} and roleId = #{roleId}
+  </delete>
 </mapper>

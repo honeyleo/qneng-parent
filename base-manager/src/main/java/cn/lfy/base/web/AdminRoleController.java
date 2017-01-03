@@ -95,29 +95,29 @@ public class AdminRoleController
 	public Object save(HttpServletRequest request) throws ApplicationException
 	{
 		Long adminId = RequestUtil.getLong(request, "adminId");
-		String menuIdsString = RequestUtil.getString(request, "menuIds");
-		if(StringUtils.isBlank(menuIdsString)) {
+		String roleIdsString = RequestUtil.getString(request, "roleIds");
+		if(StringUtils.isBlank(roleIdsString)) {
 			throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "menuIds");
 		}
-		Iterator<String> it = Splitter.on(",").split(menuIdsString).iterator();
-		List<Long> menuIds = Lists.newArrayList();
+		Iterator<String> it = Splitter.on(",").split(roleIdsString).iterator();
+		List<Long> roleIds = Lists.newArrayList();
 		while(it.hasNext()) {
-			menuIds.add(Long.parseLong(it.next()));
+			roleIds.add(Long.parseLong(it.next()));
 		}
 		if (null == adminId || adminId <= 0)
 		{
 			throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "adminId");
 		}
-		if (null == menuIds || menuIds.isEmpty())
+		if (null == roleIds || roleIds.isEmpty())
         {
-			throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "menuIds");
+			throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "roleIds");
         }
 		Admin admin = adminService.findById(adminId);
 		if (null == admin)
 		{
 			throw ApplicationException.newInstance(ErrorCode.NOT_EXIST, "用户");
 		}
-		adminMenuService.saveAdminRoles(admin, menuIds);
+		adminMenuService.saveRoles(admin.getId(), roleIds);
 		return Message.newBuilder().build();
 	}
 }

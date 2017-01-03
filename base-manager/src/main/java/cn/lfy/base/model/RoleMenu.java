@@ -2,7 +2,7 @@ package cn.lfy.base.model;
 
 import java.io.Serializable;
 
-public class RoleDefaultMenu implements Serializable {
+public class RoleMenu implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**

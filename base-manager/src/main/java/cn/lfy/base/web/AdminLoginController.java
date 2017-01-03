@@ -23,7 +23,7 @@ import cn.lfy.base.model.Role;
 import cn.lfy.base.model.type.StateType;
 import cn.lfy.base.service.AdminRoleService;
 import cn.lfy.base.service.AdminService;
-import cn.lfy.base.service.RoleDefaultMenuService;
+import cn.lfy.base.service.RoleMenuService;
 import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
 import cn.lfy.common.utils.MessageDigestUtil;
@@ -45,7 +45,7 @@ public class AdminLoginController {
     private AdminRoleService adminRoleService;
     
     @Autowired
-	private RoleDefaultMenuService roleDefaultMenuService;
+	private RoleMenuService roleDefaultMenuService;
     
     @RequestMapping("/manager/index")
     public String index(HttpServletRequest request) throws ApplicationException {

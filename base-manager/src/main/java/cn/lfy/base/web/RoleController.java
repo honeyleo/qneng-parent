@@ -2,6 +2,8 @@ package cn.lfy.base.web;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.google.common.collect.Lists;
 
 import cn.lfy.base.model.Criteria;
 import cn.lfy.base.model.LoginAccount;
@@ -22,6 +22,8 @@ import cn.lfy.base.service.RoleService;
 import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.model.Message;
 import cn.lfy.common.utils.RequestUtil;
+
+import com.google.common.collect.Lists;
 
 @Controller
 @RequestMapping("/manager/role")
@@ -41,15 +43,12 @@ public class RoleController {
     @ResponseBody
     public Object api_tree(HttpServletRequest request, LoginAccount account) {
     	List<Role> roleTree = new ArrayList<Role>();
-    	Role curRole = account.getRoles().get(0);
-    	roleTree.add(curRole);
-    	Criteria criteria = new Criteria();
-    	criteria.put("parentId", curRole.getId());
-    	List<Role> roles = roleService.getByCriteria(criteria);
+    	Set<Role> roles = account.getRoles();
     	roleTree.addAll(roles);
     	while(!roles.isEmpty()) {
-    		List<Role> next = new ArrayList<Role>();
+    		Set<Role> next = new TreeSet<Role>();
     		for(Role role : roles) {
+    			Criteria criteria = new Criteria();
     			criteria.put("parentId", role.getId());
     			List<Role> tmpRoles = roleService.getByCriteria(criteria);
     			roleTree.addAll(tmpRoles);

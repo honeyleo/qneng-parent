@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,10 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 import cn.lfy.base.model.Admin;
 import cn.lfy.base.model.Criteria;
@@ -29,6 +26,10 @@ import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
 import cn.lfy.common.model.Message;
 import cn.lfy.common.utils.RequestUtil;
+
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 @Controller
 @RequestMapping("/manager/admin_role")
@@ -54,10 +55,10 @@ public class AdminRoleController
     	for(Role role : list) {
     		roleSet.add(role.getId());
     	}
-    	List<Role> roles = account.getRoles();
+    	Set<Role> roles = account.getRoles();
     	roleTree.addAll(roles);
     	while(!roles.isEmpty()) {
-    		List<Role> next = new ArrayList<Role>();
+    		Set<Role> next = new TreeSet<Role>();
     		for(Role role : roles) {
     			Criteria criteria = new Criteria();
     			criteria.put("parentId", role.getId());
@@ -69,7 +70,7 @@ public class AdminRoleController
     	}
 		List<TreeNode> treeList = Lists.newArrayList();
 		boolean chkDisabled = false;
-		if(account.getRoleIdList().contains(Long.valueOf(1L)) && roleSet.contains(Long.valueOf(1L))) {
+		if(account.getRoleIds().contains(Long.valueOf(1L)) && roleSet.contains(Long.valueOf(1L))) {
 			chkDisabled = true;
 		} else if(roleSet.contains(Long.valueOf(1L))) {
 			chkDisabled = true;
@@ -116,7 +117,7 @@ public class AdminRoleController
 		{
 			throw ApplicationException.newInstance(ErrorCode.NOT_EXIST, "用户");
 		}
-		adminMenuService.saveAdminRoles(admin, menuIds); // 更新权限菜单
+		adminMenuService.saveAdminRoles(admin, menuIds);
 		return Message.newBuilder().build();
 	}
 }

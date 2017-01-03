@@ -3,6 +3,7 @@ package cn.lfy.base.web;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,9 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 import cn.lfy.base.Constants;
 import cn.lfy.base.model.Admin;
@@ -29,6 +27,9 @@ import cn.lfy.base.service.RoleDefaultMenuService;
 import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
 import cn.lfy.common.utils.MessageDigestUtil;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 @Controller
 public class AdminLoginController {
@@ -49,8 +50,7 @@ public class AdminLoginController {
     @RequestMapping("/manager/index")
     public String index(HttpServletRequest request) throws ApplicationException {
     	LoginAccount account = (LoginAccount) request.getSession().getAttribute(Constants.SESSION_LOGIN_USER);
-    	List<Menu> menus = roleDefaultMenuService.selectMenuListByRoleIds(account.getRoleIdList());
-        account.setMenus(menus);
+    	List<Menu> menus = roleDefaultMenuService.selectMenuListByRoleIds(Lists.newArrayList(account.getRoleIds()));
         List<Menu> menuList = Lists.newArrayList();
         Set<String> uriSet = Sets.newTreeSet();
         for(Menu menu : menus) {
@@ -141,7 +141,9 @@ public class AdminLoginController {
         }
         List<Role> roleList = adminRoleService.getRoleListByAdminId(admin.getId());
         LoginAccount account = new LoginAccount();
-        account.setRoles(roleList);
+        Set<Role> roleSet = new TreeSet<Role>();
+        roleSet.addAll(roleList);
+        account.setRoles(roleSet);
         Admin user = new Admin();
         user.setId(admin.getId());
         user.setUsername(admin.getUsername());

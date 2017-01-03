@@ -54,7 +54,7 @@ public class RoleMenuController
 		Long roleId = RequestUtil.getLong(request, "id");
 		Role role = roleService.getById(roleId);
 		List<Menu> menus = null;
-		if(account.getRoles().get(0).getId() == 1) {
+		if(account.getRoleIds().contains(1L)) {
 			if(role.getId() == 1) {
 				menus = menuService.findMenuList();
 			} else if(role.getParentId() == 1) {
@@ -64,7 +64,7 @@ public class RoleMenuController
 			}
 			
 		} else {
-			if(role.getId() == account.getRoles().get(0).getId()) {
+			if(account.getRoleIds().contains(role.getId())) {
 				menus = roleDefaultMenuService.getMenuListByRoleId(role.getId());
 			} else {
 				menus = roleDefaultMenuService.getMenuListByRoleId(role.getParentId());
@@ -80,7 +80,7 @@ public class RoleMenuController
 		for(Menu menu : menus) {
 			boolean checked = false;
 			boolean chkDisabled = false;
-			if(account.getRoles().get(0).getId() == 1 && role.getId() == 1) {
+			if(account.getRoleIds().contains(1L) && role.getId() == 1) {
 				checked = true;
 				chkDisabled = true;
 			} else {

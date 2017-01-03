@@ -1,8 +1,7 @@
 package cn.lfy.base.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class LoginAccount extends BaseEntity {
 	
@@ -10,46 +9,46 @@ public class LoginAccount extends BaseEntity {
 
 	private Admin user;
 	
-	private List<Role> roles = new ArrayList<Role>();
+	private Set<Role> roles = new TreeSet<Role>();
 	
-	private List<Long> roleIdList;
+	private Set<Long> roleIds;
 	
-	private List<Menu> menus;
-
 	private Set<String> uriSet;
 	
+	/**
+	 * 登录账号信息关联的用户
+	 * @return
+	 */
 	public Admin getUser() {
 		return user;
 	}
-
+	
 	public void setUser(Admin user) {
 		this.user = user;
 	}
-
-	public List<Role> getRoles() {
+	/**
+	 * 登录账号信息关联的角色列表
+	 * @return
+	 */
+	public Set<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<Role> roles) {
+	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
-
-	public List<Menu> getMenus() {
-		return menus;
-	}
-
-	public void setMenus(List<Menu> menus) {
-		this.menus = menus;
-	}
-
-	public List<Long> getRoleIdList() {
-		if(roleIdList == null) {
-			roleIdList = new ArrayList<Long>();
+	/**
+	 * 登录账号信息管理的角色ID列表
+	 * @return
+	 */
+	public Set<Long> getRoleIds() {
+		if(roleIds == null) {
+			roleIds = new TreeSet<Long>();
 			for(Role role : roles) {
-				roleIdList.add(role.getId());
+				roleIds.add(role.getId());
 			}
 		}
-		return roleIdList;
+		return roleIds;
 	}
 
 	public Set<String> getUriSet() {
@@ -60,8 +59,8 @@ public class LoginAccount extends BaseEntity {
 		this.uriSet = uriSet;
 	}
 
-	public void setRoleIdList(List<Long> roleIdList) {
-		this.roleIdList = roleIdList;
+	public void setRoleIds(Set<Long> roleIds) {
+		this.roleIds = roleIds;
 	}
 	
 

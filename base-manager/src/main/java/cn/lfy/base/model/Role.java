@@ -3,7 +3,7 @@ package cn.lfy.base.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Role implements Serializable {
+public class Role implements Serializable, Comparable<Role> {
     private static final long serialVersionUID = 1L;
 
     private Long id;
@@ -126,4 +126,14 @@ public class Role implements Serializable {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+	@Override
+	public int compareTo(Role o) {
+		if(this.id == o.getId()) {
+			return 0;
+		} else if(this.id > o.getId()) {
+			return 1;
+		}
+		return -1;
+	}
 }

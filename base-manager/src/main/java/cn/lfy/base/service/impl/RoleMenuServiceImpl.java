@@ -18,26 +18,26 @@ import com.google.common.collect.Sets;
 public class RoleMenuServiceImpl implements RoleMenuService {
 
     @Autowired
-    private RoleMenuDAO roleDefaultMenuDAO;
+    private RoleMenuDAO roleMenuDAO;
     
     @Override
     public List<Menu> getMenuListByRoleId(Long roleId) {
-        return roleDefaultMenuDAO.selectMenuListByRoleId(roleId);
+        return roleMenuDAO.selectMenuListByRoleId(roleId);
     }
 
     @Override
     public void add(RoleMenu record) {
-        roleDefaultMenuDAO.insert(record);
+        roleMenuDAO.insert(record);
     }
 
     @Override
     public void deleteByRoleId(Long roleId) {
-        roleDefaultMenuDAO.deleteByRoleId(roleId);
+        roleMenuDAO.deleteByRoleId(roleId);
     }
 
     @Override
     public void deleteByMenuId(Long menuId) {
-        roleDefaultMenuDAO.deleteByMenuId(menuId);
+        roleMenuDAO.deleteByMenuId(menuId);
     }
 
     @Override
@@ -60,20 +60,20 @@ public class RoleMenuServiceImpl implements RoleMenuService {
 		Set<Long> delSet = Sets.difference(roleSet, nowMenu);
 		Set<Long> newSet = Sets.difference(nowMenu, roleSet);
 		for(Long menuId : delSet) {
-			roleDefaultMenuDAO.delete(roleId, menuId);
+			roleMenuDAO.delete(roleId, menuId);
 		}
 		for(Long menuId : newSet) {
 			RoleMenu record = new RoleMenu();
 			record.setRoleId(roleId);
 			record.setMenuId(menuId);
-			roleDefaultMenuDAO.insert(record);
+			roleMenuDAO.insert(record);
 		}
 		
     }
 
 	@Override
 	public List<Menu> selectMenuListByRoleIds(List<Long> list) {
-		return roleDefaultMenuDAO.selectMenuListByRoleIds(list);
+		return roleMenuDAO.selectMenuListByRoleIds(list);
 	}
 
 }

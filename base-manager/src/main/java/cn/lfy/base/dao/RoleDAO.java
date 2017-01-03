@@ -1,6 +1,9 @@
 package cn.lfy.base.dao;
 
+import java.util.Collection;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 
 import cn.lfy.base.model.Criteria;
 import cn.lfy.base.model.Role;
@@ -35,5 +38,11 @@ public interface RoleDAO {
      * 根据主键更新属性不为空的记录
      */
     int updateByPrimaryKeySelective(Role record);
+    
+    /**
+     * 根據角色ID列表查詢角色列表
+     * @param list
+     */
+    List<Role> getRoles(@Param("list")Collection<Long> list);
 
 }

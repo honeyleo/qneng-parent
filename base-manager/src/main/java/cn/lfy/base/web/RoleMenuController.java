@@ -40,7 +40,7 @@ public class RoleMenuController
 	private RoleService roleService;
 	
     @Autowired
-	private RoleMenuService roleDefaultMenuService;
+	private RoleMenuService roleMenuService;
 
 	/**
 	 * 角色权限列表：角色拥有的权限默认选上
@@ -60,18 +60,18 @@ public class RoleMenuController
 			} else if(role.getParentId() == 1) {
 				menus = menuService.findMenuList();
 			} else {
-				menus = roleDefaultMenuService.getMenuListByRoleId(role.getParentId());
+				menus = roleMenuService.getMenuListByRoleId(role.getParentId());
 			}
 			
 		} else {
 			if(account.getRoleIds().contains(role.getId())) {
-				menus = roleDefaultMenuService.getMenuListByRoleId(role.getId());
+				menus = roleMenuService.getMenuListByRoleId(role.getId());
 			} else {
-				menus = roleDefaultMenuService.getMenuListByRoleId(role.getParentId());
+				menus = roleMenuService.getMenuListByRoleId(role.getParentId());
 			}
 		}
 		
-		List<Menu> roleMenus = roleDefaultMenuService.getMenuListByRoleId(roleId);
+		List<Menu> roleMenus = roleMenuService.getMenuListByRoleId(roleId);
 		HashSet<Long> roleMenuIdSet = Sets.newHashSet();
 		for(Menu m : roleMenus) {
 			roleMenuIdSet.add(m.getId());
@@ -127,7 +127,7 @@ public class RoleMenuController
 			nowSet.add(Long.valueOf(it.next()));
 		}
 		
-		roleDefaultMenuService.saveMenus(roleId, nowSet); // 更新权限菜单
+		roleMenuService.saveMenus(roleId, nowSet);
 		return Message.newBuilder().build();
 	}
 }

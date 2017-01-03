@@ -97,7 +97,7 @@ public class AdminRoleController
 		Long adminId = RequestUtil.getLong(request, "adminId");
 		String roleIdsString = RequestUtil.getString(request, "roleIds");
 		if(StringUtils.isBlank(roleIdsString)) {
-			throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "menuIds");
+			throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "roleIds");
 		}
 		Iterator<String> it = Splitter.on(",").split(roleIdsString).iterator();
 		List<Long> roleIds = Lists.newArrayList();

@@ -31,6 +31,7 @@
     <foreach collection="list" separator="," item="roleId" open="(" close=")">
     	#{roleId}
     </foreach>
+    group by m.id
     order by m.parentIdPath, m.orderNo
   </select>
   

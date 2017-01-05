@@ -12,6 +12,7 @@ import cn.lfy.base.model.Role;
 import cn.lfy.base.model.RoleMenu;
 import cn.lfy.base.service.RoleMenuService;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 @Service
@@ -73,6 +74,10 @@ public class RoleMenuServiceImpl implements RoleMenuService {
 
 	@Override
 	public List<Menu> selectMenuListByRoleIds(List<Long> list) {
+		if(list == null || list.isEmpty()) {
+			List<Long> tmp = Lists.newArrayList(0L);
+			return roleMenuDAO.selectMenuListByRoleIds(tmp);
+		}
 		return roleMenuDAO.selectMenuListByRoleIds(list);
 	}
 

@@ -92,7 +92,7 @@ public class AdminRoleController
     
 	@RequestMapping("/save")
 	@ResponseBody
-	public Object save(HttpServletRequest request) throws ApplicationException
+	public Object save(HttpServletRequest request, LoginAccount currentUser) throws ApplicationException
 	{
 		Long adminId = RequestUtil.getLong(request, "adminId");
 		String roleIdsString = RequestUtil.getString(request, "roleIds");
@@ -117,7 +117,7 @@ public class AdminRoleController
 		{
 			throw ApplicationException.newInstance(ErrorCode.NOT_EXIST, "用户");
 		}
-		adminMenuService.saveRoles(admin.getId(), roleIds);
+		adminMenuService.saveRoles(admin.getId(), roleIds, currentUser.getRoles());
 		return Message.newBuilder().build();
 	}
 }

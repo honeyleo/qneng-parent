@@ -25,6 +25,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public int insert(Role record) {
+    	Role parent = getByIdInCache(record.getParentId());
+    	record.setParentIdPath(parent.getParentIdPath() + record.getParentId() + "$");
         return roleDAO.insert(record);
     }
 

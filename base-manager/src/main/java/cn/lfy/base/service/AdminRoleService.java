@@ -1,6 +1,7 @@
 package cn.lfy.base.service;
 
 import java.util.List;
+import java.util.Set;
 
 import cn.lfy.base.model.Role;
 
@@ -35,5 +36,5 @@ public interface AdminRoleService
      * @param userId
      * @param roleIds
      */
-    void saveRoles(Long userId, List<Long> roleIds);
+    void saveRoles(Long userId, List<Long> roleIds, Set<Role> currentUserRoles);
 }

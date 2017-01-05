@@ -8,6 +8,8 @@
     <result column="desc" property="desc" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="parentIdPath" property="parentIdPath" jdbcType="VARCHAR" />
   </resultMap>
   
   <sql id="Example_Where_Clause" >
@@ -33,7 +35,7 @@
   </sql>
   
   <sql id="Base_Column_List" >
-    id, parentId, name, `desc`, state, createTime
+    id, parentId, name, `desc`, state, createTime, `level`, parentIdPath
   </sql>
   
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.lfy.base.model.Criteria" >
@@ -63,7 +65,7 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into role (parentId, name,`desc`, state) values (#{parentId}, #{name}, #{desc}, #{state})
+    insert into role (parentId, name,`desc`, state, level, parentIdPath) values (#{parentId}, #{name}, #{desc}, #{state}, #{level}, #{parentIdPath})
   </insert>
   
   <select id="countByExample" parameterType="cn.lfy.base.model.Criteria" resultType="java.lang.Integer" >

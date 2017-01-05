@@ -11,6 +11,10 @@ public class Role implements Serializable, Comparable<Role> {
      * 父角色ID
      */
     private Long parentId;
+    /**
+     * 父節點路徑
+     */
+    private String parentIdPath;
 
     /**
      * 员工管理角色名称
@@ -30,7 +34,7 @@ public class Role implements Serializable, Comparable<Role> {
     /**
      * 数据状态
      */
-    private Integer state;
+    private Integer state = 1;
     
     /**
      * 权限
@@ -41,6 +45,10 @@ public class Role implements Serializable, Comparable<Role> {
      * 创建时间
      */
     private Date createTime;
+    /**
+     * 角色級別
+     */
+    private Integer level;
 
     public Long getId() {
         return id;
@@ -126,6 +134,22 @@ public class Role implements Serializable, Comparable<Role> {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+	public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
+	public String getParentIdPath() {
+		return parentIdPath;
+	}
+
+	public void setParentIdPath(String parentIdPath) {
+		this.parentIdPath = parentIdPath;
+	}
 
 	@Override
 	public int compareTo(Role o) {

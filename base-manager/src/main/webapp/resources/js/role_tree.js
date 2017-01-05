@@ -58,7 +58,7 @@ var menus = {
         if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
         
         var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
-            + "' title='添加角色' onfocus='this.blur();'></span>";
+            + "' title='添加子角色' onfocus='this.blur();'></span>";
         sObj.after(addStr);
         var btn = $("#addBtn_"+treeNode.tId);
         if (btn) {

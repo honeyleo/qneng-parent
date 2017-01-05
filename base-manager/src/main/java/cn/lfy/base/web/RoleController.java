@@ -20,8 +20,10 @@ import cn.lfy.base.model.TreeNode;
 import cn.lfy.base.model.type.StateType;
 import cn.lfy.base.service.RoleService;
 import cn.lfy.common.framework.exception.ApplicationException;
+import cn.lfy.common.framework.exception.ErrorCode;
 import cn.lfy.common.model.Message;
 import cn.lfy.common.utils.RequestUtil;
+import cn.lfy.common.utils.Validators;
 
 import com.google.common.collect.Lists;
 
@@ -93,7 +95,10 @@ public class RoleController {
     @RequestMapping("/add")
     @ResponseBody
     public Object add(Role role, HttpServletRequest request) throws ApplicationException {
-        roleService.insert(role);
+        Role parent = roleService.getById(role.getParentId());
+        Validators.notNull(parent, ErrorCode.PARAM_ILLEGAL, "parentId");
+        role.setLevel(parent.getLevel() + 1);
+    	roleService.insert(role);
         return Message.newBuilder().build();
     }
 

@@ -48,7 +48,7 @@ public class AdminRoleServiceImpl implements AdminRoleService
         adminRoleDAO.deleteByRoleId(roleId);
     }
 
-    public void saveRoles(Long userId, List<Long> roleIds) {
+    public void saveRoles(Long userId, List<Long> roleIds, Set<Role> currentUserRoles) {
     	List<Role> roles = roleDAO.getRoles(roleIds);
     	if(roles.size() != roleIds.size()) {
     		throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "roleIds");

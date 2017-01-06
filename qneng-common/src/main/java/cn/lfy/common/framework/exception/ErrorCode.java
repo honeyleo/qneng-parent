@@ -15,6 +15,10 @@ public interface ErrorCode extends BaseErrorCode
      */
     static final int SIGN_ILLEGAL = SERVER_ERROR + SECURITY + 6;
     /**
+     * 未授权操作
+     */
+    static final int UNAUTHORIZED_OPERATE = SERVER_ERROR + SECURITY + 7;
+    /**
      * {0}参数无效
      */
     static final int PARAM_ILLEGAL = SERVER_ERROR + WEB + 3;

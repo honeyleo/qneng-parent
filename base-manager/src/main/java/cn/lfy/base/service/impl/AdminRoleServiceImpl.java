@@ -75,17 +75,17 @@ public class AdminRoleServiceImpl implements AdminRoleService
 			Role role = userRoleMap.get(delRoleId);
 			//判断操作者的用户的角色ID是否在该角色的父路径里
 			if(!isCurrentUserRolesOfChild(role, currentUserRoles)) {
-				throw ApplicationException.newInstance(ErrorCode.PERMISSION_DENIED);
+				throw ApplicationException.newInstance(ErrorCode.UNAUTHORIZED_OPERATE);
 			}
-		}
-		for(Long delRoleId : delSet) {
-			adminRoleDAO.delete(userId, delRoleId);
 		}
 		for(Long roleId : newSet) {
 			Role role = userRoleMap.get(roleId);
 			if(!isCurrentUserRolesOfChild(role, currentUserRoles)) {
-				throw ApplicationException.newInstance(ErrorCode.PERMISSION_DENIED);
+				throw ApplicationException.newInstance(ErrorCode.UNAUTHORIZED_OPERATE);
 			}
+		}
+		for(Long delRoleId : delSet) {
+			adminRoleDAO.delete(userId, delRoleId);
 		}
 		for(Long roleId : newSet) {
 			this.add(userId, roleId);

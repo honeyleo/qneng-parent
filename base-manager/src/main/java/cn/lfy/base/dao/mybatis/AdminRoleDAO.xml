@@ -14,10 +14,12 @@
     <result column="desc" property="desc" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="parentIdPath" property="parentIdPath" jdbcType="VARCHAR" />
   </resultMap>
   
   <select id="getRoleListByAdminId" resultMap="RoleResultMap" parameterType="java.lang.Long" >
-    select m.id, m.name, m.parentId, m.desc, m.state, m.createTime 
+    select m.id, m.name, m.parentId, m.desc, m.state, m.createTime, m.level, m.parentIdPath
     from role m inner join admin_role am on m.id = am.roleId 
     where m.state = 1 and am.adminId = #{adminId}
     order by m.id

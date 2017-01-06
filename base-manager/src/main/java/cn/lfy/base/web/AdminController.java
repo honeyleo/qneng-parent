@@ -151,6 +151,8 @@ public class AdminController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+        	admin.setPassword(null);
         }
         adminService.updateByIdSelective(admin);
         return builder.build();

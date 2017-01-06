@@ -104,7 +104,7 @@ public class RoleMenuController
 	 */
 	@RequestMapping("/saveMenu")
 	@ResponseBody
-	public Object saveMenu(HttpServletRequest request) throws ApplicationException
+	public Object saveMenu(HttpServletRequest request, LoginAccount currentUser) throws ApplicationException
 	{
 		Long roleId = RequestUtil.getLong(request, "roleId");
 		String menuIds = RequestUtil.getString(request, "menuIds");
@@ -126,8 +126,7 @@ public class RoleMenuController
 		while(it.hasNext()) {
 			nowSet.add(Long.valueOf(it.next()));
 		}
-		
-		roleMenuService.saveMenus(roleId, nowSet);
+		roleMenuService.saveMenus(roleId, nowSet, currentUser);
 		return Message.newBuilder().build();
 	}
 }

@@ -48,8 +48,17 @@ var admins = {
             ];
         this.load(action, argument, refresh);
     },
+    dropDown: function (id, text, inp) {
+        $('.' + id).delegate('li a', 'click', function () {
+            $("#" + text).text($(this).text());
+            var value = $(this).attr('value');
+            $("input[name =" + inp + "]").attr("value", value);
+            $("#" + text).attr("value", value);
+        });
+    },
     bindEvents: function () {
         var self = this;
+        self.dropDown('modify_search_status1', 'search_dropDown-status1', 'status1');
         $('.J_search').click(function () {
             self.query(true);
         });

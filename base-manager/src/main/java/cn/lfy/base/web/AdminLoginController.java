@@ -68,11 +68,13 @@ public class AdminLoginController {
         				break;
         			}
         		}
-        		if(parent.getChildList() == null) {
+        		if(parent != null && parent.getChildList() == null) {
         			 List<Menu> childList = new ArrayList<Menu>();
         			 parent.setChildList(childList);
         		}
-        		parent.getChildList().add(menu);
+        		if(parent != null) {
+        			parent.getChildList().add(menu);
+        		}
         	}
         }
         account.setUriSet(uriSet);

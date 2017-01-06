@@ -20,16 +20,18 @@ public class MenuServiceImpl implements MenuService {
     private MenuDAO menuDAO;
     
     @Autowired
-    private RoleMenuDAO roleDefaultMenuDAO;
+    private RoleMenuDAO roleMenuDAO;
     
     @Override
     public int save(Menu record) {
         if(record.getId() == null || record.getId().intValue() < 1){
+        	Menu parent = getById(record.getParentId());
+        	record.setParentIdPath(parent.getParentIdPath() + parent.getId() + "$");
         	int ret = menuDAO.insert(record);
         	RoleMenu roleMenu = new RoleMenu();
             roleMenu.setRoleId(1L);
             roleMenu.setMenuId(record.getId());
-        	roleDefaultMenuDAO.insert(roleMenu);
+        	roleMenuDAO.insert(roleMenu);
             return ret;
         }else{
             Menu old=this.getById(record.getId());
@@ -64,11 +66,11 @@ public class MenuServiceImpl implements MenuService {
     	List<Menu> list = listSubMenuByParentId(String.valueOf(id));
     	if(list != null) {
     		for(Menu menu : list) {
-    			roleDefaultMenuDAO.deleteByMenuId(menu.getId());
+    			roleMenuDAO.deleteByMenuId(menu.getId());
     		}
     	}
         menuDAO.deleteByPrimaryKey(id);
-        roleDefaultMenuDAO.deleteByMenuId(id);
+        roleMenuDAO.deleteByMenuId(id);
     }
 
 	@Override

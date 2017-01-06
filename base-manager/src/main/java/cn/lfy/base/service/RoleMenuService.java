@@ -3,8 +3,8 @@ package cn.lfy.base.service;
 import java.util.List;
 import java.util.Set;
 
+import cn.lfy.base.model.LoginAccount;
 import cn.lfy.base.model.Menu;
-import cn.lfy.base.model.Role;
 import cn.lfy.base.model.RoleMenu;
 
 public interface RoleMenuService {
@@ -39,13 +39,11 @@ public interface RoleMenuService {
      * @param operatorId
      */
     void deleteByMenuId(Long  menuId);
-    
     /**
-     * 保存管理的权限菜单
-     * @param admin
-     * @param menus
+     * 分配角色菜單
+     * @param roleId
+     * @param nowMenu
+     * @param currentUser
      */
-    void saveDefaultMenus(Role role, List<Long> menuIds);
-    
-    void saveMenus(Long roleId, Set<Long> nowMenu);
+    void saveMenus(Long roleId, Set<Long> nowMenu, LoginAccount currentUser);
 }

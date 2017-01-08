@@ -10,57 +10,10 @@ Target Server Type    : MYSQL
 Target Server Version : 50618
 File Encoding         : 65001
 
-Date: 2017-01-07 21:14:18
+Date: 2017-01-08 23:02:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
-
--- ----------------------------
--- Table structure for admin
--- ----------------------------
-DROP TABLE IF EXISTS `admin`;
-CREATE TABLE `admin` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `username` varchar(20) DEFAULT NULL COMMENT '登录名',
-  `password` varchar(256) DEFAULT NULL COMMENT '登录密码，保存md5值',
-  `realName` varchar(20) DEFAULT NULL COMMENT '真实姓名',
-  `email` varchar(50) DEFAULT NULL COMMENT '公司的个人邮箱，邮件提醒功能',
-  `phone` varchar(20) DEFAULT NULL COMMENT '联系电话',
-  `address` varchar(50) DEFAULT NULL COMMENT '地址',
-  `state` int(2) DEFAULT NULL COMMENT '数据状态',
-  `createTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='后勤用户身份';
-
--- ----------------------------
--- Records of admin
--- ----------------------------
-INSERT INTO `admin` VALUES ('1', 'dev', '8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918', '开发者', '', '18028763997', '', '1', '2013-01-23 17:33:24');
-INSERT INTO `admin` VALUES ('2', 'admin', '8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918', '系统管理员', null, '12345678909', null, '1', '2013-01-23 17:33:46');
-INSERT INTO `admin` VALUES ('3', 'qnyk123', '', '清能云控', null, '18028763997', null, '1', '2015-10-10 22:59:59');
-INSERT INTO `admin` VALUES ('5', 'qnyk1234', '', '李', null, '13430909666', null, '0', '2015-11-25 01:08:33');
-INSERT INTO `admin` VALUES ('6', 'ewang', null, 'Eric', null, '13810734019', null, '1', '2015-12-03 02:30:24');
-INSERT INTO `admin` VALUES ('7', 'ewang2', null, 'Eric', null, '13810734019', null, '1', '2015-12-03 03:18:16');
-INSERT INTO `admin` VALUES ('9', 'qnyk2', '', '电站管理员2', null, '12345678909', null, '1', '2015-12-06 21:58:55');
-INSERT INTO `admin` VALUES ('10', 'qnyk66', '', '账号管理员', null, '12345678909', null, '0', '2015-12-07 21:27:52');
-
--- ----------------------------
--- Table structure for admin_role
--- ----------------------------
-DROP TABLE IF EXISTS `admin_role`;
-CREATE TABLE `admin_role` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `adminId` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `roleId` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '角色ID',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of admin_role
--- ----------------------------
-INSERT INTO `admin_role` VALUES ('1', '1', '1');
-INSERT INTO `admin_role` VALUES ('25', '2', '2');
-INSERT INTO `admin_role` VALUES ('27', '3', '11');
 
 -- ----------------------------
 -- Table structure for menu
@@ -80,37 +33,39 @@ CREATE TABLE `menu` (
   `onMenu` tinyint(4) DEFAULT '1' COMMENT '是否显示在菜单',
   `icon` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8 COMMENT='后勤管理权限菜单信息';
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8 COMMENT='权限表';
 
 -- ----------------------------
 -- Records of menu
 -- ----------------------------
 INSERT INTO `menu` VALUES ('1', '清能管理平台', '1', '-1', '$', '', '0', '清能管理平台', '1', '2013-01-21 14:19:22', '1', null);
 INSERT INTO `menu` VALUES ('2', '系统管理', '1', '1', '$1$', '', '1', '用户和菜单的设置', '1', '2013-01-23 10:12:31', '1', 'icon-cogs');
-INSERT INTO `menu` VALUES ('3', '用户管理', '1', '2', '$1$2$', '/manager/admin/list', '1', '系统用户管理', '1', '2013-01-23 10:15:27', '1', null);
+INSERT INTO `menu` VALUES ('3', '用户管理', '1', '2', '$1$2$', '/manager/user/list', '1', '系统用户管理', '1', '2013-01-23 10:15:27', '1', null);
 INSERT INTO `menu` VALUES ('4', '菜单管理', '1', '2', '$1$2$', '/manager/menu/list', '2', '功能菜单管理', '1', '2013-01-23 10:17:34', '1', null);
 INSERT INTO `menu` VALUES ('5', '角色管理', '1', '2', '$1$2$', '/manager/role/list', '3', '用户角色管理', '1', '2013-01-24 14:28:03', '1', null);
-INSERT INTO `menu` VALUES ('9', '分配权限查看', '1', '5', '$1$2$5$', '/manager/role_menu/privileges', '1', '', '1', '2015-10-16 00:14:17', '0', null);
-INSERT INTO `menu` VALUES ('10', '分配权限提交', '1', '5', '$1$2$5$', '/manager/role_menu/saveMenu', '2', null, '1', '2015-10-16 00:21:56', '0', null);
+INSERT INTO `menu` VALUES ('9', '分配权限查看', '1', '5', '$1$2$5$', '/manager/role/privileges', '1', '', '1', '2015-10-16 00:14:17', '0', null);
+INSERT INTO `menu` VALUES ('10', '分配权限提交', '1', '5', '$1$2$5$', '/manager/role/privileges/save', '2', null, '1', '2015-10-16 00:21:56', '0', null);
 INSERT INTO `menu` VALUES ('11', '菜单详情', '1', '4', '$1$2$4$', '/manager/menu/detail', '1', null, '1', '2015-10-16 00:28:52', '0', null);
 INSERT INTO `menu` VALUES ('12', '新增菜单提交', '1', '4', '$1$2$4$', '/manager/menu/add', '4', '', '1', '2015-10-16 00:29:56', '0', null);
 INSERT INTO `menu` VALUES ('13', '修改菜单', '1', '4', '$1$2$4$', '/manager/menu/update', '3', null, '1', '2015-10-16 00:31:31', '0', null);
 INSERT INTO `menu` VALUES ('16', '删除菜单', '1', '4', '$1$2$4$', '/manager/menu/del', '6', null, '1', '2015-10-16 00:36:38', '0', null);
-INSERT INTO `menu` VALUES ('19', '新增用户提交', '1', '3', '$1$2$3$', '/manager/admin/add', '2', null, '1', '2015-10-16 01:13:24', '0', null);
-INSERT INTO `menu` VALUES ('20', '修改用户', '1', '3', '$1$2$3$', '/manager/admin/detail', '3', null, '1', '2015-10-16 01:14:20', '0', null);
-INSERT INTO `menu` VALUES ('21', '修改用户提交', '1', '3', '$1$2$3$', '/manager/admin/update', '4', null, '1', '2015-10-16 01:14:36', '0', null);
-INSERT INTO `menu` VALUES ('22', '删除用户', '1', '3', '$1$2$3$', '/manager/admin/del', '5', null, '1', '2015-10-16 01:17:26', '0', null);
+INSERT INTO `menu` VALUES ('19', '新增用户提交', '1', '3', '$1$2$3$', '/manager/user/add', '2', null, '1', '2015-10-16 01:13:24', '0', null);
+INSERT INTO `menu` VALUES ('20', '修改用户', '1', '3', '$1$2$3$', '/manager/user/detail', '3', null, '1', '2015-10-16 01:14:20', '0', null);
+INSERT INTO `menu` VALUES ('21', '修改用户提交', '1', '3', '$1$2$3$', '/manager/user/update', '4', null, '1', '2015-10-16 01:14:36', '0', null);
+INSERT INTO `menu` VALUES ('22', '删除用户', '1', '3', '$1$2$3$', '/manager/user/del', '5', null, '1', '2015-10-16 01:17:26', '0', null);
 INSERT INTO `menu` VALUES ('24', '角色树形', '1', '5', '$1$2$5$', '/manager/role/api/tree', '3', null, '1', '2015-10-16 01:19:59', '0', null);
 INSERT INTO `menu` VALUES ('25', '新增角色提交', '1', '5', '$1$2$5$', '/manager/role/add', '4', null, '1', '2015-10-16 01:20:46', '0', null);
 INSERT INTO `menu` VALUES ('26', '修改角色', '1', '5', '$1$2$5$', '/manager/role/detail', '5', null, '1', '2015-10-16 01:21:27', '0', null);
 INSERT INTO `menu` VALUES ('27', '修改角色提交', '1', '5', '$1$2$5$', '/manager/role/update', '6', null, '1', '2015-10-16 01:22:02', '0', null);
 INSERT INTO `menu` VALUES ('28', '删除角色', '1', '5', '$1$2$5$', '/manager/role/del', '7', null, '1', '2015-10-16 01:23:42', '0', null);
-INSERT INTO `menu` VALUES ('65', '用户列表', '1', '3', '$1$2$3$', '/manager/admin/api/list', '7', '', '1', '2015-10-16 01:11:31', '0', '');
+INSERT INTO `menu` VALUES ('65', '用户列表', '1', '3', '$1$2$3$', '/manager/user/api/list', '7', '', '1', '2015-10-16 01:11:31', '0', '');
 INSERT INTO `menu` VALUES ('66', '菜单树形', '1', '4', '$1$2$', '/manager/menu/api/list', '1', '', '1', '2013-01-23 10:17:34', '0', '');
-INSERT INTO `menu` VALUES ('67', '分配角色查看', '1', '3', '$1$2$3$', '/manager/admin_role/api/tree', '6', '', '1', '2017-01-01 21:24:41', '0', null);
-INSERT INTO `menu` VALUES ('68', '分配角色提交', '1', '3', '$1$2$3$', '/manager/admin_role/save', '7', '', '1', '2017-01-01 21:28:53', '0', null);
+INSERT INTO `menu` VALUES ('67', '分配角色查看', '1', '3', '$1$2$3$', '/manager/user/role/tree', '6', '', '1', '2017-01-01 21:24:41', '0', null);
+INSERT INTO `menu` VALUES ('68', '分配角色提交', '1', '3', '$1$2$3$', '/manager/user/role/save', '7', '', '1', '2017-01-01 21:28:53', '0', null);
 INSERT INTO `menu` VALUES ('69', '后台主页', '1', '-1', '$', '/manager/home', '1', '', '1', '2017-01-01 21:44:07', '0', null);
-INSERT INTO `menu` VALUES ('76', '个人设置', '1', '69', '$69$', '/manager/admin/personal', '11', '', '1', '2017-01-06 22:34:33', '0', null);
+INSERT INTO `menu` VALUES ('76', '个人设置', '1', '69', '$69$', '/manager/user/personal', '11', '', '1', '2017-01-06 22:34:33', '0', null);
+INSERT INTO `menu` VALUES ('77', '业务管理', '1', '1', '$1$', '', '2', '', '1', '2017-01-08 21:33:40', '1', null);
+INSERT INTO `menu` VALUES ('78', '业务管理1', '1', '77', '$1$77$', '/manager/role/list', '1', '', '1', '2017-01-08 21:34:17', '1', null);
 
 -- ----------------------------
 -- Table structure for role
@@ -130,7 +85,7 @@ CREATE TABLE `role` (
   `state` int(2) DEFAULT '1' COMMENT '数据状态',
   `createTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='内勤管理人员角色';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='角色表';
 
 -- ----------------------------
 -- Records of role
@@ -151,7 +106,7 @@ CREATE TABLE `role_menu` (
   `roleId` bigint(20) NOT NULL DEFAULT '0' COMMENT '角色id',
   `menuId` bigint(20) NOT NULL DEFAULT '0' COMMENT '权限菜单id',
   PRIMARY KEY (`roleId`,`menuId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='内勤管理角色默认对应的菜单';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='角色对应权限表';
 
 -- ----------------------------
 -- Records of role_menu
@@ -185,6 +140,8 @@ INSERT INTO `role_menu` VALUES ('1', '71');
 INSERT INTO `role_menu` VALUES ('1', '74');
 INSERT INTO `role_menu` VALUES ('1', '75');
 INSERT INTO `role_menu` VALUES ('1', '76');
+INSERT INTO `role_menu` VALUES ('1', '77');
+INSERT INTO `role_menu` VALUES ('1', '78');
 INSERT INTO `role_menu` VALUES ('2', '1');
 INSERT INTO `role_menu` VALUES ('2', '2');
 INSERT INTO `role_menu` VALUES ('2', '3');
@@ -234,6 +191,7 @@ INSERT INTO `role_menu` VALUES ('5', '21');
 INSERT INTO `role_menu` VALUES ('5', '22');
 INSERT INTO `role_menu` VALUES ('5', '65');
 INSERT INTO `role_menu` VALUES ('5', '67');
+INSERT INTO `role_menu` VALUES ('5', '68');
 INSERT INTO `role_menu` VALUES ('7', '1');
 INSERT INTO `role_menu` VALUES ('7', '2');
 INSERT INTO `role_menu` VALUES ('7', '3');
@@ -258,3 +216,52 @@ INSERT INTO `role_menu` VALUES ('11', '24');
 INSERT INTO `role_menu` VALUES ('11', '25');
 INSERT INTO `role_menu` VALUES ('11', '26');
 INSERT INTO `role_menu` VALUES ('11', '27');
+
+-- ----------------------------
+-- Table structure for user
+-- ----------------------------
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `username` varchar(20) DEFAULT NULL COMMENT '登录名',
+  `password` varchar(256) DEFAULT NULL COMMENT '登录密码，保存md5值',
+  `realName` varchar(20) DEFAULT NULL COMMENT '真实姓名',
+  `email` varchar(50) DEFAULT NULL COMMENT '公司的个人邮箱，邮件提醒功能',
+  `phone` varchar(20) DEFAULT NULL COMMENT '联系电话',
+  `address` varchar(50) DEFAULT NULL COMMENT '地址',
+  `state` int(2) DEFAULT NULL COMMENT '数据状态',
+  `createTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='用户表';
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES ('1', 'dev', '8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918', '开发者', '', '18028763997', '', '1', '2013-01-23 17:33:24');
+INSERT INTO `user` VALUES ('2', 'admin', '8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918', '系统管理员', null, '12345678909', null, '1', '2013-01-23 17:33:46');
+INSERT INTO `user` VALUES ('3', 'qnyk123', '', '清能云控', null, '18028763997', null, '1', '2015-10-10 22:59:59');
+INSERT INTO `user` VALUES ('5', 'qnyk1234', '', '李', null, '13430909666', null, '1', '2015-11-25 01:08:33');
+INSERT INTO `user` VALUES ('6', 'ewang', null, 'Eric', null, '13810734019', null, '1', '2015-12-03 02:30:24');
+INSERT INTO `user` VALUES ('7', 'ewang2', null, 'Eric', null, '13810734019', null, '1', '2015-12-03 03:18:16');
+INSERT INTO `user` VALUES ('9', 'qnyk2', '', '电站管理员2', null, '12345678909', null, '1', '2015-12-06 21:58:55');
+INSERT INTO `user` VALUES ('10', 'qnyk66', '', '账号管理员', null, '12345678909', null, '1', '2015-12-07 21:27:52');
+
+-- ----------------------------
+-- Table structure for user_role
+-- ----------------------------
+DROP TABLE IF EXISTS `user_role`;
+CREATE TABLE `user_role` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `adminId` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `roleId` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '角色ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COMMENT='用户角色表';
+
+-- ----------------------------
+-- Records of user_role
+-- ----------------------------
+INSERT INTO `user_role` VALUES ('1', '1', '1');
+INSERT INTO `user_role` VALUES ('25', '2', '2');
+INSERT INTO `user_role` VALUES ('33', '2', '11');
+INSERT INTO `user_role` VALUES ('35', '3', '9');
+INSERT INTO `user_role` VALUES ('36', '3', '4');

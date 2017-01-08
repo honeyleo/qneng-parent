@@ -2,10 +2,10 @@ package cn.lfy.base.dao;
 
 import java.util.List;
 
-import cn.lfy.base.model.Admin;
+import cn.lfy.base.model.User;
 import cn.lfy.base.model.Criteria;
 
-public interface AdminDAO {
+public interface UserDAO {
     /**
      * 根据条件查询记录总数
      */
@@ -19,28 +19,28 @@ public interface AdminDAO {
     /**
      * 保存记录,不管记录里面的属性是否为空
      */
-    int insert(Admin record);
+    int insert(User record);
 
     /**
      * 根据条件查询记录集
      */
-    List<Admin> selectByExample(Criteria example);
+    List<User> selectByExample(Criteria example);
 
     /**
      * 根据主键查询记录
      */
-    Admin selectByPrimaryKey(Long id);
+    User selectByPrimaryKey(Long id);
 
     /**
      * 根据主键更新属性不为空的记录
      */
-    int updateByPrimaryKeySelective(Admin record);
+    int updateByPrimaryKeySelective(User record);
     
     /**
      * 根据登录名查询，username唯一
      * @param username
      * @return
      */
-    Admin selectByUsername(String username);
+    User selectByUsername(String username);
 
 }

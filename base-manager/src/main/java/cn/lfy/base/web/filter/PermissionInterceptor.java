@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import cn.lfy.base.Constants;
-import cn.lfy.base.model.LoginAccount;
+import cn.lfy.base.model.LoginUser;
 import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
 
@@ -57,7 +57,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 	private boolean permissionVerify(HttpServletRequest request) {
 
 		HttpSession session = request.getSession();
-		LoginAccount user = (LoginAccount) session.getAttribute(Constants.SESSION_LOGIN_USER);
+		LoginUser user = (LoginUser) session.getAttribute(Constants.SESSION_LOGIN_USER);
 
 		String uri = request.getRequestURI();
 		Set<String> uriSet = user.getUriSet();

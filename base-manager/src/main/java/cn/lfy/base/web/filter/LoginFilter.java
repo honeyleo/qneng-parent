@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import cn.lfy.base.model.LoginAccount;
+import cn.lfy.base.model.LoginUser;
 
 public class LoginFilter extends OncePerRequestFilter {
 
@@ -43,7 +43,7 @@ public class LoginFilter extends OncePerRequestFilter {
 	private boolean LoginVerify(HttpServletRequest request){
 		
 		HttpSession session = request.getSession();
-		LoginAccount user = (LoginAccount) session.getAttribute("SESSION_USER");
+		LoginUser user = (LoginUser) session.getAttribute("SESSION_USER");
 		if(null == user || user.getId() <= 0){
 			return false;
 		}

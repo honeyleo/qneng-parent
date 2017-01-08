@@ -3,7 +3,7 @@ package cn.lfy.base.service;
 import java.util.List;
 import java.util.Set;
 
-import cn.lfy.base.model.LoginAccount;
+import cn.lfy.base.model.LoginUser;
 import cn.lfy.base.model.Menu;
 import cn.lfy.base.model.RoleMenu;
 
@@ -45,5 +45,5 @@ public interface RoleMenuService {
      * @param nowMenu
      * @param currentUser
      */
-    void saveMenus(Long roleId, Set<Long> nowMenu, LoginAccount currentUser);
+    void saveMenus(Long roleId, Set<Long> nowMenu, LoginUser currentUser);
 }

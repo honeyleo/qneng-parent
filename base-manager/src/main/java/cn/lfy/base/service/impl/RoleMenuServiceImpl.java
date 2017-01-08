@@ -10,7 +10,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import cn.lfy.base.dao.RoleMenuDAO;
-import cn.lfy.base.model.LoginAccount;
+import cn.lfy.base.model.LoginUser;
 import cn.lfy.base.model.Menu;
 import cn.lfy.base.model.Role;
 import cn.lfy.base.model.RoleMenu;
@@ -47,7 +47,7 @@ public class RoleMenuServiceImpl implements RoleMenuService {
         roleMenuDAO.deleteByMenuId(menuId);
     }
 
-    public void saveMenus(Long roleId, Set<Long> nowMenu, LoginAccount currentUser) {
+    public void saveMenus(Long roleId, Set<Long> nowMenu, LoginUser currentUser) {
     	Validators.isFalse(roleId == 1, ErrorCode.UNAUTHORIZED_OPERATE);
     	Role role = roleService.getById(roleId);
     	List<Menu> parentRoleMenus = getMenuListByRoleId(role.getParentId());

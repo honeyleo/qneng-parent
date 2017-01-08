@@ -1,4 +1,4 @@
-var admins = {
+var users = {
     sunNum : 0,
     editor: null,
     pickerLoaded: true,
@@ -27,13 +27,13 @@ var admins = {
             var createTime = new Date(value[i].createTime);
             value[i].createTime = createTime.format("yyyy-MM-dd hh:mm:ss");
 
-            admins.sunNum = (i+1)+(currentPage*PAGE_SIZE);
-            $opera = '<a href="javascript:void(0);" class="operation J_delete" data-toggle="modal" data-target="#myModal" data-value=' + value[i].id + '>删除</a>' + 
-            	'<a href="javascript:void(0);" class="operation J_strategyInfo" data-toggle="modal" data-target="#myModal" data-value=' + value[i].id + '>详情</a>'+
+            users.sunNum = (i+1)+(currentPage*PAGE_SIZE);
+            $opera = '<a href="#" class="operation J_delete" data-toggle="modal" data-target="#myModal" data-value=' + value[i].id + '>删除</a>' + 
+            	'<a href="#" class="operation J_strategyInfo" data-toggle="modal" data-target="#myModal" data-value=' + value[i].id + '>详情</a>'+
                 '<a href="#" class="operation dialog-editor" data-toggle="modal" data-target="#editorDialog"  data-value=' + value[i].id + '>编辑</a>' + 
                 '<a href="#" class="operation dialog-roles" data-toggle="modal" data-target="#rolesDialog"  data-value=' + value[i].id + '>分配角色</a>' +
                 '</td>';
-            arr.push([admins.sunNum,value[i].id,value[i].username,value[i].realName, '<div class="text_l">'+ value[i].phone +'</div>', value[i].state,value[i].createTime, $opera]);
+            arr.push([users.sunNum,value[i].id,value[i].username,value[i].realName, '<div class="text_l">'+ value[i].phone +'</div>', value[i].state,value[i].createTime, $opera]);
         }
         self.num++;
         result.draw = self.num;
@@ -42,7 +42,7 @@ var admins = {
         result.data = arr;
     },
     query: function (refresh) {
-        var action = "/manager/admin/api/list", argument;
+        var action = "/manager/user/api/list", argument;
             argument = [
                 {test:"test"}
             ];
@@ -89,7 +89,7 @@ var admins = {
             $('.modal-dialog .modal-body').css({'overflow':"auto",'height':''});
             $('.modal-dialog .modal-content').css({'width':'800px'});
             var id = $(this).attr("data-value");
-            $.get("/manager/admin/detail",{"id":id}, function (result) {
+            $.get("/manager/user/detail",{"id":id}, function (result) {
                 if (result.ret == 0) {
                     self.insertInfo(result);
                 }
@@ -109,14 +109,13 @@ var admins = {
         // editor
         $("#table").on("click", ".dialog-editor", function(){
             $('#myModalLabel').text("编辑用户");
-            admins.pickerLoaded = false;
+            users.pickerLoaded = false;
             var sure = $('.modal-footer .btn-primary');
             sure.addClass("none");
             $(".J_sure").removeClass("none");
             $("#updContent").show();
             var id = $(this).attr("data-value");
-            $("#contentAppId").val(appId);
-            $.getJSON("/manager/admin/detail", {id: id}, function(result){
+            $.getJSON("/manager/user/detail", {id: id}, function(result){
             	if (result.ret == 0) {
                     if (result.data.state == 1) {
                         $('#search_dropDown-status1').attr("value", '1').text("有效");
@@ -130,9 +129,7 @@ var admins = {
             	}
             });
         }).on("click", ".dialog-roles", function(){
-            var sure = $('.modal-footer .btn-primary');
-            sure.addClass("none");
-            $(".J_roles_sure").removeClass("none");
+        	$(".J_roles_sure").removeClass("none");
             var id = $(this).attr("data-value");
             $(".J_roles_sure").unbind().click(function () {
             	var treeObj=$.fn.zTree.getZTreeObj("roleTree");
@@ -147,16 +144,16 @@ var admins = {
 						roleIds += tmpNode.id;
 					}
                 }
-                $.get("/manager/admin_role/save",{adminId:id, roleIds : roleIds},function(result){
+                $.get("/manager/user/role/save",{userId:id, roleIds : roleIds},function(result){
                     if (result.ret == 0) {
-                        $('#roles').modal('hide');
+                        $('#rolesDialog').modal('hide');
                     } else {
                         asyncbox.alert("分配权限失败！\n"+result.msg,"提示");
-                        $('#roles').modal('hide');
+                        $('#rolesDialog').modal('hide');
                     }
                 });
             });
-            $.getJSON("/manager/admin_role/api/tree", {id: id}, function(result){
+            $.getJSON("/manager/user/role/tree", {id: id}, function(result){
             	if (result.ret == 0) {
             		var setting = {
         				check: {
@@ -179,7 +176,7 @@ var admins = {
         	        };
             		var zNodes = result.data;
         			$.fn.zTree.init($("#roleTree"), setting, zNodes);
-        			$('#roles').modal('show');
+        			$('#rolesDialog').modal('show');
             	}
             });
         });;
@@ -192,7 +189,7 @@ var admins = {
                 phone: $("#phone").val(),
                 state:$("#search_dropDown-status1").attr("value")
             };
-            $.post("/manager/admin/update", param, function(result){
+            $.post("/manager/user/update", param, function(result){
                 if ( result.ret == 0 ) {
                     self.query();
                     $(".btn-default").trigger("click");
@@ -247,7 +244,7 @@ var admins = {
                 phone: $("#phone").val(),
                 state:$("#search_dropDown-status1").attr("value")
             };
-            $.post("/manager/admin/add", param, function(result){
+            $.post("/manager/user/add", param, function(result){
                 if ( result.ret == 0 ) {
                     self.query();
                     $(".btn-default").trigger("click");
@@ -260,7 +257,7 @@ var admins = {
         var self =this;
         $(".J_delete_sure").unbind('click');
         $(".J_delete_sure").click(function () {
-            $.get("/manager/admin/del",{"id":id},function(result){
+            $.get("/manager/user/del",{"id":id},function(result){
                 if (result.ret == 0) {
                     $('#myModal').modal('hide');
                     self.query();
@@ -288,7 +285,7 @@ var admins = {
     },
 };
 $(function () {
-    admins.init();
+    users.init();
 });
 
 

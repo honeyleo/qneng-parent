@@ -32,7 +32,6 @@
 									<li class="" id="z${sub.id }">
 										<a target="mainFrame"  href="${sub.url }" onclick="siMenu('z${sub.id }','lm${menu.id }','${sub.name }','${sub.url }')">
 											<i class="menu-icon fa fa-caret-right"></i>${sub.name }
-											<b class="fa-angle-down"></b>
 										</a>
 									</li>
 									</c:when>

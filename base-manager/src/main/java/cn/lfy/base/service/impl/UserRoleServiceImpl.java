@@ -7,54 +7,55 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.lfy.base.dao.AdminRoleDAO;
-import cn.lfy.base.dao.RoleDAO;
-import cn.lfy.base.model.AdminRole;
-import cn.lfy.base.model.Role;
-import cn.lfy.base.service.AdminRoleService;
-import cn.lfy.common.framework.exception.ApplicationException;
-import cn.lfy.common.framework.exception.ErrorCode;
-
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+import cn.lfy.base.dao.RoleDAO;
+import cn.lfy.base.dao.UserRoleDAO;
+import cn.lfy.base.model.Role;
+import cn.lfy.base.model.UserRole;
+import cn.lfy.base.service.UserRoleService;
+import cn.lfy.common.framework.exception.ApplicationException;
+import cn.lfy.common.framework.exception.ErrorCode;
+
 @Service
-public class AdminRoleServiceImpl implements AdminRoleService
+public class UserRoleServiceImpl implements UserRoleService
 {
 	@Autowired
-	private AdminRoleDAO adminRoleDAO;
+	private UserRoleDAO userRoleDAO;
 	
 	@Autowired
 	private RoleDAO roleDAO;
 
     @Override
-    public List<Role> getRoleListByAdminId(Long adminId) {
-        return adminRoleDAO.getRoleListByAdminId(adminId);
+    public List<Role> getRoleListByUserId(Long adminId) {
+        return userRoleDAO.getRoleListByAdminId(adminId);
     }
 
     @Override
     public void add(Long adminId, Long menuId) {
-        AdminRole record=new AdminRole();
+        UserRole record=new UserRole();
         record.setAdminId(adminId);
         record.setRoleId(menuId);
-        adminRoleDAO.insert(record);
+        userRoleDAO.insert(record);
     }
 
     @Override
-    public void deleteByAdminId(Long adminId) {
-        adminRoleDAO.deleteByAdminId(adminId);
+    public void deleteByUserId(Long adminId) {
+        userRoleDAO.deleteByAdminId(adminId);
     }
 
     @Override
     public void deleteByRoleId(Long roleId) {
-        adminRoleDAO.deleteByRoleId(roleId);
+        userRoleDAO.deleteByRoleId(roleId);
     }
 
     public void saveRoles(Long userId, List<Long> roleIds, Set<Role> currentUserRoles) {
-    	List<Role> roles = roleDAO.getRoles(roleIds);
-    	if(roles.size() != roleIds.size()) {
-    		throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "roleIds");
+    	if(roleIds != null && roleIds.isEmpty()) {
+    		roleIds = Lists.newArrayList(0L);
     	}
+    	List<Role> roles = roleDAO.getRoles(roleIds);
     	Map<Long, Role> userRoleMap = Maps.newHashMap();
     	//有效的角色ID
     	Set<Long> nowRoleIds = Sets.newHashSet();
@@ -62,7 +63,7 @@ public class AdminRoleServiceImpl implements AdminRoleService
     		nowRoleIds.add(role.getId());
     		userRoleMap.put(role.getId(), role);
     	}
-    	List<Role> userRoles = getRoleListByAdminId(userId);
+    	List<Role> userRoles = getRoleListByUserId(userId);
     	Set<Long> userRolesSet = Sets.newHashSet();
     	
     	for(Role role : userRoles) {
@@ -85,7 +86,7 @@ public class AdminRoleServiceImpl implements AdminRoleService
 			}
 		}
 		for(Long delRoleId : delSet) {
-			adminRoleDAO.delete(userId, delRoleId);
+			userRoleDAO.delete(userId, delRoleId);
 		}
 		for(Long roleId : newSet) {
 			this.add(userId, roleId);

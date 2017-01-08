@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.lfy.base.dao.AdminRoleDAO" >
-  <resultMap id="BaseResultMap" type="cn.lfy.base.model.AdminRole" >
+<mapper namespace="cn.lfy.base.dao.UserRoleDAO" >
+  <resultMap id="BaseResultMap" type="cn.lfy.base.model.UserRole" >
   	<id column="id" property="id" jdbcType="BIGINT" />
     <id column="adminId" property="adminId" jdbcType="BIGINT" />
     <id column="roleId" property="roleId" jdbcType="BIGINT" />
@@ -20,23 +20,23 @@
   
   <select id="getRoleListByAdminId" resultMap="RoleResultMap" parameterType="java.lang.Long" >
     select m.id, m.name, m.parentId, m.desc, m.state, m.createTime, m.level, m.parentIdPath
-    from role m inner join admin_role am on m.id = am.roleId 
+    from role m inner join user_role am on m.id = am.roleId 
     where m.state = 1 and am.adminId = #{adminId}
     order by m.id
   </select>
   
-  <insert id="insert" parameterType="cn.lfy.base.model.AdminRole" >
-    insert into admin_role (adminId, roleId) values (#{adminId}, #{roleId})
+  <insert id="insert" parameterType="cn.lfy.base.model.UserRole" >
+    insert into user_role (adminId, roleId) values (#{adminId}, #{roleId})
   </insert>
   
   <delete id="deleteByAdminId" parameterType="java.lang.Long" >
-    delete from admin_role where adminId = #{adminId}
+    delete from user_role where adminId = #{adminId}
   </delete>
   
   <delete id="deleteByMenuId" parameterType="java.lang.Long" >
-    delete from admin_role where roleId = #{roleId}
+    delete from user_role where roleId = #{roleId}
   </delete>
   <delete id="delete" parameterType="java.lang.Long" >
-    delete from admin_role where adminId = #{adminId} and roleId = #{roleId}
+    delete from user_role where adminId = #{adminId} and roleId = #{roleId}
   </delete>
 </mapper>

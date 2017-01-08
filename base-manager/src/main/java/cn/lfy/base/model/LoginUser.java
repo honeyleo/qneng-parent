@@ -3,11 +3,11 @@ package cn.lfy.base.model;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class LoginAccount extends BaseEntity {
+public class LoginUser extends BaseEntity {
 	
 	private static final long serialVersionUID = 4049274926799482032L;
 
-	private Admin user;
+	private User user;
 	
 	private Set<Role> roles = new TreeSet<Role>();
 	
@@ -19,11 +19,11 @@ public class LoginAccount extends BaseEntity {
 	 * 登录账号信息关联的用户
 	 * @return
 	 */
-	public Admin getUser() {
+	public User getUser() {
 		return user;
 	}
 	
-	public void setUser(Admin user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 	/**

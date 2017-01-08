@@ -16,13 +16,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import cn.lfy.base.Constants;
-import cn.lfy.base.model.Admin;
-import cn.lfy.base.model.LoginAccount;
+import cn.lfy.base.model.User;
+import cn.lfy.base.model.LoginUser;
 import cn.lfy.base.model.Menu;
 import cn.lfy.base.model.Role;
 import cn.lfy.base.model.type.StateType;
-import cn.lfy.base.service.AdminRoleService;
-import cn.lfy.base.service.AdminService;
+import cn.lfy.base.service.UserRoleService;
+import cn.lfy.base.service.UserService;
 import cn.lfy.base.service.RoleMenuService;
 import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
@@ -32,24 +32,24 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 @Controller
-public class AdminLoginController {
+public class LoginController {
 
     private static final String ADMIN_LOGIN = "/system/login";
 
     private static final String INDEX = "/system/common/index";
 
     @Autowired
-    private AdminService adminService;
+    private UserService adminService;
 
     @Autowired
-    private AdminRoleService adminRoleService;
+    private UserRoleService adminRoleService;
     
     @Autowired
 	private RoleMenuService roleDefaultMenuService;
     
     @RequestMapping("/manager/index")
     public String index(HttpServletRequest request) throws ApplicationException {
-    	LoginAccount account = (LoginAccount) request.getSession().getAttribute(Constants.SESSION_LOGIN_USER);
+    	LoginUser account = (LoginUser) request.getSession().getAttribute(Constants.SESSION_LOGIN_USER);
     	List<Menu> menus = roleDefaultMenuService.selectMenuListByRoleIds(Lists.newArrayList(account.getRoleIds()));
         List<Menu> menuList = Lists.newArrayList();
         Set<String> uriSet = Sets.newTreeSet();
@@ -121,8 +121,8 @@ public class AdminLoginController {
                 || null == password || password.length() == 0) {
             throw new ApplicationException(ErrorCode.PARAM_ILLEGAL, "", new String[]{"用户名或密码"});
         }
-        LoginAccount account = getAdminLoginUser(username);
-        Admin user = account.getUser();
+        LoginUser account = getAdminLoginUser(username);
+        User user = account.getUser();
         if (user == null) {
             throw ApplicationException.newInstance(ErrorCode.ERROR);
         }
@@ -136,17 +136,17 @@ public class AdminLoginController {
         request.getSession().setAttribute(Constants.SESSION_LOGIN_USER, account);
     }
     
-    private LoginAccount getAdminLoginUser(String username){
-        Admin admin = adminService.findByUsername(username);
+    private LoginUser getAdminLoginUser(String username){
+        User admin = adminService.findByUsername(username);
         if(admin == null){
             return null;
         }
-        List<Role> roleList = adminRoleService.getRoleListByAdminId(admin.getId());
-        LoginAccount account = new LoginAccount();
+        List<Role> roleList = adminRoleService.getRoleListByUserId(admin.getId());
+        LoginUser account = new LoginUser();
         Set<Role> roleSet = new TreeSet<Role>();
         roleSet.addAll(roleList);
         account.setRoles(roleSet);
-        Admin user = new Admin();
+        User user = new User();
         user.setId(admin.getId());
         user.setUsername(admin.getUsername());
         user.setPassword(admin.getPassword());

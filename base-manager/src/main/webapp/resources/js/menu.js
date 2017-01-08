@@ -120,6 +120,8 @@ var menus = {
             });
     },
     beforeRemove : function(treeId, treeNode) {
+    	$("#myModalLabel").text("删除菜单");
+    	$('.modal-body').empty().html("确定要删除吗？");
     	var zTree = $.fn.zTree.getZTreeObj("treeDemo");
     	zTree.selectNode(treeNode);
     	$(".J_delete_sure").unbind('click');

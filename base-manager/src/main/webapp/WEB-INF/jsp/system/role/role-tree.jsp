@@ -17,7 +17,7 @@
     <script src="<%=basePath%>resources/js/common/common.js"></script>
     <script src="<%=basePath%>resources/plugins/zTree/jquery.ztree.all.js"></script>
     <script src="<%=basePath%>resources/js/common/bootstrap.js"></script>
-    <script src="<%=basePath%>resources/js/role_tree.js"></script>
+    <script src="<%=basePath%>resources/js/role.js"></script>
     
 </HEAD>
 
@@ -97,7 +97,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">分配权限</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body2">
 				<div class="zTreeDemoBackground">
 		        	<ul id="privilegeTree" class="ztree"></ul>
 		    	</div>

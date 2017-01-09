@@ -33,7 +33,7 @@ var users = {
                 '<a href="#" class="operation dialog-editor" data-toggle="modal" data-target="#editorDialog"  data-value=' + value[i].id + '>编辑</a>' + 
                 '<a href="#" class="operation dialog-roles" data-toggle="modal" data-target="#rolesDialog"  data-value=' + value[i].id + '>分配角色</a>' +
                 '</td>';
-            arr.push([users.sunNum,value[i].id,value[i].username,value[i].realName, '<div class="text_l">'+ value[i].phone +'</div>', value[i].state,value[i].createTime, $opera]);
+            arr.push([users.sunNum,value[i].id,value[i].username,value[i].nickname, '<div class="text_l">'+ value[i].phone +'</div>', value[i].state,value[i].createTime, $opera]);
         }
         self.num++;
         result.draw = self.num;
@@ -124,7 +124,7 @@ var users = {
                     }
                     $("#id").val(result.data.id);
                     $("#username").val(result.data.username);
-                    $("#realName").val(result.data.realName);
+                    $("#nickname").val(result.data.nickname);
                     $("#phone").val(result.data.phone);
             	}
             });
@@ -185,7 +185,7 @@ var users = {
                 id: $("#id").val(),
                 username: $("#username").val(),
                 password: $("#password").val(),
-                realName: $("#realName").val(),
+                nickname: $("#nickname").val(),
                 phone: $("#phone").val(),
                 state:$("#search_dropDown-status1").attr("value")
             };
@@ -216,7 +216,7 @@ var users = {
     	var data = result.data;
     	$(".idText").text(data.id);
         $(".usernameText").text(data.username);
-        $(".realNameText").text(data.realName);
+        $(".nicknameText").text(data.nickname);
         $(".phoneText").text(data.phone);
         var statusText = "";
         if (data.state == 0) {
@@ -240,7 +240,7 @@ var users = {
     	var param = {
                 username: $("#username").val(),
                 password: $("#password").val(),
-                realName: $("#realName").val(),
+                nickname: $("#nickname").val(),
                 phone: $("#phone").val(),
                 state:$("#search_dropDown-status1").attr("value")
             };
@@ -280,7 +280,7 @@ var users = {
     clearData:function(){
     	username: $("#username").val("");
         password: $("#password").val("");
-        realName: $("#realName").val("");
+        nickname: $("#nickname").val("");
         phone: $("#phone").val("");
     },
 };

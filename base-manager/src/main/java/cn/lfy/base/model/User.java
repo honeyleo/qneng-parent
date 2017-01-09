@@ -22,9 +22,9 @@ public class User implements Serializable {
     private String password;
 
     /**
-     * 真实姓名
+     * 昵称
      */
-    private String realName;
+    private String nickname;
 
     /**
      * 公司的个人邮箱，邮件提醒功能
@@ -35,11 +35,6 @@ public class User implements Serializable {
      * 联系电话
      */
     private String phone;
-
-    /**
-     * 地址
-     */
-    private String address;
 
     /**
      * 数据状态
@@ -97,18 +92,18 @@ public class User implements Serializable {
     }
 
     /**
-     * @return 真实姓名
+     * @return 昵称
      */
-    public String getRealName() {
-        return realName;
+    public String getNickname() {
+        return nickname;
     }
 
     /**
-     * @param realname 
-	 *            真实姓名
+     * 昵称
+     * @param nickname 
      */
-    public void setRealName(String realName) {
-        this.realName = realName;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     /**
@@ -139,21 +134,6 @@ public class User implements Serializable {
      */
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    /**
-     * @return 地址
-     */
-    public String getAddress() {
-        return address;
-    }
-
-    /**
-     * @param address 
-	 *            地址
-     */
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     /**

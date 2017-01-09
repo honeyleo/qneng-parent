@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <div class="col-width" style="display:none">
-                    <span class="label_style">姓名：</span>
+                    <span class="label_style">用户昵称：</span>
                     <div class="form-group drop_com">
                         <input type="text" id="appId" class="form-control searchName" value="" readonly />
                     </div>
@@ -80,7 +80,7 @@
                 <th width="40px">序号</th>
                 <th>用户ID</th>
                 <th>用户名</th>
-                <th>姓名</th>
+                <th>用户昵称</th>
                 <th width="140px">手机号</th>
                 <th>状态</th>
                 <th width="180px">创建时间</th>
@@ -135,9 +135,9 @@
                         </td>
                     </tr>
                     <tr>
-	                    <th>姓名：</th>
+	                    <th>用户昵称：</th>
 	                    <td>
-	                        <input type="text" class="form-control input_common300" id="realName" placeholder="用户姓名">
+	                        <input type="text" class="form-control input_common300" id="nickname" placeholder="昵称">
 	                    </td>
 	                </tr>
 	                <tr>
@@ -208,8 +208,8 @@
      <td><span class="usernameText"></span></td>
     </tr>
    <tr>
-        <th>姓名</th>
-        <td><span class="realNameText"></span></td>
+        <th>用户昵称</th>
+        <td><span class="nicknameText"></span></td>
         <th>手机号：</th>
         <td><span class="phoneText"></span></td>
   </tr>

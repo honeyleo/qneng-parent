@@ -79,7 +79,7 @@ public class LoginController {
         }
         account.setUriSet(uriSet);
         request.setAttribute("menuList", menuList);
-        request.setAttribute("realName", account.getUser().getRealName());
+        request.setAttribute("realName", account.getUser().getNickname());
         return INDEX;
     }
     
@@ -150,7 +150,7 @@ public class LoginController {
         user.setId(admin.getId());
         user.setUsername(admin.getUsername());
         user.setPassword(admin.getPassword());
-        user.setRealName(admin.getRealName());
+        user.setNickname(admin.getNickname());
         user.setEmail(admin.getEmail());
         user.setState(admin.getState());
         account.setUser(user);

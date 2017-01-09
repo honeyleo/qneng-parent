@@ -139,7 +139,6 @@ public class UserController {
         }
         user.setPassword(password);
         user.setEmail("");
-        user.setAddress("");
         user.setState(1);
         userService.add(user);
         return builder.build();

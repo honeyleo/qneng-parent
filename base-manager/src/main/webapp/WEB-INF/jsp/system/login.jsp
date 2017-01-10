@@ -40,14 +40,14 @@
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control" placeholder="用户名" name="username" value="admin"/>
+															<input type="text" class="form-control" placeholder="用户名" id = "username" name="username" value="admin"/>
 															<i class="ace-icon fa fa-user"></i>
 														</span>
 													</label>
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" placeholder="密码" name="password" value="admin"/>
+															<input type="password" class="form-control" placeholder="密码" id = "password" name="password" value="admin"/>
 															<i class="ace-icon fa fa-lock"></i>
 														</span>
 													</label>
@@ -67,7 +67,7 @@
 															<span class="lbl"> 记住我</span>
 														</label>
 
-														<button type="submit" class="width-35 pull-right btn btn-sm btn-primary">
+														<button type="button" class="width-35 pull-right btn btn-sm btn-primary" onclick="severCheck()">
 															<i class="ace-icon fa fa-key"></i>
 															<span class="bigger-110">登录</span>
 														</button>
@@ -272,12 +272,37 @@
 		
 		<script type="text/javascript" src="<%=request.getContextPath() %>/resources/js/jquery.validate.js"></script>
 		<script type="text/javascript" src="<%=request.getContextPath() %>/resources/js/jquery.cms.validate.js"></script>
+		<script type="text/javascript" src="<%=request.getContextPath() %>/resources/js/common/sha256.min.js"></script>
 		
 		
 		<script type="text/javascript">
 			$(function() {
 				$("#myForm").cmsvalidate();
 			});
+			function severCheck(){
+				var username = $("#username").val();
+				var password = $("#password").val();
+				password = sha256(password);
+				$.ajax({
+					type: "POST",
+					url: '/dologin',
+			    	data: {username:username,password:password},
+					dataType:'json',
+					cache: false,
+					success: function(data){
+						if(0 == data.ret) {
+							window.location.href="/manager/index";
+						} else {
+							$("#password").tips({
+								side : 2,
+								msg : data.msg,
+								bg : '#AE81FF',
+								time : 3
+							});
+						}
+					}
+				});
+			}
 		</script>
 		<title>后台管理登录</title>
 		<script type="text/javascript">

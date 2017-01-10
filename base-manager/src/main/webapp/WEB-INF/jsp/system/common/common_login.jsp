@@ -31,3 +31,5 @@
 <script src="<%=request.getContextPath() %>/resources/ace/assets/js/html5shiv.js"></script>
 <script src="<%=request.getContextPath() %>/resources/ace/assets/js/respond.js"></script>
 <![endif]-->
+<script src="<%=request.getContextPath() %>resources/js/common/common.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>resources/js/jquery.tips.js"></script>

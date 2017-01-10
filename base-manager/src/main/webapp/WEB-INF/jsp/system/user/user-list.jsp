@@ -131,7 +131,7 @@
                     <tr>
                         <th>密码：</th>
                         <td>
-                            <input type="text" class="form-control input_common300" id="password" placeholder="用户密码">
+                            <input type="password" class="form-control input_common300" id="password" placeholder="用户密码">
                         </td>
                     </tr>
                     <tr>
@@ -232,6 +232,7 @@
 <script src="<%=basePath%>resources/js/common/jquery-asyncbox.js"></script>
 <script src="<%=basePath%>resources/js/common/jquery-ui.min.js"></script>
 <script src="<%=basePath%>resources/js/common/public.js"></script>
+<script src="<%=basePath %>/resources/js/common/sha256.min.js"></script>
 <script src="<%=basePath%>resources/js/user.js"></script>
 </body>
 </html>

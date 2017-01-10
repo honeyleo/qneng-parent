@@ -12,24 +12,24 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
-
-import cn.lfy.base.Constants;
-import cn.lfy.base.model.User;
-import cn.lfy.base.model.LoginUser;
-import cn.lfy.base.model.Menu;
-import cn.lfy.base.model.Role;
-import cn.lfy.base.model.type.StateType;
-import cn.lfy.base.service.UserRoleService;
-import cn.lfy.base.service.UserService;
-import cn.lfy.base.service.RoleMenuService;
-import cn.lfy.common.framework.exception.ApplicationException;
-import cn.lfy.common.framework.exception.ErrorCode;
-import cn.lfy.common.utils.MessageDigestUtil;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
+import cn.lfy.base.Constants;
+import cn.lfy.base.model.LoginUser;
+import cn.lfy.base.model.Menu;
+import cn.lfy.base.model.Role;
+import cn.lfy.base.model.User;
+import cn.lfy.base.model.type.StateType;
+import cn.lfy.base.service.RoleMenuService;
+import cn.lfy.base.service.UserRoleService;
+import cn.lfy.base.service.UserService;
+import cn.lfy.common.framework.exception.ApplicationException;
+import cn.lfy.common.framework.exception.ErrorCode;
+import cn.lfy.common.model.Message;
+import cn.lfy.common.utils.MessageDigestUtil;
 
 @Controller
 public class LoginController {
@@ -98,13 +98,14 @@ public class LoginController {
     }
 
     @RequestMapping("/dologin")
-    public ModelAndView login(HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
+    @ResponseBody
+    public Object login(HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
         try {
             doLogin(request, response);
         } catch (ApplicationException ex) {
             throw ex;
         }
-        return new ModelAndView(new RedirectView(request.getContextPath() + "/manager/index"), "model", null);
+        return Message.newBuilder().build();
     }
 
     private void doLogin(HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
@@ -125,7 +126,7 @@ public class LoginController {
         	throw ApplicationException.newInstance(ErrorCode.ERROR);
         }
         
-        password = MessageDigestUtil.getSHA256(MessageDigestUtil.getSHA256(password) + user.getSalt());
+        password = MessageDigestUtil.getSHA256(password + user.getSalt());
         
         if (!password.equals(user.getPassword())) {
         	throw ApplicationException.newInstance(ErrorCode.ERROR, "用户名或密码错误");
@@ -137,7 +138,7 @@ public class LoginController {
     private LoginUser getLoginUser(String username){
         User dbUser = userService.findByUsername(username);
         if(dbUser == null) {
-            return null;
+        	throw ApplicationException.newInstance(ErrorCode.ERROR, "用户名或密码错误");
         }
         List<Role> roleList = userRoleService.getRoleListByUserId(dbUser.getId());
         LoginUser account = new LoginUser();

@@ -115,6 +115,7 @@ var users = {
             $(".J_sure").removeClass("none");
             $("#updContent").show();
             var id = $(this).attr("data-value");
+            self.clearData();
             $.getJSON("/manager/user/detail", {id: id}, function(result){
             	if (result.ret == 0) {
                     if (result.data.state == 1) {
@@ -179,12 +180,16 @@ var users = {
         			$('#rolesDialog').modal('show');
             	}
             });
-        });;
+        });
         $("#updContent").click(function(){
+        	var password = $("#password").val();
+        	if(password) {
+        		password = sha256(password);
+        	}
             var param = {
                 id: $("#id").val(),
                 username: $("#username").val(),
-                password: $("#password").val(),
+                password: password,
                 nickname: $("#nickname").val(),
                 phone: $("#phone").val(),
                 state:$("#search_dropDown-status1").attr("value")
@@ -278,10 +283,10 @@ var users = {
         });
     },
     clearData:function(){
-    	username: $("#username").val("");
-        password: $("#password").val("");
-        nickname: $("#nickname").val("");
-        phone: $("#phone").val("");
+    	$("#username").val("");
+        $("#password").val("");
+        $("#nickname").val("");
+        $("#phone").val("");
     },
 };
 $(function () {

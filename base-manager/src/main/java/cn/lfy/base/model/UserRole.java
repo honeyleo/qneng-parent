@@ -7,7 +7,7 @@ public class UserRole implements Serializable {
 
     private Long id;
     
-    private Long adminId;
+    private Long userId;
 
     private Long roleId;
 
@@ -19,12 +19,12 @@ public class UserRole implements Serializable {
 		this.id = id;
 	}
 
-	public Long getAdminId() {
-        return adminId;
+	public Long getUserId() {
+        return userId;
     }
 
-    public void setAdminId(Long adminId) {
-        this.adminId = adminId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
 	public Long getRoleId() {

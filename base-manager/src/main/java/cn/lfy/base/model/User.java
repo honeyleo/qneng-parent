@@ -20,6 +20,10 @@ public class User implements Serializable {
      * 登录密码，保存md5值
      */
     private String password;
+    /**
+     * 盐
+     */
+    private String salt;
 
     /**
      * 昵称
@@ -91,7 +95,15 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    /**
+    public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
+	/**
      * @return 昵称
      */
     public String getNickname() {

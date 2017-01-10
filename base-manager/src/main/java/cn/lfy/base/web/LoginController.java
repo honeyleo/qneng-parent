@@ -39,18 +39,17 @@ public class LoginController {
     private static final String INDEX = "/system/common/index";
 
     @Autowired
-    private UserService adminService;
+    private UserService userService;
 
     @Autowired
-    private UserRoleService adminRoleService;
+    private UserRoleService userRoleService;
     
     @Autowired
-	private RoleMenuService roleDefaultMenuService;
+	private RoleMenuService roleMenuService;
     
     @RequestMapping("/manager/index")
-    public String index(HttpServletRequest request) throws ApplicationException {
-    	LoginUser account = (LoginUser) request.getSession().getAttribute(Constants.SESSION_LOGIN_USER);
-    	List<Menu> menus = roleDefaultMenuService.selectMenuListByRoleIds(Lists.newArrayList(account.getRoleIds()));
+    public String index(HttpServletRequest request, LoginUser currentUser) throws ApplicationException {
+    	List<Menu> menus = roleMenuService.selectMenuListByRoleIds(Lists.newArrayList(currentUser.getRoleIds()));
         List<Menu> menuList = Lists.newArrayList();
         Set<String> uriSet = Sets.newTreeSet();
         for(Menu menu : menus) {
@@ -77,9 +76,9 @@ public class LoginController {
         		}
         	}
         }
-        account.setUriSet(uriSet);
+        currentUser.setUriSet(uriSet);
         request.setAttribute("menuList", menuList);
-        request.setAttribute("realName", account.getUser().getNickname());
+        request.setAttribute("realName", currentUser.getUser().getNickname());
         return INDEX;
     }
     
@@ -111,17 +110,13 @@ public class LoginController {
     private void doLogin(HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
-        try {
-            password = MessageDigestUtil.getSHA256(password).toUpperCase();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        
         if (null == username || username.trim().length() == 0
                 || null == password || password.length() == 0) {
             throw new ApplicationException(ErrorCode.PARAM_ILLEGAL, "", new String[]{"用户名或密码"});
         }
-        LoginUser account = getAdminLoginUser(username);
+        
+        LoginUser account = getLoginUser(username);
         User user = account.getUser();
         if (user == null) {
             throw ApplicationException.newInstance(ErrorCode.ERROR);
@@ -129,31 +124,27 @@ public class LoginController {
         if (user.getState().equals(StateType.INACTIVE)) {
         	throw ApplicationException.newInstance(ErrorCode.ERROR);
         }
+        
+        password = MessageDigestUtil.getSHA256(MessageDigestUtil.getSHA256(password) + user.getSalt());
+        
         if (!password.equals(user.getPassword())) {
-        	throw ApplicationException.newInstance(ErrorCode.ERROR, "密码错误");
+        	throw ApplicationException.newInstance(ErrorCode.ERROR, "用户名或密码错误");
         }
         account.setId(user.getId());
         request.getSession().setAttribute(Constants.SESSION_LOGIN_USER, account);
     }
     
-    private LoginUser getAdminLoginUser(String username){
-        User admin = adminService.findByUsername(username);
-        if(admin == null){
+    private LoginUser getLoginUser(String username){
+        User dbUser = userService.findByUsername(username);
+        if(dbUser == null) {
             return null;
         }
-        List<Role> roleList = adminRoleService.getRoleListByUserId(admin.getId());
+        List<Role> roleList = userRoleService.getRoleListByUserId(dbUser.getId());
         LoginUser account = new LoginUser();
         Set<Role> roleSet = new TreeSet<Role>();
         roleSet.addAll(roleList);
         account.setRoles(roleSet);
-        User user = new User();
-        user.setId(admin.getId());
-        user.setUsername(admin.getUsername());
-        user.setPassword(admin.getPassword());
-        user.setNickname(admin.getNickname());
-        user.setEmail(admin.getEmail());
-        user.setState(admin.getState());
-        account.setUser(user);
+        account.setUser(dbUser);
 
         return account;
     }

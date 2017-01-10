@@ -11,10 +11,10 @@ public interface UserRoleDAO {
 
     /**
      * 根据内勤人员id获取菜单列表
-     * @param adminId
+     * @param userId
      * @return
      */
-    List<Role> getRoleListByAdminId(Long adminId);
+    List<Role> getRoleListByUserId(Long userId);
     
     /**
      * 添加内勤人员菜单
@@ -24,9 +24,9 @@ public interface UserRoleDAO {
     
     /**
      * 删除内勤人员ID的菜单 
-     * @param adminId
+     * @param userId
      */
-    void deleteByAdminId(Long  adminId);
+    void deleteByUserId(Long  userId);
     
     /**
      * 删除某菜单 
@@ -36,9 +36,9 @@ public interface UserRoleDAO {
     
     /**
      * 删除某菜单 
-     * @param adminId
+     * @param userId
      * @param roleId
      */
-    void delete(@Param("adminId")Long adminId, @Param("roleId")Long roleId);
+    void delete(@Param("userId")Long userId, @Param("roleId")Long roleId);
     
 }

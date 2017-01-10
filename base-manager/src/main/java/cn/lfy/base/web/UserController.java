@@ -37,6 +37,7 @@ import cn.lfy.common.framework.exception.ErrorCode;
 import cn.lfy.common.model.Message;
 import cn.lfy.common.utils.MessageDigestUtil;
 import cn.lfy.common.utils.RequestUtil;
+import cn.lfy.common.utils.UUIDUtil;
 
 @Controller
 @RequestMapping("/manager/user")
@@ -158,13 +159,16 @@ public class UserController {
     	Message.Builder builder = Message.newBuilder();
         if (StringUtils.isNotBlank(user.getPassword())) {// 判断password是否为空
             try {
-                String password = MessageDigestUtil.getSHA256(user.getPassword()).toUpperCase();
+            	String salt = UUIDUtil.salt();
+                String password = MessageDigestUtil.getSHA256(user.getPassword() + salt);
                 user.setPassword(password);
+                user.setSalt(salt);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
         	user.setPassword(null);
+        	user.setSalt(null);
         }
         userService.updateByIdSelective(user);
         return builder.build();

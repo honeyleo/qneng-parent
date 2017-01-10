@@ -3,7 +3,7 @@
 <mapper namespace="cn.lfy.base.dao.UserRoleDAO" >
   <resultMap id="BaseResultMap" type="cn.lfy.base.model.UserRole" >
   	<id column="id" property="id" jdbcType="BIGINT" />
-    <id column="adminId" property="adminId" jdbcType="BIGINT" />
+    <id column="userId" property="userId" jdbcType="BIGINT" />
     <id column="roleId" property="roleId" jdbcType="BIGINT" />
   </resultMap>
   
@@ -18,25 +18,25 @@
     <result column="parentIdPath" property="parentIdPath" jdbcType="VARCHAR" />
   </resultMap>
   
-  <select id="getRoleListByAdminId" resultMap="RoleResultMap" parameterType="java.lang.Long" >
+  <select id="getRoleListByUserId" resultMap="RoleResultMap" parameterType="java.lang.Long" >
     select m.id, m.name, m.parentId, m.desc, m.state, m.createTime, m.level, m.parentIdPath
     from role m inner join user_role am on m.id = am.roleId 
-    where m.state = 1 and am.adminId = #{adminId}
+    where m.state = 1 and am.userId = #{userId}
     order by m.id
   </select>
   
   <insert id="insert" parameterType="cn.lfy.base.model.UserRole" >
-    insert into user_role (adminId, roleId) values (#{adminId}, #{roleId})
+    insert into user_role (userId, roleId) values (#{userId}, #{roleId})
   </insert>
   
-  <delete id="deleteByAdminId" parameterType="java.lang.Long" >
-    delete from user_role where adminId = #{adminId}
+  <delete id="deleteByUserId" parameterType="java.lang.Long" >
+    delete from user_role where userId = #{userId}
   </delete>
   
   <delete id="deleteByMenuId" parameterType="java.lang.Long" >
     delete from user_role where roleId = #{roleId}
   </delete>
   <delete id="delete" parameterType="java.lang.Long" >
-    delete from user_role where adminId = #{adminId} and roleId = #{roleId}
+    delete from user_role where userId = #{userId} and roleId = #{roleId}
   </delete>
 </mapper>

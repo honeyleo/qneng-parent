@@ -30,20 +30,20 @@ public class UserRoleServiceImpl implements UserRoleService
 
     @Override
     public List<Role> getRoleListByUserId(Long adminId) {
-        return userRoleDAO.getRoleListByAdminId(adminId);
+        return userRoleDAO.getRoleListByUserId(adminId);
     }
 
     @Override
     public void add(Long adminId, Long menuId) {
         UserRole record=new UserRole();
-        record.setAdminId(adminId);
+        record.setUserId(adminId);
         record.setRoleId(menuId);
         userRoleDAO.insert(record);
     }
 
     @Override
     public void deleteByUserId(Long adminId) {
-        userRoleDAO.deleteByAdminId(adminId);
+        userRoleDAO.deleteByUserId(adminId);
     }
 
     @Override

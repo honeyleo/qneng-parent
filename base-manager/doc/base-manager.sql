@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50618
+Source Server Version : 50624
 Source Host           : localhost:3306
 Source Database       : base-manager
 
 Target Server Type    : MYSQL
-Target Server Version : 50618
+Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2017-01-08 23:02:14
+Date: 2017-01-10 14:53:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -105,7 +105,8 @@ DROP TABLE IF EXISTS `role_menu`;
 CREATE TABLE `role_menu` (
   `roleId` bigint(20) NOT NULL DEFAULT '0' COMMENT '角色id',
   `menuId` bigint(20) NOT NULL DEFAULT '0' COMMENT '权限菜单id',
-  PRIMARY KEY (`roleId`,`menuId`)
+  PRIMARY KEY (`roleId`,`menuId`),
+  UNIQUE KEY `idx_role_menu` (`roleId`,`menuId`) USING BTREE
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='角色对应权限表';
 
 -- ----------------------------
@@ -224,27 +225,28 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `username` varchar(20) DEFAULT NULL COMMENT '登录名',
-  `password` varchar(256) DEFAULT NULL COMMENT '登录密码，保存md5值',
-  `realName` varchar(20) DEFAULT NULL COMMENT '真实姓名',
+  `password` varchar(256) DEFAULT NULL COMMENT '密码',
+  `salt` varchar(32) DEFAULT '' COMMENT '盐',
+  `nickname` varchar(20) DEFAULT NULL COMMENT '昵称',
   `email` varchar(50) DEFAULT NULL COMMENT '公司的个人邮箱，邮件提醒功能',
   `phone` varchar(20) DEFAULT NULL COMMENT '联系电话',
-  `address` varchar(50) DEFAULT NULL COMMENT '地址',
   `state` int(2) DEFAULT NULL COMMENT '数据状态',
   `createTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_username` (`username`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'dev', '8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918', '开发者', '', '18028763997', '', '1', '2013-01-23 17:33:24');
-INSERT INTO `user` VALUES ('2', 'admin', '8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918', '系统管理员', null, '12345678909', null, '1', '2013-01-23 17:33:46');
-INSERT INTO `user` VALUES ('3', 'qnyk123', '', '清能云控', null, '18028763997', null, '1', '2015-10-10 22:59:59');
-INSERT INTO `user` VALUES ('5', 'qnyk1234', '', '李', null, '13430909666', null, '1', '2015-11-25 01:08:33');
-INSERT INTO `user` VALUES ('6', 'ewang', null, 'Eric', null, '13810734019', null, '1', '2015-12-03 02:30:24');
-INSERT INTO `user` VALUES ('7', 'ewang2', null, 'Eric', null, '13810734019', null, '1', '2015-12-03 03:18:16');
-INSERT INTO `user` VALUES ('9', 'qnyk2', '', '电站管理员2', null, '12345678909', null, '1', '2015-12-06 21:58:55');
-INSERT INTO `user` VALUES ('10', 'qnyk66', '', '账号管理员', null, '12345678909', null, '1', '2015-12-07 21:27:52');
+INSERT INTO `user` VALUES ('1', 'dev', '8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918', null, '开发者', '', '18028763997', '1', '2013-01-23 17:33:24');
+INSERT INTO `user` VALUES ('2', 'admin', '8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918', null, '系统管理员', null, '12345678909', '1', '2013-01-23 17:33:46');
+INSERT INTO `user` VALUES ('3', 'qnyk123', '', null, '清能云控', null, '18028763997', '1', '2015-10-10 22:59:59');
+INSERT INTO `user` VALUES ('5', 'qnyk1234', '', null, '李', null, '13430909666', '1', '2015-11-25 01:08:33');
+INSERT INTO `user` VALUES ('6', 'ewang', null, null, 'Eric', null, '13810734019', '1', '2015-12-03 02:30:24');
+INSERT INTO `user` VALUES ('7', 'ewang2', null, null, 'Eric', null, '13810734019', '1', '2015-12-03 03:18:16');
+INSERT INTO `user` VALUES ('9', 'qnyk2', '', null, '电站管理员2', null, '12345678909', '1', '2015-12-06 21:58:55');
+INSERT INTO `user` VALUES ('10', 'qnyk66', '', null, '账号管理员', null, '12345678909', '1', '2015-12-07 21:27:52');
 
 -- ----------------------------
 -- Table structure for user_role
@@ -252,9 +254,10 @@ INSERT INTO `user` VALUES ('10', 'qnyk66', '', '账号管理员', null, '1234567
 DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `adminId` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `userId` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
   `roleId` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '角色ID',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_user_role` (`userId`,`roleId`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COMMENT='用户角色表';
 
 -- ----------------------------
@@ -263,5 +266,5 @@ CREATE TABLE `user_role` (
 INSERT INTO `user_role` VALUES ('1', '1', '1');
 INSERT INTO `user_role` VALUES ('25', '2', '2');
 INSERT INTO `user_role` VALUES ('33', '2', '11');
-INSERT INTO `user_role` VALUES ('35', '3', '9');
 INSERT INTO `user_role` VALUES ('36', '3', '4');
+INSERT INTO `user_role` VALUES ('35', '3', '9');

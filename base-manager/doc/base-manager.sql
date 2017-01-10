@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50624
+Source Server Version : 50618
 Source Host           : localhost:3306
 Source Database       : base-manager
 
 Target Server Type    : MYSQL
-Target Server Version : 50624
+Target Server Version : 50618
 File Encoding         : 65001
 
-Date: 2017-01-10 14:53:40
+Date: 2017-01-10 22:47:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -239,14 +239,14 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'dev', '8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918', null, '开发者', '', '18028763997', '1', '2013-01-23 17:33:24');
-INSERT INTO `user` VALUES ('2', 'admin', '8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918', null, '系统管理员', null, '12345678909', '1', '2013-01-23 17:33:46');
-INSERT INTO `user` VALUES ('3', 'qnyk123', '', null, '清能云控', null, '18028763997', '1', '2015-10-10 22:59:59');
-INSERT INTO `user` VALUES ('5', 'qnyk1234', '', null, '李', null, '13430909666', '1', '2015-11-25 01:08:33');
-INSERT INTO `user` VALUES ('6', 'ewang', null, null, 'Eric', null, '13810734019', '1', '2015-12-03 02:30:24');
-INSERT INTO `user` VALUES ('7', 'ewang2', null, null, 'Eric', null, '13810734019', '1', '2015-12-03 03:18:16');
-INSERT INTO `user` VALUES ('9', 'qnyk2', '', null, '电站管理员2', null, '12345678909', '1', '2015-12-06 21:58:55');
-INSERT INTO `user` VALUES ('10', 'qnyk66', '', null, '账号管理员', null, '12345678909', '1', '2015-12-07 21:27:52');
+INSERT INTO `user` VALUES ('1', 'dev', '31587b849f0a7e4e229af7ab742a1b634e1907d81abfa866bc9ac49f9d63da3c', '834ec6', '开发者', '', '18028763997', '1', '2013-01-23 17:33:24');
+INSERT INTO `user` VALUES ('2', 'admin', '0c75f68693dfad5b3ef8d6581b21f5130fe312285821ad7f79e405b17dbed1e5', 'b9ecdc', '系统管理员', '', '12345678909', '1', '2013-01-23 17:33:46');
+INSERT INTO `user` VALUES ('3', 'qnyk123', '77dda7c14c66ac20746997d066f479141ca22e526bd9f836fac06719a21beda2', 'f2ac4e', '清能云控', '', '18028763997', '1', '2015-10-10 22:59:59');
+INSERT INTO `user` VALUES ('5', 'qnyk1234', '70504ff24b385392e82f3247d4d28788c18aa56df34d24c4b4c5798c47aa1274', 'd99193', '李', '', '13430909666', '1', '2015-11-25 01:08:33');
+INSERT INTO `user` VALUES ('6', 'ewang', '812cd692cb0749c3bfaa3985400ff87ec9401a8c3fbda32568652abca17ae999', '7e44d7', 'Eric', '', '13810734019', '1', '2015-12-03 02:30:24');
+INSERT INTO `user` VALUES ('7', 'ewang2', 'f81b3385baa4a7a776dc33324f2d61df9fea3f368e6f34e13ad6eedd7ee00a9b', '1bf5a1', 'Eric', '', '13810734019', '1', '2015-12-03 03:18:16');
+INSERT INTO `user` VALUES ('9', 'qnyk2', '2e9f3cacb346e911feba8bf0fbf3d7ed7faa72082cacb175da99d67a1c02de7a', 'c88f1c', '电站管理员2', '', '12345678909', '1', '2015-12-06 21:58:55');
+INSERT INTO `user` VALUES ('10', 'qnyk66', 'fcdf6a46d0095d4237daed3a5573d7174e314d1c7f32674a18d110cdf98b8497', '422528', '账号管理员', '', '12345678909', '1', '2015-12-07 21:27:52');
 
 -- ----------------------------
 -- Table structure for user_role

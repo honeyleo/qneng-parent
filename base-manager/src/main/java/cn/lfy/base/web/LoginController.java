@@ -30,6 +30,7 @@ import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
 import cn.lfy.common.model.Message;
 import cn.lfy.common.utils.MessageDigestUtil;
+import cn.lfy.common.utils.Strings;
 
 @Controller
 public class LoginController {
@@ -128,7 +129,7 @@ public class LoginController {
         
         password = MessageDigestUtil.getSHA256(password + user.getSalt());
         
-        if (!password.equals(user.getPassword())) {
+        if (!Strings.slowEquals(password, user.getPassword())) {
         	throw ApplicationException.newInstance(ErrorCode.ERROR, "用户名或密码错误");
         }
         account.setId(user.getId());

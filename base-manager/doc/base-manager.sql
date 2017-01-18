@@ -268,3 +268,17 @@ INSERT INTO `user_role` VALUES ('25', '2', '2');
 INSERT INTO `user_role` VALUES ('33', '2', '11');
 INSERT INTO `user_role` VALUES ('36', '3', '4');
 INSERT INTO `user_role` VALUES ('35', '3', '9');
+
+DROP TABLE IF EXISTS `dict`;
+CREATE TABLE `dict` (
+   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+   `type` varchar(20) NOT NULL DEFAULT '' COMMENT '字典类型',
+   `name` varchar(100) NOT NULL DEFAULT '' COMMENT '名称',
+   `parentId` int(11) NOT NULL DEFAULT '0' COMMENT '父节点ID',
+   `parentIdPath` varchar(200) NOT NULL DEFAULT '' COMMENT '父节点路径',
+   `remark` varchar(100) NOT NULL DEFAULT '' COMMENT '备注',
+   `seq` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '顺序号',
+   `updateTime` bigint(20) NOT NULL COMMENT '最后更新时间',
+   PRIMARY KEY (`id`),
+   KEY `idx_type_pid` (`type`,`parentId`) USING BTREE
+ ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='字典表'

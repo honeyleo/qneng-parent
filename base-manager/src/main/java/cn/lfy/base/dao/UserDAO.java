@@ -2,8 +2,11 @@ package cn.lfy.base.dao;
 
 import java.util.List;
 
-import cn.lfy.base.model.User;
+import org.apache.ibatis.annotations.Param;
+
 import cn.lfy.base.model.Criteria;
+import cn.lfy.base.model.User;
+import cn.lfy.common.page.Page;
 
 public interface UserDAO {
     /**
@@ -43,4 +46,9 @@ public interface UserDAO {
      */
     User selectByUsername(String username);
 
+    Page<User> listPage(@Param("pageIndex") int pageNum, @Param("pageSize") int pageSize);
+    
+    Page<User> list2(User user);
+    
+    Page<User> list3();
 }

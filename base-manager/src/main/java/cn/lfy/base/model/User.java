@@ -50,6 +50,10 @@ public class User implements Serializable {
      */
     private Date createTime;
     
+    private Integer pageIndex;
+    
+    private Integer pageSize;
+    
     /**
      * @return 主键
      */
@@ -177,5 +181,21 @@ public class User implements Serializable {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+	public Integer getPageIndex() {
+		return pageIndex;
+	}
+
+	public void setPageIndex(Integer pageIndex) {
+		this.pageIndex = pageIndex;
+	}
+
+	public Integer getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
 
 }

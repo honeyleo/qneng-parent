@@ -126,4 +126,22 @@
     from user where username = #{username} limit 1
   </select>
   
+   <select id="listPage" resultMap="BaseResultMap" useCache="true">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+  </select>
+  
+  <select id="list2" resultMap="BaseResultMap" useCache="true">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+  </select>
+  
+  <select id="list3" resultMap="BaseResultMap" useCache="true">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+  </select>
+  
 </mapper>

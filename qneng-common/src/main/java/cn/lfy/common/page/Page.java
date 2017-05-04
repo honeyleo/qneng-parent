@@ -1,11 +1,12 @@
 package cn.lfy.common.page;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
 
-public class Page<T> extends ArrayList<T> {
+public class Page<T> implements Serializable {
 	
 	private static final long serialVersionUID = -8133942644763377252L;
 
@@ -16,6 +17,8 @@ public class Page<T> extends ArrayList<T> {
 	private int currentPage;	//当前页
 	private int totalPage;//总页数
 	
+	private List<T> list = new ArrayList<T>();
+	
 	public Page() {
 		
 	}
@@ -23,7 +26,7 @@ public class Page<T> extends ArrayList<T> {
 		this.currentPage = currentPage;
 		this.totalResult = totalResult;
 		this.pageSize = pageSize;
-		addAll(list);
+		this.list = list;
 	}
 	
 	public int getTotalPage() {
@@ -68,6 +71,12 @@ public class Page<T> extends ArrayList<T> {
 		this.currentPage = currentPage;
 	}
 
+	public List<T> getList() {
+		return list;
+	}
+	public void setList(List<T> list) {
+		this.list = list;
+	}
 	@Override
 	public String toString() {
 		return "Page [pageSize=" + pageSize + ", totalResult=" + totalResult

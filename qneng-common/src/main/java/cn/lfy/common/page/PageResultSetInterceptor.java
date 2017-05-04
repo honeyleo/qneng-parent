@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -50,8 +51,8 @@ public class PageResultSetInterceptor implements Interceptor {
       
                     MapperMethod.ParamMap paramMapObject = (MapperMethod.ParamMap)parameterObject ;  
       
-                    if(paramMapObject != null){  
-                        for(Object key : paramMapObject.keySet()){  
+                    if(paramMapObject != null) {  
+                        for(Object key : paramMapObject.keySet()) {  
                             if("pageIndex".equals(key)) {
                             	pageIndex = (Integer)paramMapObject.get(key);
                             } else if("pageSize".equals(key)) {
@@ -60,13 +61,13 @@ public class PageResultSetInterceptor implements Interceptor {
                         }  
                     }  
                 } else {
-                	Field pageIndexField = ReflectHelper.getFieldByFieldName(parameterObject,"pageIndex");
+                	Field pageIndexField = ReflectHelper.getFieldByFieldName(parameterObject, "pageIndex");
         			if(pageIndexField != null) {
-        				pageIndex = (Integer)ReflectHelper.getValueByFieldName(parameterObject,"pageIndex");
+        				pageIndex = (Integer)ReflectHelper.getValueByFieldName(parameterObject, "pageIndex");
         			}
-        			Field pageSizeField = ReflectHelper.getFieldByFieldName(parameterObject,"pageSize");
+        			Field pageSizeField = ReflectHelper.getFieldByFieldName(parameterObject, "pageSize");
         			if(pageSizeField != null) {
-        				pageSize = (Integer)ReflectHelper.getValueByFieldName(parameterObject,"pageSize");
+        				pageSize = (Integer)ReflectHelper.getValueByFieldName(parameterObject, "pageSize");
         			}
                 }
                 if (pageIndex != null && pageSize != null) {  
@@ -86,16 +87,16 @@ public class PageResultSetInterceptor implements Interceptor {
                             break;  
                     }  
       
-      
                     // 修改sql，用于返回总记录数  
                     String sql = dialect.getCountString(originalSql);  
                     Integer totalRecord = getTotalRecord(connection, sql, parameterHandler);  
       
                     Object result = invocation.proceed();  
                     Page<?> page = new Page((List)result, pageIndex, pageSize, totalRecord);  
-      
                     log.info("{}", page);
-                    return page;  
+                    List<Page> pageList = new ArrayList<Page>();  
+                    pageList.add(page);  
+                    return pageList;  
                 }  
             }
         } catch (Exception e) {  

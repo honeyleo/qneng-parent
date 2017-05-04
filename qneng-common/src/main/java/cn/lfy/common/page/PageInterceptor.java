@@ -42,8 +42,8 @@ public class PageInterceptor implements Interceptor {
       
                 MapperMethod.ParamMap paramMapObject = (MapperMethod.ParamMap)parameterObject ;  
       
-                if(paramMapObject != null){  
-                    for(Object key : paramMapObject.keySet()){  
+                if(paramMapObject != null) {  
+                    for(Object key : paramMapObject.keySet()) {  
                         if("pageIndex".equals(key)) {
                         	pageIndex = (Integer)paramMapObject.get(key);
                         } else if("pageSize".equals(key)) {
@@ -52,16 +52,15 @@ public class PageInterceptor implements Interceptor {
                     }  
                 }  
             } else {
-            	Field pageIndexField = ReflectHelper.getFieldByFieldName(parameterObject,"pageIndex");
+            	Field pageIndexField = ReflectHelper.getFieldByFieldName(parameterObject, "pageIndex");
     			if(pageIndexField != null) {
-    				pageIndex = (Integer)ReflectHelper.getValueByFieldName(parameterObject,"pageIndex");
+    				pageIndex = (Integer)ReflectHelper.getValueByFieldName(parameterObject, "pageIndex");
     			}
-    			Field pageSizeField = ReflectHelper.getFieldByFieldName(parameterObject,"pageSize");
+    			Field pageSizeField = ReflectHelper.getFieldByFieldName(parameterObject, "pageSize");
     			if(pageSizeField != null) {
-    				pageSize = (Integer)ReflectHelper.getValueByFieldName(parameterObject,"pageSize");
+    				pageSize = (Integer)ReflectHelper.getValueByFieldName(parameterObject, "pageSize");
     			}
             }
-            
             
             if (pageIndex != null && pageSize != null) {  
       

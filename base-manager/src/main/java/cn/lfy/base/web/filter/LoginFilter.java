@@ -27,7 +27,12 @@ public class LoginFilter extends OncePerRequestFilter {
 		if(!LoginVerify(request)) {
 			String httpAjax=request.getHeader("X-Requested-With");
 			if(httpAjax != null && "XMLHttpRequest".equals(httpAjax)) {
-				response.getWriter().write("{\"ret\":\"3000\", \"msg\":\"验证会话失败，请先登录\", \"redirectUrl\":\"\"}\\");
+				String scheme = request.getScheme();
+				String host = request.getServerName();
+				int port =request.getServerPort();
+				String loginUrl = scheme + "://" + host + ":" + port + "/login";
+				response.setStatus(302);
+				response.getWriter().write("{\"ret\":\"3000\", \"msg\":\"验证会话失败，请先登录\", \"redirectUrl\":\"" + loginUrl + "\"}");
 				response.getWriter().flush();
 				response.getWriter().close();
 			} else {

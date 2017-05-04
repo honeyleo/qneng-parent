@@ -44,7 +44,8 @@ public class DelayItem<T> implements Delayed {
         return d;
     }
 
-    public int compareTo(Delayed other) {
+    @SuppressWarnings("rawtypes")
+	public int compareTo(Delayed other) {
         if (other == this) // compare zero ONLY if same object
             return 0;
         if (other instanceof DelayItem) {

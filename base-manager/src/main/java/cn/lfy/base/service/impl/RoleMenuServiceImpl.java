@@ -17,7 +17,7 @@ import cn.lfy.base.model.RoleMenu;
 import cn.lfy.base.service.RoleMenuService;
 import cn.lfy.base.service.RoleService;
 import cn.lfy.common.framework.exception.ErrorCode;
-import cn.lfy.common.utils.Validators;
+import cn.lfy.common.validator.Validators;
 
 @Service
 public class RoleMenuServiceImpl implements RoleMenuService {

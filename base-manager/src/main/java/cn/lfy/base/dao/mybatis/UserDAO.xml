@@ -44,12 +44,7 @@
   
   <sql id="Example_Order_Clause">
   	<trim prefix="order by" prefixOverrides="," >
-  		<if test="orderMap.id != null">
-  			,id #{orderMap.id}
-  		</if>
-  		<if test="orderMap.username != null">
-  			,id #{orderMap.userName}
-  		</if>
+  		id DESC
   	</trim>
   </sql>
   
@@ -67,7 +62,6 @@
     <if test="_parameter != null" >
       <include refid="Example_Order_Clause" />
     </if>
-    <include refid="common.Mysql_Pagination_Limit" />
   </select>
   
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >

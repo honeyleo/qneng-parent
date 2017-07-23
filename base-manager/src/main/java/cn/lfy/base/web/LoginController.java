@@ -1,7 +1,9 @@
 package cn.lfy.base.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.common.collect.Lists;
@@ -29,6 +32,7 @@ import cn.lfy.base.service.UserService;
 import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
 import cn.lfy.common.model.Message;
+import cn.lfy.common.model.ResultDTO;
 import cn.lfy.common.utils.MessageDigestUtil;
 import cn.lfy.common.utils.Strings;
 
@@ -81,6 +85,47 @@ public class LoginController {
         request.setAttribute("menuList", menuList);
         request.setAttribute("realName", currentUser.getUser().getNickname());
         return INDEX;
+    }
+    
+    @RequestMapping(value = "/manager/menu", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultDTO<Map<String, Object>> menu(HttpServletRequest request, LoginUser currentUser) throws ApplicationException {
+    	ResultDTO<Map<String, Object>> resultDTO = new ResultDTO<>();
+    	List<Menu> menus = roleMenuService.selectMenuListByRoleIds(Lists.newArrayList(currentUser.getRoleIds()));
+        List<Menu> menuList = Lists.newArrayList();
+        Set<String> uriSet = Sets.newTreeSet();
+        for(Menu menu : menus) {
+        	uriSet.add(menu.getUrl());
+        	if(menu.getParentId() == -1) {
+        		continue;
+        	}
+        	else if(menu.getParentId() == 1) {
+        		menuList.add(menu);
+        	} else if(menu.getOnMenu() == 1) {
+        		Menu parent = null;
+        		for(Menu m : menuList) {
+        			if(m.getId() == menu.getParentId()) {
+        				parent = m;
+        				break;
+        			}
+        		}
+        		if(parent != null && parent.getChildList() == null) {
+        			 List<Menu> childList = new ArrayList<Menu>();
+        			 parent.setChildList(childList);
+        		}
+        		if(parent != null) {
+        			parent.getChildList().add(menu);
+        		}
+        	}
+        }
+        currentUser.setUriSet(uriSet);
+        request.setAttribute("menuList", menuList);
+        request.setAttribute("realName", currentUser.getUser().getNickname());
+        Map<String, Object> data = new HashMap<String, Object>();
+        data.put("menus", menuList);
+        data.put("user", currentUser.getUser());
+        resultDTO.setData(data);
+        return resultDTO;
     }
     
     @RequestMapping("/manager/home")

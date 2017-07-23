@@ -8,10 +8,6 @@ import cn.lfy.base.model.Criteria;
 import cn.lfy.base.model.Menu;
 
 public interface MenuDAO {
-    /**
-     * 根据条件查询记录总数
-     */
-    int countByExample(Criteria example);
 
     /**
      * 根据主键删除记录
@@ -26,7 +22,7 @@ public interface MenuDAO {
     /**
      * 根据条件查询记录集
      */
-    List<Menu> selectByExample(Criteria example);
+    List<Menu> selectByExample(@Param("condition")Criteria example);
 
     /**
      * 根据主键查询记录

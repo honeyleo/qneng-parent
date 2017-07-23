@@ -32,7 +32,7 @@ import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
 import cn.lfy.common.model.Message;
 import cn.lfy.common.utils.RequestUtil;
-import cn.lfy.common.utils.Validators;
+import cn.lfy.common.validator.Validators;
 
 @Controller
 @RequestMapping("/manager/role")

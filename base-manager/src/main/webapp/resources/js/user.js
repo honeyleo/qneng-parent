@@ -42,9 +42,13 @@ var users = {
         result.data = arr;
     },
     query: function (refresh) {
+    	var state = $("#search_dropDown-status").attr("value");
+    	var username = $("#usernameSearch").val();
+    	var nickname = $("#nicknameSearch").val();
+    	var phone = $("#phoneSearch").val();
         var action = "/manager/user/api/list", argument;
             argument = [
-                {test:"test"}
+                {name:"state", value:state}, {name:"username", value:username},{name:"nickname", value:nickname}, {name:"phone", value:phone}
             ];
         this.load(action, argument, refresh);
     },
@@ -58,6 +62,7 @@ var users = {
     },
     bindEvents: function () {
         var self = this;
+        self.dropDown('modify_search_status', 'search_dropDown-status', 'status');
         self.dropDown('modify_search_status1', 'search_dropDown-status1', 'status1');
         $('.J_search').click(function () {
             self.query(true);

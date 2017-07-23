@@ -1,7 +1,5 @@
 package cn.lfy.base.dao;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 
 import cn.lfy.base.model.Criteria;
@@ -27,7 +25,7 @@ public interface UserDAO {
     /**
      * 根据条件查询记录集
      */
-    List<User> selectByExample(Criteria example);
+    Page<User> selectByExample(@Param("condition")Criteria example, @Param("pageIndex") int pageindex, @Param("pageSize")int pageSize);
 
     /**
      * 根据主键查询记录

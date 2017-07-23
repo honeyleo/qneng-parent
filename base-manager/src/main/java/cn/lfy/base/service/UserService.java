@@ -1,10 +1,8 @@
 package cn.lfy.base.service;
 
-import java.util.List;
-
-import cn.lfy.base.model.User;
 import cn.lfy.base.model.Criteria;
-import cn.lfy.base.model.PageInfo;
+import cn.lfy.base.model.User;
+import cn.lfy.common.page.Page;
 
 public interface UserService {
     /**
@@ -20,12 +18,7 @@ public interface UserService {
     /**
      * 根据条件查询记录集
      */
-    List<User> findListByCriteria(Criteria criteria);
-    
-    /**
-     * 根据条件查询记录集
-     */
-    PageInfo<User> findListByCriteria(Criteria criteria, int pageNo, int pageSize);
+    Page<User> findListByCriteria(Criteria criteria, int pageNum, int pageSize);
 
     /**
      * 根据主键查询记录

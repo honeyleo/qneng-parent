@@ -151,7 +151,7 @@ var scheduler = {
                     $('#myModal').modal('hide');
                 }
             });
-            scheduler.fireNowSure(jobId);
+            //scheduler.fireNowSure(jobId);
         }).delegate('.dialog-update','click',function(){
             $('.modal-dialog').css({'width':"620"});
             $('.modal-body').html($("#updateCRON").tmpl());

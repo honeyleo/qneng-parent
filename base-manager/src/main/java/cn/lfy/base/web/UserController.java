@@ -22,19 +22,19 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import cn.lfy.base.model.User;
 import cn.lfy.base.model.Criteria;
 import cn.lfy.base.model.LoginUser;
-import cn.lfy.base.model.PageInfo;
 import cn.lfy.base.model.Role;
 import cn.lfy.base.model.TreeNode;
+import cn.lfy.base.model.User;
 import cn.lfy.base.model.type.StateType;
-import cn.lfy.base.service.UserService;
 import cn.lfy.base.service.RoleService;
 import cn.lfy.base.service.UserRoleService;
+import cn.lfy.base.service.UserService;
 import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
 import cn.lfy.common.model.Message;
+import cn.lfy.common.page.Page;
 import cn.lfy.common.utils.MessageDigestUtil;
 import cn.lfy.common.utils.RequestUtil;
 import cn.lfy.common.utils.UUIDUtil;
@@ -66,15 +66,16 @@ public class UserController {
     
     @RequestMapping(value = "/api/list")
     @ResponseBody
-    public Object api_list(HttpServletRequest request) throws ApplicationException {
+    public Object api_list(Integer state, HttpServletRequest request) throws ApplicationException {
         Integer pageNum = RequestUtil.getInteger(request, "currentPage");
         Integer pageSize = RequestUtil.getInteger(request, "pageSize");
         Criteria criteria = new Criteria();
-        PageInfo<User> result = userService.findListByCriteria(criteria, pageNum, pageSize);
+        criteria.put("state", state);
+        Page<User> result = userService.findListByCriteria(criteria, pageNum, pageSize);
         JSONObject json = new JSONObject();
         json.put("code", 200);
-        json.put("total", result.getTotal());
-        json.put("value", result.getData());
+        json.put("total", result.getTotalResult());
+        json.put("value", result.getList());
         return json;
     }
     

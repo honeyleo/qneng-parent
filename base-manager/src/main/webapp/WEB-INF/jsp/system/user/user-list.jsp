@@ -52,19 +52,19 @@
                 <div class="col-width">
                     <span class="label_style">用户名：</span>
                     <div class="form-group drop_com">
-                        <input type="text" id="gameName" class="form-control searchName" placeholder="填写用户名">
+                        <input type="text" id="usernameSearch" class="form-control searchName" placeholder="填写用户名">
                     </div>
                 </div>
-                <div class="col-width" style="display:none">
+                <div class="col-width">
                     <span class="label_style">用户昵称：</span>
                     <div class="form-group drop_com">
-                        <input type="text" id="appId" class="form-control searchName" value="" readonly />
+                        <input type="text" id="nicknameSearch" class="form-control searchName" value="" />
                     </div>
                 </div>
                 <div class="col-width">
                     <span class="label_style">手机号：</span>
                     <div class="form-group drop_com">
-                        <input type="text" id="strategyName" class="form-control searchName" placeholder="手机号">
+                        <input type="text" id="phoneSearch" class="form-control searchName" placeholder="手机号">
                     </div>
                 </div>
                 <div class="col-width">

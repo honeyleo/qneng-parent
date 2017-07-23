@@ -9,10 +9,6 @@ import cn.lfy.base.model.Criteria;
 import cn.lfy.base.model.Role;
 
 public interface RoleDAO {
-    /**
-     * 根据条件查询记录总数
-     */
-    int countByExample(Criteria example);
 
     /**
      * 根据主键删除记录
@@ -27,7 +23,7 @@ public interface RoleDAO {
     /**
      * 根据条件查询记录集
      */
-    List<Role> selectByExample(Criteria example);
+    List<Role> selectByExample(@Param("condition")Criteria example);
 
     /**
      * 根据主键查询记录
@@ -44,5 +40,5 @@ public interface RoleDAO {
      * @param list
      */
     List<Role> getRoles(@Param("list")Collection<Long> list);
-
+    
 }

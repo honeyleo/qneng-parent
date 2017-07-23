@@ -2,16 +2,15 @@ package cn.lfy.base.model;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * 公用条件查询类
  */
-public class Criteria {
+public class Criteria extends HashMap<String, Object> {
     /**
-     * 存放条件查询值
-     */
-    private Map<String, Object> condition;
+	 * 
+	 */
+	private static final long serialVersionUID = 3484255941736400409L;
 
     /**
      * 是否相异
@@ -21,14 +20,13 @@ public class Criteria {
     /**
      * 排序字段
      */
-    protected LinkedHashMap<String, Boolean> orderMap;
+    protected LinkedHashMap<String, Boolean> orderMap = new LinkedHashMap<String, Boolean>();
 
     private Integer offset;
 
     private Integer rows;
 
     protected Criteria(Criteria example) {
-        this.condition = example.condition;
         this.distinct = example.distinct;
         this.offset = example.offset;
         this.rows = example.rows;
@@ -36,12 +34,11 @@ public class Criteria {
     }
 
     public Criteria() {
-        condition = new HashMap<String, Object>();
         orderMap = new LinkedHashMap<String, Boolean>();
     }
 
     public void clear() {
-        condition.clear();
+        clear();
         distinct = false;
         this.offset = null;
         this.rows = null;
@@ -54,7 +51,7 @@ public class Criteria {
 	 *            查询的值
      */
     public Criteria put(String condition, Object value) {
-        this.condition.put(condition, value);
+        super.put(condition, value);
         return (Criteria) this;
     }
 
@@ -71,14 +68,6 @@ public class Criteria {
         this.distinct = distinct;
     }
 
-    public void setCondition(Map<String, Object> condition) {
-        this.condition = condition;
-    }
-
-    public Map<String, Object> getCondition() {
-        return condition;
-    }
-    
     public LinkedHashMap<String, Boolean> getOrderMap() {
 		return orderMap;
 	}

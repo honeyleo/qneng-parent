@@ -22,7 +22,7 @@ var users = {
         if (result.code != 200) {
             return;
         }
-        var value = result.value;
+        var value = result.data;
         for (var i = 0; i < value.length; i++) {
             var createTime = new Date(value[i].createTime);
             value[i].createTime = createTime.format("yyyy-MM-dd hh:mm:ss");

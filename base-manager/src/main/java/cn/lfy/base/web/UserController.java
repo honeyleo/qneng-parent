@@ -7,17 +7,16 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -34,9 +33,9 @@ import cn.lfy.base.service.UserService;
 import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
 import cn.lfy.common.model.Message;
+import cn.lfy.common.model.ResultDTO;
 import cn.lfy.common.page.Page;
 import cn.lfy.common.utils.MessageDigestUtil;
-import cn.lfy.common.utils.RequestUtil;
 import cn.lfy.common.utils.UUIDUtil;
 
 @Controller
@@ -64,19 +63,19 @@ public class UserController {
         return new ModelAndView("/system/user/user-list");
     }
     
-    @RequestMapping(value = "/api/list")
+    @RequestMapping(value = "/api/list", method = RequestMethod.GET)
     @ResponseBody
-    public Object api_list(Integer state, HttpServletRequest request) throws ApplicationException {
-        Integer pageNum = RequestUtil.getInteger(request, "currentPage");
-        Integer pageSize = RequestUtil.getInteger(request, "pageSize");
-        Criteria criteria = new Criteria();
+    public ResultDTO<List<User>> api_list(@RequestParam(name = "state", required = false)Integer state,
+    		@RequestParam(name = "currentPage", required = false, defaultValue = "0")Integer currentPage, 
+    		@RequestParam(name = "pageSize", required = false, defaultValue = "0")Integer pageSize) throws ApplicationException {
+        
+    	ResultDTO<List<User>> result = new ResultDTO<>();
+    	Criteria criteria = new Criteria();
         criteria.put("state", state);
-        Page<User> result = userService.findListByCriteria(criteria, pageNum, pageSize);
-        JSONObject json = new JSONObject();
-        json.put("code", 200);
-        json.put("total", result.getTotalResult());
-        json.put("value", result.getList());
-        return json;
+        Page<User> page = userService.findListByCriteria(criteria, currentPage, pageSize);
+        result.setData(page.getList());
+        result.setTotal(page.getTotalResult());
+        return result;
     }
     
     /**
@@ -86,10 +85,9 @@ public class UserController {
      * @return ModelAndView
      * @throws ApplicationException
      */
-    @RequestMapping("/del")
+    @RequestMapping(value = "/del", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public Object del(HttpServletRequest request) throws ApplicationException {
-        Long id = RequestUtil.getLong(request, "id");
+    public Object del(@RequestParam(name = "id", required = false)Long id) throws ApplicationException {
         User record = new User();
         record.setId(id);
         record.setState(StateType.DELETED.getId());
@@ -105,16 +103,12 @@ public class UserController {
      * @return
      * @throws ApplicationException
      */
-    @RequestMapping("/detail")
+    @RequestMapping(value = "/detail", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public Object detail(HttpServletRequest request) throws ApplicationException {
+    public Object detail(@RequestParam(name = "state", required = true) Long id) throws ApplicationException {
     	Message.Builder builder = Message.newBuilder();
-        Long id = RequestUtil.getLong(request, "id");
         User user = userService.findById(id);
         builder.data(user);
-        List<Role> roles = roleService.getByCriteria(new Criteria());
-        request.setAttribute("roles", roles);
-        request.setAttribute("uri", "update");
         return builder.build();
     }
 
@@ -124,16 +118,16 @@ public class UserController {
      * @param request
      * @throws ApplicationException
      */
-    @RequestMapping("/add")
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public Object add(User user, HttpServletRequest request) throws ApplicationException {
+    public Object add(User user) throws ApplicationException {
     	Message.Builder builder = Message.newBuilder();
-        String username = RequestUtil.getString(request, "username");
+        String username = user.getUsername();
         User extuser = userService.findByUsername(username);
         if (extuser != null) {
             throw new ApplicationException(ErrorCode.EXIST, "用户名存在", new String[]{"用户名"});
         }
-        String password = RequestUtil.getString(request, "passward");
+        String password = user.getPassword();
         try {
             password = MessageDigestUtil.getSHA256(password).toUpperCase();
         } catch (Exception e) {
@@ -153,10 +147,9 @@ public class UserController {
      * @return ModelAndView
      * @throws ApplicationException
      */
-    @RequestMapping("/update")
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
-    public Object update(User user, HttpServletRequest request,
-            HttpServletResponse response) throws ApplicationException {
+    public Object update(User user) throws ApplicationException {
     	Message.Builder builder = Message.newBuilder();
         if (StringUtils.isNotBlank(user.getPassword())) {// 判断password是否为空
             try {
@@ -175,11 +168,10 @@ public class UserController {
         return builder.build();
     }
     
-    @RequestMapping("/role/tree")
+    @RequestMapping(value = "/role/tree", method = RequestMethod.GET)
     @ResponseBody
-    public Object api_tree(HttpServletRequest request, LoginUser account) {
+    public Object api_tree(@RequestParam(name = "id", required = true) Long userId, LoginUser account) {
     	List<Role> roleTree = new ArrayList<Role>();
-    	Long userId = RequestUtil.getLong(request, "id");
     	List<Role> list = userRoleService.getRoleListByUserId(userId);
     	Set<Long> roleSet = Sets.newHashSet();
     	for(Role role : list) {
@@ -220,12 +212,12 @@ public class UserController {
     	return builder.build();
     }
     
-	@RequestMapping("/role/save")
+	@RequestMapping(value = "/role/save", method = {RequestMethod.POST, RequestMethod.GET})
 	@ResponseBody
-	public Object save(HttpServletRequest request, LoginUser currentUser) throws ApplicationException
+	public Object save(@RequestParam(name = "userId", required = true) Long userId, 
+			@RequestParam(name = "roleIds", required = true) String roleIdsString,
+			LoginUser currentUser) throws ApplicationException
 	{
-		Long userId = RequestUtil.getLong(request, "userId");
-		String roleIdsString = RequestUtil.getString(request, "roleIds");
 		List<Long> roleIds = Lists.newArrayList();
 		if(StringUtils.isNotBlank(roleIdsString)) {
 			Iterator<String> it = Splitter.on(",").split(roleIdsString).iterator();

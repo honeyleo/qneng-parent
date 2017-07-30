@@ -89,7 +89,7 @@ public class LoginController {
     
     @RequestMapping(value = "/manager/menu", method = RequestMethod.GET)
     @ResponseBody
-    public ResultDTO<Map<String, Object>> menu(HttpServletRequest request, LoginUser currentUser) throws ApplicationException {
+    public ResultDTO<Map<String, Object>> menu(LoginUser currentUser) throws ApplicationException {
     	ResultDTO<Map<String, Object>> resultDTO = new ResultDTO<>();
     	List<Menu> menus = roleMenuService.selectMenuListByRoleIds(Lists.newArrayList(currentUser.getRoleIds()));
         List<Menu> menuList = Lists.newArrayList();
@@ -119,8 +119,6 @@ public class LoginController {
         	}
         }
         currentUser.setUriSet(uriSet);
-        request.setAttribute("menuList", menuList);
-        request.setAttribute("realName", currentUser.getUser().getNickname());
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("menus", menuList);
         data.put("user", currentUser.getUser());

@@ -31,7 +31,7 @@ var menus = {
             }
         };
         $.post("/manager/menu/api/list", function(result) {
-    		if(result.ret == 0) {
+    		if(result.code == 200) {
     			var zNodes = result.data;
     			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
     		}
@@ -85,7 +85,7 @@ var menus = {
         	menus.editConfirmSubmit();
         });
         $.getJSON("/manager/menu/detail", {id: treeNode.id}, function(result){
-        	if (result.ret == 0) {
+        	if (result.code == 200) {
                 if (result.data.onMenu == 0) {
                 	$('#search_dropDown-status1').attr("value",'0').text("否");
                 } else {
@@ -111,7 +111,7 @@ var menus = {
                 onMenu:$("#search_dropDown-status1").attr("value")
             };
             $.post("/manager/menu/update", param, function(result){
-                if ( result.ret == 0 ) {
+                if ( result.code == 200 ) {
                     self.loadTree();
                     $(".btn-default").trigger("click");
                 } else {
@@ -127,7 +127,7 @@ var menus = {
     	$(".J_delete_sure").unbind('click');
         $(".J_delete_sure").click(function () {
             $.get("/manager/menu/del",{"id":treeNode.id},function(result){
-                if (result.ret == 0) {
+                if (result.code == 200) {
                     $('#myModal').modal('hide');
                     menus.loadTree();
                 } else {
@@ -155,7 +155,7 @@ var menus = {
                 onMenu:$("#search_dropDown-status1").attr("value")
             };
             $.post("/manager/menu/add", param, function(result){
-                if ( result.ret == 0 ) {
+                if ( result.code == 200 ) {
                     self.loadTree();
                     $(".btn-default").trigger("click");
                 } else {

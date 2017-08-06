@@ -29,13 +29,8 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 		 * 放置忽略拦截请求的action名称
 		 */
 		ignoreUrl.add("/manager/login"); /* 登录验证 */
-		ignoreUrl.add("/manager/dologin"); /* 登录验证 */
 		ignoreUrl.add("/manager/code"); /* 登录验证 */
-		ignoreUrl.add("/manager/index"); /* 登录验证 */
 		ignoreUrl.add("/manager/menu"); /* 登录验证 */
-		ignoreUrl.add("/manager/login_default.do");
-		ignoreUrl.add("/manager/admin/personal");
-		ignoreUrl.add("/manager/admin/update2");
 		ignoreUrl.add("/manager/logout");
 
 	}

@@ -34,7 +34,7 @@ var roles = {
             }
         };
         $.post("/manager/role/api/tree", function(result) {
-    		if(result.ret == 0) {
+    		if(result.code == 200) {
     			var zNodes = result.data;
     			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
     		}
@@ -100,7 +100,7 @@ var roles = {
 				}
             }
             $.get("/manager/role/privileges/save",{roleId:id, menuIds : menuIds},function(result){
-                if (result.ret == 0) {
+                if (result.code == 200) {
                     $('#privilege').modal('hide');
                     roles.query();
                 } else {
@@ -110,7 +110,7 @@ var roles = {
             });
         });
         $.getJSON("/manager/role/privileges", {id: id}, function(result){
-        	if (result.ret == 0) {
+        	if (result.code == 200) {
         		var setting = {
     	            view: {
     	                selectedMulti: false
@@ -148,7 +148,7 @@ var roles = {
         	roles.editConfirmSubmit();
         });
         $.getJSON("/manager/role/detail", {id: treeNode.id}, function(result){
-        	if (result.ret == 0) {
+        	if (result.code == 200) {
                 if (result.data.onMenu == 0) {
                 	$('#search_dropDown-status1').attr("value",'0').text("否");
                 } else {
@@ -173,7 +173,7 @@ var roles = {
                 onMenu:$("#search_dropDown-status1").attr("value")
             };
             $.post("/manager/role/update", param, function(result){
-                if ( result.ret == 0 ) {
+                if ( result.code == 200 ) {
                     self.loadTree();
                     $(".btn-default").trigger("click");
                 } else {
@@ -188,7 +188,7 @@ var roles = {
     	$(".J_delete_sure").unbind('click');
         $(".J_delete_sure").click(function () {
             $.get("/manager/role/del",{"id":treeNode.id},function(result){
-                if (result.ret == 0) {
+                if (result.code == 200) {
                     $('#myModal').modal('hide');
                     roles.loadTree();
                 } else {
@@ -214,7 +214,7 @@ var roles = {
                 desc: $("#desc").val(),
             };
             $.post("/manager/role/add", param, function(result){
-                if ( result.ret == 0 ) {
+                if ( result.code == 200 ) {
                     self.loadTree();
                     $(".btn-default").trigger("click");
                 } else {

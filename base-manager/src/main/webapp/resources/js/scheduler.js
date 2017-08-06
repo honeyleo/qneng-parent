@@ -91,7 +91,7 @@ var scheduler = {
                 jobId = $(this).attr("data-id"), jobName = $(this).attr("data-jobName");
             if(status == 'NONE'){//NONE的任务现在只可以操作:部署,状态改为NORMAL并开始按cron运行
                 $.get('/manager/scheduleJob/schedule',{"jobId": jobId,"jobName": jobName, "jobStatus": 'NORMAL', 'idc': $('#idc').attr('value')},function(result){
-                    if(result.ret == 0){
+                    if(result.code == 200){
                         $(self).text("任务暂停").attr('data-value','NORMAL');
                         var action = "/manager/scheduleJob/api/list";
                         var argument = [];
@@ -103,7 +103,7 @@ var scheduler = {
                 });
             }else if(status == 'NORMAL'){
                 $.get('/manager/scheduleJob/pause',{"jobId": jobId, idc: $('#idc').attr('value')},function(result){
-                    if(result.ret == 0){
+                    if(result.code == 200){
                         $(self).text("任务恢复").attr('data-value','PAUSED');
                         var action = "/console/scheduler/api/list";
                         var argument = [
@@ -118,7 +118,7 @@ var scheduler = {
 
             }else if(status == 'PAUSED'){
                 $.get('/manager/scheduleJob/resume',{"jobId": jobId, idc: $('#idc').attr('value')},function(result){
-                    if(result.ret == 0){
+                    if(result.code == 200){
                         $(self).text("任务暂停").attr('data-value','NORMAL');
                         var action = "/manager/scheduleJob/api/list";
                         var argument = [
@@ -136,7 +136,7 @@ var scheduler = {
         }).delegate('.dialog-trigger','click',function(){//jianbin
         	var jobId = $(this).attr("data-value");
         	$.get("/manager/scheduleJob/runOne", {"jobId": jobId, 'idc': $('#idc').attr('value')}, function (result) {
-                if (result.ret == 0) {
+                if (result.code == 200) {
                     asyncbox.alert("运行成功","提示");
                     $('#myModal').modal('hide');
                     var action = "/manager/scheduleJob/api/list";
@@ -175,7 +175,7 @@ var scheduler = {
         var arr = [], opera, n,statusText,concurrentText,statusOpera,leaf;
         n = 0;
         statusOpera = "";
-        var value = result.data;
+        var value = result.data.list;
         for (var i = 0; i < value.length; i++) {
             scheduler.num = (i+1)+(currentPage*10);
             n=i+1;
@@ -224,8 +224,8 @@ var scheduler = {
         }
         self.num++;
         result.draw = self.num;
-        result.recordsTotal = result.total;;
-        result.recordsFiltered = result.total;;
+        result.recordsTotal = result.data.totalResult;
+        result.recordsFiltered = result.data.totalResult;
         result.data = arr;
     },
     addSure: function () {
@@ -241,7 +241,7 @@ var scheduler = {
             idc = $("#idc1").attr('value');
             boot = $('#boot').attr('value');
             $.get("/manager/scheduleJob/add", {"jobName": jobName, "jobGroup": jobGroup, "jobStatus": jobStatus, "cronExpression": cronExpression, "concurrent": concurrent, "desc": desc, "idc": idc, "boot": boot}, function (result) {
-                if (result.ret == 0) {
+                if (result.code == 200) {
                     $('#myModal').modal('hide');
                     var action = "/manager/scheduleJob/api/list";
                     var argument = [
@@ -264,7 +264,7 @@ var scheduler = {
                 idc = $('#idc1').attr('value'),
                 boot = $('input[name="boot"]').attr('value');
             $.get("/manager/scheduleJob/update", {"jobId":jobId,"desc": desc,"jobName":jobName,"jobGroup":jobGroup,"concurrent":concurrent, "idc":idc, "boot": boot}, function (result) {
-                if (result.ret == 0) {
+                if (result.code == 200) {
                     $('#myModal').modal('hide');
                     var action = "/manager/scheduleJob/api/list";
                     var argument = [
@@ -282,7 +282,7 @@ var scheduler = {
         $(".j_delete_sure").unbind('click');
         $(".j_delete_sure").click(function () {
             $.get("/manager/scheduleJob/del", {"jobId": jobId, 'idc': $('#idc').attr('value')}, function (result) {
-                if (result.ret == 0) {
+                if (result.code == 200) {
                     $('#myModal').modal('hide');
                     var action = "/manager/scheduleJob/api/list";
                     var argument = [
@@ -302,7 +302,7 @@ var scheduler = {
         $(".j_update_sure").click(function () {
             var cronExpression =$("input[name =cronExpression]").val();
             $.get("/manager/scheduleJob/updateCron", {"jobId":jobId,"cronExpression":cronExpression, 'idc': $('#idc').attr('value')}, function (result) {
-                if (result.ret == 0) {
+                if (result.code == 200) {
                     $('#myModal').modal('hide');
                     var action = "/manager/scheduleJob/api/list";
                     var argument = [

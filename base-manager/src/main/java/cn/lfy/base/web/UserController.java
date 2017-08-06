@@ -6,17 +6,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
@@ -51,17 +47,6 @@ public class UserController extends BaseController {
 
 	@Autowired
 	private UserRoleService userRoleService;
-
-	/**
-	 * 用户详情列表
-	 * 
-	 * @throws ApplicationException
-	 */
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list(HttpServletRequest request)
-			throws ApplicationException {
-		return new ModelAndView("/system/user/user-list");
-	}
 
 	@RequestMapping(value = "/api/list")
 	@ResponseBody

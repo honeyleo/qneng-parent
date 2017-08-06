@@ -8,17 +8,19 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.wordnik.swagger.annotations.ApiOperation;
 
 import cn.lfy.base.Constants;
 import cn.lfy.base.model.LoginUser;
@@ -31,17 +33,12 @@ import cn.lfy.base.service.UserRoleService;
 import cn.lfy.base.service.UserService;
 import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
-import cn.lfy.common.model.Message;
 import cn.lfy.common.model.ResultDTO;
 import cn.lfy.common.utils.MessageDigestUtil;
 import cn.lfy.common.utils.Strings;
 
 @Controller
-public class LoginController {
-
-    private static final String ADMIN_LOGIN = "/system/login";
-
-    private static final String INDEX = "/system/common/index";
+public class LoginController extends BaseController {
 
     @Autowired
     private UserService userService;
@@ -52,43 +49,9 @@ public class LoginController {
     @Autowired
 	private RoleMenuService roleMenuService;
     
-    @RequestMapping("/manager/index")
-    public String index(HttpServletRequest request, LoginUser currentUser) throws ApplicationException {
-    	List<Menu> menus = roleMenuService.selectMenuListByRoleIds(Lists.newArrayList(currentUser.getRoleIds()));
-        List<Menu> menuList = Lists.newArrayList();
-        Set<String> uriSet = Sets.newTreeSet();
-        for(Menu menu : menus) {
-        	uriSet.add(menu.getUrl());
-        	if(menu.getParentId() == -1) {
-        		continue;
-        	}
-        	else if(menu.getParentId() == 1) {
-        		menuList.add(menu);
-        	} else if(menu.getOnMenu() == 1) {
-        		Menu parent = null;
-        		for(Menu m : menuList) {
-        			if(m.getId() == menu.getParentId()) {
-        				parent = m;
-        				break;
-        			}
-        		}
-        		if(parent != null && parent.getChildList() == null) {
-        			 List<Menu> childList = new ArrayList<Menu>();
-        			 parent.setChildList(childList);
-        		}
-        		if(parent != null) {
-        			parent.getChildList().add(menu);
-        		}
-        	}
-        }
-        currentUser.setUriSet(uriSet);
-        request.setAttribute("menuList", menuList);
-        request.setAttribute("realName", currentUser.getUser().getNickname());
-        return INDEX;
-    }
-    
     @RequestMapping(value = "/manager/menu", method = RequestMethod.GET)
     @ResponseBody
+    @ApiOperation(value = "用户菜单", httpMethod = "GET", notes = "用户菜单")
     public ResultDTO<Map<String, Object>> menu(LoginUser currentUser) throws ApplicationException {
     	ResultDTO<Map<String, Object>> resultDTO = new ResultDTO<>();
     	List<Menu> menus = roleMenuService.selectMenuListByRoleIds(Lists.newArrayList(currentUser.getRoleIds()));
@@ -126,36 +89,10 @@ public class LoginController {
         return resultDTO;
     }
     
-    @RequestMapping("/manager/home")
-    public String home() throws ApplicationException {
-        return "/system/common/home";
-    }
-    
-    @RequestMapping("/")
-    public String manager() throws ApplicationException {
-        return ADMIN_LOGIN;
-    }
-    
-    @RequestMapping("/login")
-    public String login() throws ApplicationException {
-        return ADMIN_LOGIN;
-    }
-
-    @RequestMapping("/dologin")
+    @RequestMapping("/manager/login")
     @ResponseBody
-    public Object login(HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
-        try {
-            doLogin(request, response);
-        } catch (ApplicationException ex) {
-            throw ex;
-        }
-        return Message.newBuilder().build();
-    }
-
-    private void doLogin(HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        
+    @ApiOperation(value = "登录接口", httpMethod = "GET", notes = "登录接口", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ResultDTO<Void> doLogin(@RequestParam("username")String username, @RequestParam("password")String password) throws ApplicationException {
         if (null == username || username.trim().length() == 0
                 || null == password || password.length() == 0) {
             throw new ApplicationException(ErrorCode.PARAM_ILLEGAL, "", new String[]{"用户名或密码"});
@@ -176,7 +113,10 @@ public class LoginController {
         	throw ApplicationException.newInstance(ErrorCode.ERROR, "用户名或密码错误");
         }
         account.setId(user.getId());
+        HttpServletRequest request = getRequest();
         request.getSession().setAttribute(Constants.SESSION_LOGIN_USER, account);
+        ResultDTO<Void> resultDTO = new ResultDTO<>();
+        return resultDTO;
     }
     
     private LoginUser getLoginUser(String username){
@@ -195,11 +135,16 @@ public class LoginController {
     }
 
     @RequestMapping("/manager/logout")
-    public String logout(HttpServletRequest request) {
+    @ResponseBody
+    @ApiOperation(value = "登出接口", httpMethod = "GET", notes = "登出接口")
+    public ResultDTO<Void> logout() {
+    	HttpServletRequest request = getRequest();
+    	ResultDTO<Void> resultDTO = new ResultDTO<>();
         HttpSession session = request.getSession();
         session.removeAttribute(Constants.SESSION_LOGIN_USER);
         session.invalidate();
-        return "redirect:/login";
+        resultDTO.setRedirect("/console/login.html");
+        return resultDTO;
     }
     
 

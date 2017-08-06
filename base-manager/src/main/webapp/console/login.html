@@ -207,20 +207,20 @@
 			password = sha256(password);
 			$.ajax({
 				type : "POST",
-				url : '/dologin',
+				url : '/manager/login',
 				data : {
 					username : username,
 					password : password
 				},
 				dataType : 'json',
 				cache : false,
-				success : function(data) {
-					if (0 == data.ret) {
+				success : function(result) {
+					if (200 == result.code) {
 						window.location.href = "/console/index.html";
 					} else {
 						$("#password").tips({
 							side : 2,
-							msg : data.msg,
+							msg : result.message,
 							bg : '#AE81FF',
 							time : 3
 						});

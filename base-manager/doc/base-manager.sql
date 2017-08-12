@@ -10,10 +10,31 @@ Target Server Type    : MYSQL
 Target Server Version : 50618
 File Encoding         : 65001
 
-Date: 2017-01-10 22:47:35
+Date: 2017-08-12 10:43:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for dict
+-- ----------------------------
+DROP TABLE IF EXISTS `dict`;
+CREATE TABLE `dict` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `type` varchar(20) NOT NULL DEFAULT '' COMMENT '字典类型',
+  `name` varchar(100) NOT NULL DEFAULT '' COMMENT '名称',
+  `parentId` int(11) NOT NULL DEFAULT '0' COMMENT '父节点ID',
+  `parentIdPath` varchar(200) NOT NULL DEFAULT '' COMMENT '父节点路径',
+  `remark` varchar(100) NOT NULL DEFAULT '' COMMENT '备注',
+  `seq` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '顺序号',
+  `updateTime` bigint(20) NOT NULL COMMENT '最后更新时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_type_pid` (`type`,`parentId`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='字典表';
+
+-- ----------------------------
+-- Records of dict
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for menu
@@ -33,16 +54,16 @@ CREATE TABLE `menu` (
   `onMenu` tinyint(4) DEFAULT '1' COMMENT '是否显示在菜单',
   `icon` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8 COMMENT='权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8 COMMENT='权限表';
 
 -- ----------------------------
 -- Records of menu
 -- ----------------------------
 INSERT INTO `menu` VALUES ('1', '清能管理平台', '1', '-1', '$', '', '0', '清能管理平台', '1', '2013-01-21 14:19:22', '1', null);
 INSERT INTO `menu` VALUES ('2', '系统管理', '1', '1', '$1$', '', '1', '用户和菜单的设置', '1', '2013-01-23 10:12:31', '1', 'icon-cogs');
-INSERT INTO `menu` VALUES ('3', '用户管理', '1', '2', '$1$2$', '/manager/user/list', '1', '系统用户管理', '1', '2013-01-23 10:15:27', '1', null);
-INSERT INTO `menu` VALUES ('4', '菜单管理', '1', '2', '$1$2$', '/manager/menu/list', '2', '功能菜单管理', '1', '2013-01-23 10:17:34', '1', null);
-INSERT INTO `menu` VALUES ('5', '角色管理', '1', '2', '$1$2$', '/manager/role/list', '3', '用户角色管理', '1', '2013-01-24 14:28:03', '1', null);
+INSERT INTO `menu` VALUES ('3', '用户管理', '1', '2', '$1$2$', '/console/user/list.html', '1', '系统用户管理', '1', '2013-01-23 10:15:27', '1', null);
+INSERT INTO `menu` VALUES ('4', '菜单管理', '1', '2', '$1$2$', '/console/menu/list.html', '2', '功能菜单管理', '1', '2013-01-23 10:17:34', '1', null);
+INSERT INTO `menu` VALUES ('5', '角色管理', '1', '2', '$1$2$', '/console/role/list.html', '3', '用户角色管理', '1', '2013-01-24 14:28:03', '1', null);
 INSERT INTO `menu` VALUES ('9', '分配权限查看', '1', '5', '$1$2$5$', '/manager/role/privileges', '1', '', '1', '2015-10-16 00:14:17', '0', null);
 INSERT INTO `menu` VALUES ('10', '分配权限提交', '1', '5', '$1$2$5$', '/manager/role/privileges/save', '2', null, '1', '2015-10-16 00:21:56', '0', null);
 INSERT INTO `menu` VALUES ('11', '菜单详情', '1', '4', '$1$2$4$', '/manager/menu/detail', '1', null, '1', '2015-10-16 00:28:52', '0', null);
@@ -65,7 +86,17 @@ INSERT INTO `menu` VALUES ('68', '分配角色提交', '1', '3', '$1$2$3$', '/ma
 INSERT INTO `menu` VALUES ('69', '后台主页', '1', '-1', '$', '/manager/home', '1', '', '1', '2017-01-01 21:44:07', '0', null);
 INSERT INTO `menu` VALUES ('76', '个人设置', '1', '69', '$69$', '/manager/user/personal', '11', '', '1', '2017-01-06 22:34:33', '0', null);
 INSERT INTO `menu` VALUES ('77', '业务管理', '1', '1', '$1$', '', '2', '', '1', '2017-01-08 21:33:40', '1', null);
-INSERT INTO `menu` VALUES ('78', '业务管理1', '1', '77', '$1$77$', '/manager/role/list', '1', '', '1', '2017-01-08 21:34:17', '1', null);
+INSERT INTO `menu` VALUES ('78', '业务管理1', '1', '77', '$1$77$', '/console/role/list.html', '1', '', '1', '2017-01-08 21:34:17', '1', null);
+INSERT INTO `menu` VALUES ('79', '定时任务', '1', '2', '$1$2$', '/console/scheduleJob/list.html', '4', '', '1', '2017-04-29 22:44:23', '1', null);
+INSERT INTO `menu` VALUES ('80', '任务列表', '1', '79', '$1$2$79$', '/manager/scheduleJob/api/list', '1', '', '1', '2017-04-29 22:49:22', '0', null);
+INSERT INTO `menu` VALUES ('81', '新增任务', '1', '79', '$1$2$79$', '/manager/scheduleJob/add', '2', '', '1', '2017-04-29 22:52:02', '0', null);
+INSERT INTO `menu` VALUES ('82', '部署', '1', '79', '$1$2$79$', '/manager/scheduleJob/schedule', '3', '', '1', '2017-04-29 22:55:45', '0', null);
+INSERT INTO `menu` VALUES ('83', '修改', '1', '79', '$1$2$79$', '/manager/scheduleJob/update', '4', '', '1', '2017-04-29 23:12:30', '0', null);
+INSERT INTO `menu` VALUES ('84', '运行一次', '1', '79', '$1$2$79$', '/manager/scheduleJob/runOne', '5', '', '1', '2017-04-29 23:13:45', '0', null);
+INSERT INTO `menu` VALUES ('85', '更新表达式', '1', '79', '$1$2$79$', '/manager/scheduleJob/updateCron', '6', '', '1', '2017-04-29 23:14:24', '0', null);
+INSERT INTO `menu` VALUES ('86', '删除', '1', '79', '$1$2$79$', '/manager/scheduleJob/del', '7', '', '1', '2017-04-29 23:14:43', '0', null);
+INSERT INTO `menu` VALUES ('87', '暂停', '1', '79', '$1$2$79$', '/manager/scheduleJob/pause', '8', '', '1', '2017-04-29 23:16:29', '0', null);
+INSERT INTO `menu` VALUES ('88', '恢复', '1', '79', '$1$2$79$', '/manager/scheduleJob/resume', '9', '', '1', '2017-04-29 23:17:12', '0', null);
 
 -- ----------------------------
 -- Table structure for role
@@ -143,6 +174,16 @@ INSERT INTO `role_menu` VALUES ('1', '75');
 INSERT INTO `role_menu` VALUES ('1', '76');
 INSERT INTO `role_menu` VALUES ('1', '77');
 INSERT INTO `role_menu` VALUES ('1', '78');
+INSERT INTO `role_menu` VALUES ('1', '79');
+INSERT INTO `role_menu` VALUES ('1', '80');
+INSERT INTO `role_menu` VALUES ('1', '81');
+INSERT INTO `role_menu` VALUES ('1', '82');
+INSERT INTO `role_menu` VALUES ('1', '83');
+INSERT INTO `role_menu` VALUES ('1', '84');
+INSERT INTO `role_menu` VALUES ('1', '85');
+INSERT INTO `role_menu` VALUES ('1', '86');
+INSERT INTO `role_menu` VALUES ('1', '87');
+INSERT INTO `role_menu` VALUES ('1', '88');
 INSERT INTO `role_menu` VALUES ('2', '1');
 INSERT INTO `role_menu` VALUES ('2', '2');
 INSERT INTO `role_menu` VALUES ('2', '3');
@@ -219,6 +260,30 @@ INSERT INTO `role_menu` VALUES ('11', '26');
 INSERT INTO `role_menu` VALUES ('11', '27');
 
 -- ----------------------------
+-- Table structure for t_schedule_job
+-- ----------------------------
+DROP TABLE IF EXISTS `t_schedule_job`;
+CREATE TABLE `t_schedule_job` (
+  `FJOBID` int(11) NOT NULL AUTO_INCREMENT COMMENT '任务id,主键',
+  `FJOB_NAME` varchar(256) NOT NULL DEFAULT '' COMMENT '任务名称',
+  `FJOB_GROUP` varchar(256) NOT NULL DEFAULT '' COMMENT '任务分组',
+  `FJOB_STATUS` varchar(32) NOT NULL DEFAULT 'NONE' COMMENT '任务状态 0:NONE, 1:NORMAL, 2:PAUSED, 3:COMPLETE, 4:ERROR, 5:BLOCKED',
+  `FCRON_EXPRESSION` varchar(32) NOT NULL DEFAULT '' COMMENT '任务运行时间表达式',
+  `FCONCURRENT` tinyint(4) NOT NULL DEFAULT '0' COMMENT '并行/串行标志位 1:并行,2:串行',
+  `FDESC` varchar(700) NOT NULL DEFAULT '' COMMENT '任务描述',
+  `FOPERATOR` int(11) NOT NULL DEFAULT '0' COMMENT '操作人员',
+  `FOP_TIME` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间unix_timestamp格式 1411538492',
+  `FIDC` varchar(16) DEFAULT '' COMMENT 'IDC_NS表示南沙机房:IDC_WX 无锡机房',
+  `FISBOOT` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`FJOBID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='定时任务表';
+
+-- ----------------------------
+-- Records of t_schedule_job
+-- ----------------------------
+INSERT INTO `t_schedule_job` VALUES ('1', 'testTask', 'testTask', 'NORMAL', '*/5 * * * * ?', '0', '测试', '0', '1493477697', 'IDC_DEFAULT', '0');
+
+-- ----------------------------
 -- Table structure for user
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
@@ -234,7 +299,7 @@ CREATE TABLE `user` (
   `createTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_username` (`username`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 -- ----------------------------
 -- Records of user
@@ -247,6 +312,7 @@ INSERT INTO `user` VALUES ('6', 'ewang', '812cd692cb0749c3bfaa3985400ff87ec9401a
 INSERT INTO `user` VALUES ('7', 'ewang2', 'f81b3385baa4a7a776dc33324f2d61df9fea3f368e6f34e13ad6eedd7ee00a9b', '1bf5a1', 'Eric', '', '13810734019', '1', '2015-12-03 03:18:16');
 INSERT INTO `user` VALUES ('9', 'qnyk2', '2e9f3cacb346e911feba8bf0fbf3d7ed7faa72082cacb175da99d67a1c02de7a', 'c88f1c', '电站管理员2', '', '12345678909', '1', '2015-12-06 21:58:55');
 INSERT INTO `user` VALUES ('10', 'qnyk66', 'fcdf6a46d0095d4237daed3a5573d7174e314d1c7f32674a18d110cdf98b8497', '422528', '账号管理员', '', '12345678909', '1', '2015-12-07 21:27:52');
+INSERT INTO `user` VALUES ('11', 'admin2', 'BCB15F821479B4D5772BD0CA866C00AD5F926E3580720659CC80D39C9D09802A', null, 'admin2', '', '1111111111', '-1', '2017-07-30 11:27:00');
 
 -- ----------------------------
 -- Table structure for user_role
@@ -258,7 +324,7 @@ CREATE TABLE `user_role` (
   `roleId` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '角色ID',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_user_role` (`userId`,`roleId`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COMMENT='用户角色表';
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COMMENT='用户角色表';
 
 -- ----------------------------
 -- Records of user_role
@@ -268,17 +334,5 @@ INSERT INTO `user_role` VALUES ('25', '2', '2');
 INSERT INTO `user_role` VALUES ('33', '2', '11');
 INSERT INTO `user_role` VALUES ('36', '3', '4');
 INSERT INTO `user_role` VALUES ('35', '3', '9');
-
-DROP TABLE IF EXISTS `dict`;
-CREATE TABLE `dict` (
-   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-   `type` varchar(20) NOT NULL DEFAULT '' COMMENT '字典类型',
-   `name` varchar(100) NOT NULL DEFAULT '' COMMENT '名称',
-   `parentId` int(11) NOT NULL DEFAULT '0' COMMENT '父节点ID',
-   `parentIdPath` varchar(200) NOT NULL DEFAULT '' COMMENT '父节点路径',
-   `remark` varchar(100) NOT NULL DEFAULT '' COMMENT '备注',
-   `seq` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '顺序号',
-   `updateTime` bigint(20) NOT NULL COMMENT '最后更新时间',
-   PRIMARY KEY (`id`),
-   KEY `idx_type_pid` (`type`,`parentId`) USING BTREE
- ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='字典表'
+INSERT INTO `user_role` VALUES ('37', '11', '9');
+INSERT INTO `user_role` VALUES ('38', '11', '11');

@@ -219,5 +219,6 @@
   <module>qneng-client</module>
   <module>wx-dev</module>
   <module>base-manager</module>
+  <module>scaffold-demo</module>
   </modules>
 </project>

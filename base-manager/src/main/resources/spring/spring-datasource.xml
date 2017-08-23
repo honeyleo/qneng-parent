@@ -12,7 +12,9 @@
        http://www.springframework.org/schema/aop     
        http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 
-	<context:component-scan base-package="cn.lfy.base,cn.lfy.qneng" />
+	<context:component-scan base-package="cn.lfy.base,cn.lfy.qneng" >
+	   <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
 	<!-- 使用默认的扫描方式 -->
 	<context:property-placeholder location="classpath:conf/jdbc.properties" ignore-unresolvable="true" />
 

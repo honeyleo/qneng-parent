@@ -6,7 +6,16 @@
            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd  
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd  
             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">  
-	  
+	
+	<bean id="yardConfig" class="com.meizu.yard.spring.YardPropertiesHolder">
+        <property name="locations">
+            <list>
+                <value>http://localhost:8081/conf/game-center/order/V1.4</value>
+            </list>
+        </property>
+        <property name="fileEncoding" value="utf-8" />
+    </bean>  
 	<import resource="spring/spring-datasource.xml"/>
+	<import resource="spring/spring-servlet.xml"/>
 	<import resource="spring/spring-service.xml"/>
 </beans> 

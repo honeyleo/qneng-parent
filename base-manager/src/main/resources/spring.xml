@@ -11,6 +11,7 @@
         <property name="locations">
             <list>
                 <value>http://localhost:8081/conf/game-center/order/V1.4</value>
+                <value>http://localhost:8081/conf/game-center/order2/V1.4</value>
             </list>
         </property>
         <property name="fileEncoding" value="utf-8" />

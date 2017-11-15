@@ -220,5 +220,6 @@
   <module>wx-dev</module>
   <module>base-manager</module>
   <module>scaffold-demo</module>
+  <module>demo</module>
   </modules>
 </project>

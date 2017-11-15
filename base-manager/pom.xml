@@ -10,11 +10,11 @@
   <name>base-manager</name>
   <build><finalName>base-manager</finalName></build>
   <dependencies>
-    <dependency>
+    <!-- <dependency>
         <groupId>cn.lfy</groupId>
 		  <artifactId>lfy-conf</artifactId>
 		  <version>0.0.1-SNAPSHOT</version>
-    </dependency>
+    </dependency> -->
   	<dependency>
   		<groupId>cn.lfy</groupId>
   		<artifactId>base-common</artifactId>

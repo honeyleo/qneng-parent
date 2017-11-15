@@ -1,4 +1,4 @@
-package cn.lfy.base.service;
+/*package cn.lfy.base.service;
 
 import org.springframework.stereotype.Service;
 
@@ -19,4 +19,4 @@ public class TextListener extends YardSpringConfigTextListener {
 	
 	
 
-}
+}*/

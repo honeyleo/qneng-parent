@@ -1,13 +1,14 @@
-package cn.lfy.base.dao;
+package cn.lfy.base.mapper;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import cn.lfy.base.model.UserRole;
 import cn.lfy.base.model.Role;
+import cn.lfy.base.model.UserRole;
+import cn.lfy.common.mybatis.SuperMapper;
 
-public interface UserRoleDAO {
+public interface UserRoleMapper extends SuperMapper<UserRole> {
 
     /**
      * 根据内勤人员id获取菜单列表
@@ -15,12 +16,6 @@ public interface UserRoleDAO {
      * @return
      */
     List<Role> getRoleListByUserId(Long userId);
-    
-    /**
-     * 添加内勤人员菜单
-     * @param record
-     */
-    void insert(UserRole record);
     
     /**
      * 删除内勤人员ID的菜单 

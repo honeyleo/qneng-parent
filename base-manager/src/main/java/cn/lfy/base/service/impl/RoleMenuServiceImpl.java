@@ -6,35 +6,31 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import cn.lfy.base.dao.RoleMenuDAO;
-import cn.lfy.base.model.LoginUser;
+import cn.lfy.base.mapper.RoleMenuMapper;
 import cn.lfy.base.model.Menu;
 import cn.lfy.base.model.Role;
 import cn.lfy.base.model.RoleMenu;
 import cn.lfy.base.service.RoleMenuService;
 import cn.lfy.base.service.RoleService;
+import cn.lfy.base.vo.LoginUser;
 import cn.lfy.common.framework.exception.ErrorCode;
 import cn.lfy.common.validator.Validators;
 
 @Service
-public class RoleMenuServiceImpl implements RoleMenuService {
+public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuMapper, RoleMenu> implements RoleMenuService {
 
     @Autowired
-    private RoleMenuDAO roleMenuDAO;
+    private RoleMenuMapper roleMenuDAO;
     @Autowired
     private RoleService roleService;
     
     @Override
     public List<Menu> getMenuListByRoleId(Long roleId) {
         return roleMenuDAO.selectMenuListByRoleId(roleId);
-    }
-
-    @Override
-    public void add(RoleMenu record) {
-        roleMenuDAO.insert(record);
     }
 
     @Override
@@ -49,7 +45,7 @@ public class RoleMenuServiceImpl implements RoleMenuService {
 
     public void saveMenus(Long roleId, Set<Long> nowMenu, LoginUser currentUser) {
     	Validators.isFalse(roleId == 1, ErrorCode.UNAUTHORIZED_OPERATE);
-    	Role role = roleService.getById(roleId);
+    	Role role = roleService.selectById(roleId);
     	List<Menu> parentRoleMenus = getMenuListByRoleId(role.getParentId());
     	List<Menu> roleMenus = getMenuListByRoleId(roleId);
 		Set<Long> roleSet = Sets.newHashSet();

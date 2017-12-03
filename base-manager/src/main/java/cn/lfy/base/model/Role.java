@@ -1,12 +1,15 @@
 package cn.lfy.base.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class Role implements Serializable, Comparable<Role> {
+import com.baomidou.mybatisplus.annotations.TableName;
+
+import cn.lfy.common.mybatis.SuperEntity;
+
+@TableName("role")
+public class Role extends SuperEntity implements Comparable<Role> {
     private static final long serialVersionUID = 1L;
 
-    private Long id;
     /**
      * 父角色ID
      */
@@ -49,14 +52,6 @@ public class Role implements Serializable, Comparable<Role> {
      * 角色級別
      */
     private Integer level;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
 	public Long getParentId() {
 		return parentId;
@@ -153,9 +148,9 @@ public class Role implements Serializable, Comparable<Role> {
 
 	@Override
 	public int compareTo(Role o) {
-		if(this.id == o.getId()) {
+		if(this.getId() == o.getId()) {
 			return 0;
-		} else if(this.id > o.getId()) {
+		} else if(this.getId() > o.getId()) {
 			return 1;
 		}
 		return -1;

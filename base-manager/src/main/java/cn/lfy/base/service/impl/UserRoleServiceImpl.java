@@ -7,12 +7,13 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import cn.lfy.base.dao.RoleDAO;
-import cn.lfy.base.dao.UserRoleDAO;
+import cn.lfy.base.mapper.RoleMapper;
+import cn.lfy.base.mapper.UserRoleMapper;
 import cn.lfy.base.model.Role;
 import cn.lfy.base.model.UserRole;
 import cn.lfy.base.service.UserRoleService;
@@ -20,13 +21,13 @@ import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
 
 @Service
-public class UserRoleServiceImpl implements UserRoleService
+public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> implements UserRoleService
 {
 	@Autowired
-	private UserRoleDAO userRoleDAO;
+	private UserRoleMapper userRoleDAO;
 	
 	@Autowired
-	private RoleDAO roleDAO;
+	private RoleMapper roleDAO;
 
     @Override
     public List<Role> getRoleListByUserId(Long adminId) {

@@ -14,24 +14,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.wordnik.swagger.annotations.ApiOperation;
 
-import cn.lfy.base.model.Criteria;
-import cn.lfy.base.model.LoginUser;
 import cn.lfy.base.model.Role;
-import cn.lfy.base.model.TreeNode;
 import cn.lfy.base.model.User;
 import cn.lfy.base.model.type.StateType;
 import cn.lfy.base.service.RoleService;
 import cn.lfy.base.service.UserRoleService;
 import cn.lfy.base.service.UserService;
+import cn.lfy.base.vo.LoginUser;
+import cn.lfy.base.vo.TreeNode;
 import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
 import cn.lfy.common.model.ResultDTO;
-import cn.lfy.common.page.Page;
 import cn.lfy.common.utils.MessageDigestUtil;
 import cn.lfy.common.utils.UUIDUtil;
 
@@ -58,10 +58,11 @@ public class UserController extends BaseController {
 			throws ApplicationException {
 
 		ResultDTO<Page<User>> result = new ResultDTO<>();
-		Criteria criteria = new Criteria();
-		criteria.put("state", state);
-		Page<User> page = userService.findListByCriteria(criteria, currentPage,
-				pageSize);
+		User user = new User();
+		user.setState(state);
+		Page<User> page = new Page<>(currentPage, pageSize);
+		EntityWrapper<User> entityWrapper = new EntityWrapper<User>(user);
+		page = userService.selectPage(page, entityWrapper);
 		result.setData(page);
 		return result;
 	}
@@ -80,7 +81,7 @@ public class UserController extends BaseController {
 		User record = new User();
 		record.setId(id);
 		record.setState(StateType.DELETED.getId());
-		userService.updateByIdSelective(record);
+		userService.updateById(record);
 		ResultDTO<Boolean> result = new ResultDTO<>();
 		return result;
 	}
@@ -97,7 +98,7 @@ public class UserController extends BaseController {
 			@RequestParam(name = "id", required = true) Long id)
 			throws ApplicationException {
 		ResultDTO<User> result = new ResultDTO<>();
-		User user = userService.findById(id);
+		User user = userService.selectById(id);
 		result.setData(user);
 		return result;
 	}
@@ -127,7 +128,7 @@ public class UserController extends BaseController {
 		user.setPassword(password);
 		user.setEmail("");
 		user.setState(1);
-		userService.add(user);
+		userService.insert(user);
 		return result;
 	}
 
@@ -155,7 +156,7 @@ public class UserController extends BaseController {
 			user.setPassword(null);
 			user.setSalt(null);
 		}
-		userService.updateByIdSelective(user);
+		userService.updateById(user);
 		return result;
 	}
 
@@ -176,9 +177,10 @@ public class UserController extends BaseController {
 		while (!roles.isEmpty()) {
 			Set<Role> next = new TreeSet<Role>();
 			for (Role role : roles) {
-				Criteria criteria = new Criteria();
-				criteria.put("parentId", role.getId());
-				List<Role> tmpRoles = roleService.getByCriteria(criteria);
+				Role parent = new Role();
+				parent.setParentId(role.getId());
+				EntityWrapper<Role> entityWrapper = new EntityWrapper<>(parent);
+				List<Role> tmpRoles = roleService.selectList(entityWrapper);
 				roleTree.addAll(tmpRoles);
 				next.addAll(tmpRoles);
 			}
@@ -229,7 +231,7 @@ public class UserController extends BaseController {
 					"userId");
 		}
 
-		User user = userService.findById(userId);
+		User user = userService.selectById(userId);
 		if (null == user) {
 			throw ApplicationException.newInstance(ErrorCode.NOT_EXIST, "用户");
 		}

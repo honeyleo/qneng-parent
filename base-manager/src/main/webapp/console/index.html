@@ -222,6 +222,10 @@
     }
 	$(function(){
 		$.getJSON("/manager/menu", function(result){
+			if(result.code == 302) {
+				window.location = result.redirect;
+				return;
+			}
 			$("#nickname").html(result.data.user.nickname);
 			var menus = result.data.menus;
 	        for(var i = 0; i < menus.length; i++) {

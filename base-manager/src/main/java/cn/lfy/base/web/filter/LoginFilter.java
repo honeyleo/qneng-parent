@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import cn.lfy.base.model.LoginUser;
+import cn.lfy.base.vo.LoginUser;
 
 public class LoginFilter extends OncePerRequestFilter {
 
@@ -30,8 +30,8 @@ public class LoginFilter extends OncePerRequestFilter {
 				String host = request.getServerName();
 				int port =request.getServerPort();
 				String loginUrl = scheme + "://" + host + ":" + port + "/console/login.html";
-				response.setStatus(302);
-				response.getWriter().write("{\"code\":\"401\", \"message\":\"验证会话失败，请先登录\", \"redirect\":\"" + loginUrl + "\"}");
+				response.setStatus(200);
+				response.getWriter().write("{\"code\":\"302\", \"message\":\"验证会话失败，请先登录\", \"redirect\":\"" + loginUrl + "\"}");
 				response.getWriter().flush();
 				response.getWriter().close();
 			} else {

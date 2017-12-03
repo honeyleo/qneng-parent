@@ -1,12 +1,13 @@
-package cn.lfy.base.dao;
+package cn.lfy.base.mapper;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
 import cn.lfy.common.job.model.ScheduleJob;
+import cn.lfy.common.mybatis.SuperMapper;
 
-public interface ScheduleJobDAO {
+public interface ScheduleJobMapper extends SuperMapper<ScheduleJob> {
 
 	/**
 	 * 获取所有可用的调度配置

@@ -1,13 +1,16 @@
 package cn.lfy.base.model;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Menu implements Serializable {
-    private static final long serialVersionUID = 1L;
+import com.baomidou.mybatisplus.annotations.TableName;
 
-    private Long id;
+import cn.lfy.common.mybatis.SuperEntity;
+
+@TableName("menu")
+public class Menu extends SuperEntity {
+	
+    private static final long serialVersionUID = 1L;
 
     /**
      * 菜单名称
@@ -54,24 +57,11 @@ public class Menu implements Serializable {
      */
     private Date createTime = new Date();
 
-    /**
-     * 菜单所有者，adminId或者operatorId或者roleId
-     */
-    private Long ownerId;
-    
     private Integer onMenu = 0;
     
     private String icon;
 
-    private List<Menu> childList;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private transient List<Menu> childList;
 
     /**
      * @return 菜单名称
@@ -192,14 +182,6 @@ public class Menu implements Serializable {
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
-    }
-
-    public Long getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
     }
 
     public List<Menu> getChildList() {

@@ -15,20 +15,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.wordnik.swagger.annotations.ApiOperation;
 
-import cn.lfy.base.model.Criteria;
-import cn.lfy.base.model.LoginUser;
 import cn.lfy.base.model.Menu;
 import cn.lfy.base.model.Role;
-import cn.lfy.base.model.TreeNode;
 import cn.lfy.base.model.type.StateType;
 import cn.lfy.base.service.MenuService;
 import cn.lfy.base.service.RoleMenuService;
 import cn.lfy.base.service.RoleService;
+import cn.lfy.base.vo.LoginUser;
+import cn.lfy.base.vo.TreeNode;
 import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
 import cn.lfy.common.model.ResultDTO;
@@ -60,9 +60,10 @@ public class RoleController {
     	while(!roles.isEmpty()) {
     		Set<Role> next = new TreeSet<Role>();
     		for(Role role : roles) {
-    			Criteria criteria = new Criteria();
-    			criteria.put("parentId", role.getId());
-    			List<Role> tmpRoles = roleService.getByCriteria(criteria);
+    			Role parent = new Role();
+    			parent.setParentId(role.getId());
+    			EntityWrapper<Role> entityWrapper = new EntityWrapper<Role>(parent);
+    			List<Role> tmpRoles = roleService.selectList(entityWrapper);
     			roleTree.addAll(tmpRoles);
     			next.addAll(tmpRoles);
     		}
@@ -89,7 +90,7 @@ public class RoleController {
         Role record = new Role();
         record.setId(id);
         record.setState(StateType.INACTIVE.getId());
-        roleService.updateByIdSelective(record);
+        roleService.updateById(record);
         return resultDTO;
     }
 
@@ -99,7 +100,7 @@ public class RoleController {
     public ResultDTO<Role> detail(HttpServletRequest request) throws ApplicationException {
     	ResultDTO<Role> resultDTO = new ResultDTO<>();
         Long id = RequestUtil.getLong(request, "id");
-        Role role = roleService.getById(id);
+        Role role = roleService.selectById(id);
         resultDTO.setData(role);
         return resultDTO;
     }
@@ -109,7 +110,7 @@ public class RoleController {
     @ApiOperation(value = "添加角色", httpMethod = "POST", notes = "添加角色")
     public ResultDTO<Void> add(Role role) throws ApplicationException {
     	ResultDTO<Void> resultDTO = new ResultDTO<>();
-        Role parent = roleService.getById(role.getParentId());
+        Role parent = roleService.selectById(role.getParentId());
         Validators.notNull(parent, ErrorCode.PARAM_ILLEGAL, "parentId");
         role.setLevel(parent.getLevel() + 1);
     	roleService.insert(role);
@@ -121,7 +122,7 @@ public class RoleController {
     @ApiOperation(value = "更新角色", httpMethod = "POST", notes = "更新角色")
     public ResultDTO<Void> update(Role role, HttpServletRequest request, HttpServletResponse response) throws ApplicationException {
     	ResultDTO<Void> resultDTO = new ResultDTO<>();
-    	roleService.updateByIdSelective(role);
+    	roleService.updateById(role);
         return resultDTO;
     }
     
@@ -135,13 +136,13 @@ public class RoleController {
 	@ResponseBody
 	@ApiOperation(value = "角色权限树", httpMethod = "GET", notes = "角色权限树")
 	public ResultDTO<List<TreeNode>> privileges(Long id, LoginUser account) {
-		Role role = roleService.getById(id);
+		Role role = roleService.selectById(id);
 		List<Menu> menus = null;
 		if(account.getRoleIds().contains(1L)) {
 			if(role.getId() == 1) {
-				menus = menuService.findMenuList();
+				menus = menuService.selectList(null);
 			} else if(role.getParentId() == 1) {
-				menus = menuService.findMenuList();
+				menus = menuService.selectList(null);
 			} else {
 				menus = roleMenuService.getMenuListByRoleId(role.getParentId());
 			}
@@ -198,7 +199,7 @@ public class RoleController {
         {
 			throw ApplicationException.newInstance(ErrorCode.PARAM_ILLEGAL, "menuIds");
         }
-		Role role = roleService.getById(roleId);
+		Role role = roleService.selectById(roleId);
 		if (null == role)
 		{
 			throw ApplicationException.newInstance(ErrorCode.NOT_EXIST, "角色");

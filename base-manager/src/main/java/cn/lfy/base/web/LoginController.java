@@ -23,7 +23,6 @@ import com.google.common.collect.Sets;
 import com.wordnik.swagger.annotations.ApiOperation;
 
 import cn.lfy.base.Constants;
-import cn.lfy.base.model.LoginUser;
 import cn.lfy.base.model.Menu;
 import cn.lfy.base.model.Role;
 import cn.lfy.base.model.User;
@@ -31,6 +30,7 @@ import cn.lfy.base.model.type.StateType;
 import cn.lfy.base.service.RoleMenuService;
 import cn.lfy.base.service.UserRoleService;
 import cn.lfy.base.service.UserService;
+import cn.lfy.base.vo.LoginUser;
 import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
 import cn.lfy.common.model.ResultDTO;

@@ -12,8 +12,8 @@ import com.google.common.collect.Lists;
 import com.wordnik.swagger.annotations.ApiOperation;
 
 import cn.lfy.base.model.Menu;
-import cn.lfy.base.model.TreeNode;
 import cn.lfy.base.service.MenuService;
+import cn.lfy.base.vo.TreeNode;
 import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
 import cn.lfy.common.model.ResultDTO;
@@ -30,7 +30,7 @@ public class MenuController {
     @ResponseBody
     @ApiOperation(value = "菜单树", httpMethod = "POST", notes = "菜单树")
     public ResultDTO<List<TreeNode>> api_list() {
-    	List<Menu> menus = menuService.findMenuList();
+    	List<Menu> menus = menuService.selectList(null);
 		List<TreeNode> treeList = Lists.newArrayList();
 		for(Menu menu : menus) {
 			treeList.add(new TreeNode(menu.getId(), menu.getName(), menu.getParentId(), false));
@@ -49,13 +49,13 @@ public class MenuController {
     @ApiOperation(value = "更新菜单", httpMethod = "POST", notes = "更新菜单")
     public ResultDTO<Void> update(Menu menu) throws ApplicationException {
     	ResultDTO<Void> resultDTO = new ResultDTO<>();
-        Menu menuDb=menuService.getById(menu.getId());
+        Menu menuDb=menuService.selectById(menu.getId());
         
         menuDb.setName(menu.getName());
         menuDb.setUrl(menu.getUrl());
         menuDb.setOrderNo(menu.getOrderNo());
         menuDb.setOnMenu(menu.getOnMenu());
-        menuService.updateByIdSelective(menuDb);
+        menuService.updateById(menuDb);
         return resultDTO;
     }
     
@@ -65,7 +65,7 @@ public class MenuController {
     public ResultDTO<Menu> detail(Long id) throws ApplicationException {
     	ResultDTO<Menu> resultDTO = new ResultDTO<>();
         if(null != id) {
-            Menu menu=menuService.getById(id);
+            Menu menu=menuService.selectById(id);
             resultDTO.setData(menu);
         }
         return resultDTO;

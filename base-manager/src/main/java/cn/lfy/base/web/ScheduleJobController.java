@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.google.common.collect.Lists;
 import com.wordnik.swagger.annotations.ApiOperation;
 
@@ -18,7 +19,6 @@ import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
 import cn.lfy.common.job.model.ScheduleJob;
 import cn.lfy.common.model.ResultDTO;
-import cn.lfy.common.page.Page;
 import cn.lfy.common.utils.RequestUtil;
 
 /**
@@ -44,7 +44,8 @@ public class ScheduleJobController {
 			throw ApplicationException.newInstance(ErrorCode.ERROR);
 		}
 		ResultDTO<Page<ScheduleJob>> resultDTO = new ResultDTO<>();
-		Page<ScheduleJob> page = new Page<ScheduleJob>(list, 1, 100, list.size());
+		Page<ScheduleJob> page = new Page<ScheduleJob>(1, 100);
+		page.setRecords(list);
 		resultDTO.setData(page);
 		return resultDTO;
     }

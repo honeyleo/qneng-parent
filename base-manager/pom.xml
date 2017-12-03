@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>cn.lfy</groupId>
-    <artifactId>qneng-parent</artifactId>
+    <artifactId>base-parent</artifactId>
     <version>1.0</version>
   </parent>
   <artifactId>base-manager</artifactId>

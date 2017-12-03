@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import cn.lfy.base.Constants;
-import cn.lfy.base.model.LoginUser;
+import cn.lfy.base.vo.LoginUser;
 import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
 

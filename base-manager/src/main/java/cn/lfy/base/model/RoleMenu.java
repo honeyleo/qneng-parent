@@ -1,8 +1,12 @@
 package cn.lfy.base.model;
 
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotations.TableName;
 
-public class RoleMenu implements Serializable {
+import cn.lfy.common.mybatis.SuperEntity;
+
+@TableName("role_menu")
+public class RoleMenu extends SuperEntity {
+	
     private static final long serialVersionUID = 1L;
 
     /**

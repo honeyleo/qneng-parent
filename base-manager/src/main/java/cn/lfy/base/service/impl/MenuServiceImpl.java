@@ -6,60 +6,53 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import cn.lfy.base.dao.MenuDAO;
-import cn.lfy.base.dao.RoleMenuDAO;
-import cn.lfy.base.model.Criteria;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+
+import cn.lfy.base.mapper.MenuMapper;
+import cn.lfy.base.mapper.RoleMenuMapper;
 import cn.lfy.base.model.Menu;
 import cn.lfy.base.model.RoleMenu;
 import cn.lfy.base.service.MenuService;
 
 @Service
-public class MenuServiceImpl implements MenuService {
+public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
 
+	@Autowired
+	private MenuMapper menuMapper;
+	
     @Autowired
-    private MenuDAO menuDAO;
-    
-    @Autowired
-    private RoleMenuDAO roleMenuDAO;
+    private RoleMenuMapper roleMenuDAO;
     
     @Override
-    public int save(Menu record) {
+    public boolean save(Menu record) {
         if(record.getId() == null || record.getId().intValue() < 1){
-        	Menu parent = getById(record.getParentId());
+        	Menu parent = selectById(record.getParentId());
         	record.setParentIdPath(parent.getParentIdPath() + parent.getId() + "$");
-        	int ret = menuDAO.insert(record);
+        	boolean ret = this.insert(record);
         	RoleMenu roleMenu = new RoleMenu();
             roleMenu.setRoleId(1L);
             roleMenu.setMenuId(record.getId());
         	roleMenuDAO.insert(roleMenu);
             return ret;
         }else{
-            Menu old=this.getById(record.getId());
-            int cnt=this.updateByIdSelective(record);
+            Menu old=this.selectById(record.getId());
+            boolean cnt=this.updateById(record);
             if(!old.getParentId().equals(record.getParentId())){
                 String oldParentIdPath = old.getParentIdPath() + old.getId() + "$";
                 String newParentIdPath = record.getParentIdPath() + record.getId() + "$";
-                menuDAO.updateChildParentPath(oldParentIdPath, newParentIdPath);
+                menuMapper.updateChildParentPath(oldParentIdPath, newParentIdPath);
             }
             return cnt;
         }
     }
 
-    @Override
-    public Menu getById(Long id) {
-        return menuDAO.selectByPrimaryKey(id);
-    }
-    
     @Cacheable(value = "commonCache", key = "'Menu_id_' + #id")
     @Override
     public Menu getByIdInCache(Long id) {
-        return menuDAO.selectByPrimaryKey(id);
+        return this.selectById(id);
     }
 
-    @Override
-    public int updateByIdSelective(Menu record) {
-        return menuDAO.updateByPrimaryKeySelective(record);
-    }
     
     @Override
     public void deleteById(Long id){
@@ -69,33 +62,23 @@ public class MenuServiceImpl implements MenuService {
     			roleMenuDAO.deleteByMenuId(menu.getId());
     		}
     	}
-        menuDAO.deleteByPrimaryKey(id);
+        this.deleteById(id);
         roleMenuDAO.deleteByMenuId(id);
     }
 
-	@Override
-	public List<Menu> findMenuList() {
-
-		return menuDAO.selectByExample(new Criteria());
-	}
-	
-	public List<Menu> listAllParentMenu() {
-		Criteria c = new Criteria();
-		c.put("parentId", 1);
-		return menuDAO.selectByExample(c);
-	}
-	
 	public List<Menu> listSubMenuByParentId(String parentId) {
-		Criteria c = new Criteria();
-		c.put("parentId", parentId);
-		return menuDAO.selectByExample(c);
+		EntityWrapper<Menu> ew = new EntityWrapper<Menu>();
+		Menu menu = new Menu();
+		menu.setParentId(Long.parseLong(parentId));
+		ew.setEntity(menu);
+		return this.selectList(ew.where("parentId={0}", parentId));
 	}
 	
 	public boolean updateIcon(Long id, String icon) {
 		Menu menu = new Menu();
 		menu.setId(id);
 		menu.setIcon(icon);
-		return menuDAO.updateByPrimaryKeySelective(menu) > 0 ? true : false;
+		return this.updateById(menu);
 	}
 
 }

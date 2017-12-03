@@ -1,4 +1,4 @@
-package cn.lfy.base.model;
+package cn.lfy.base.vo;
 
 import java.util.List;
 

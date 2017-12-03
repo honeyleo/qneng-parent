@@ -3,11 +3,13 @@ package cn.lfy.base.service;
 import java.util.List;
 import java.util.Set;
 
-import cn.lfy.base.model.LoginUser;
+import com.baomidou.mybatisplus.service.IService;
+
 import cn.lfy.base.model.Menu;
 import cn.lfy.base.model.RoleMenu;
+import cn.lfy.base.vo.LoginUser;
 
-public interface RoleMenuService {
+public interface RoleMenuService extends IService<RoleMenu> {
     /**
      * 根据角色查询默认的菜单列表
      * @param operatorId
@@ -21,12 +23,6 @@ public interface RoleMenuService {
      * @return
      */
     List<Menu> selectMenuListByRoleIds(List<Long> list);
-    
-    /**
-     * 添加角色默认菜单
-     * @param record
-     */
-    void add(RoleMenu record);
     
     /**
      * 删除角色的菜单 

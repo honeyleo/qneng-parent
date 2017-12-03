@@ -14,7 +14,7 @@ var users = {
         if (result.code != 200) {
             return;
         }
-        var value = result.data.list;
+        var value = result.data.records;
         for (var i = 0; i < value.length; i++) {
             var createTime = new Date(value[i].createTime);
             value[i].createTime = createTime.format("yyyy-MM-dd hh:mm:ss");
@@ -29,8 +29,8 @@ var users = {
         }
         self.num++;
         result.draw = self.num;
-        result.recordsTotal = result.data.totalResult;
-        result.recordsFiltered = result.data.totalResult;
+        result.recordsTotal = result.data.total;
+        result.recordsFiltered = result.data.total;
         result.data = arr;
     },
     dropDown: function (id, text, inp) {

@@ -16,6 +16,8 @@
         </property>
         <property name="fileEncoding" value="utf-8" />
     </bean>   -->
+    <!-- 引入属性文件 -->
+    <context:property-placeholder location="classpath:conf/jdbc.properties"/>
 	<import resource="spring/spring-datasource.xml"/>
 	<import resource="spring/spring-servlet.xml"/>
 	<import resource="spring/spring-service.xml"/>

@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.lfy.base.dao.RoleMenuDAO" >
-  <resultMap id="BaseResultMap" type="cn.lfy.base.model.RoleMenu" >
-    <id column="menuId" property="menuId" jdbcType="BIGINT" />
-    <id column="roleId" property="roleId" jdbcType="BIGINT" />
-  </resultMap>
+<mapper namespace="cn.lfy.base.mapper.RoleMenuMapper" >
   
   <resultMap id="MenuResultMap" type="cn.lfy.base.model.Menu" >
     <id column="id" property="id" jdbcType="BIGINT" />
@@ -12,7 +8,6 @@
     <result column="parentId" property="parentId" jdbcType="INTEGER" />
     <result column="parentIdPath" property="parentIdPath" jdbcType="VARCHAR" />
     <result column="url" property="url" jdbcType="VARCHAR" />
-    <result column="ownerId" property="ownerId" jdbcType="BIGINT" />
     <result column="onMenu" property="onMenu" jdbcType="INTEGER" />
     <result column="icon" property="icon" jdbcType="VARCHAR" />
   </resultMap>
@@ -34,10 +29,6 @@
     group by m.id
     order by m.parentIdPath, m.orderNo
   </select>
-  
-  <insert id="insert" parameterType="cn.lfy.base.model.RoleMenu" >
-    insert into role_menu (menuId, roleId) values (#{menuId}, #{roleId})
-  </insert>
   
   <delete id="deleteByRoleId" parameterType="java.lang.Long" >
     delete from role_menu where roleId = #{roleId}

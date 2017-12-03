@@ -175,7 +175,7 @@ var scheduler = {
         var arr = [], opera, n,statusText,concurrentText,statusOpera,leaf;
         n = 0;
         statusOpera = "";
-        var value = result.data.list;
+        var value = result.data.records;
         for (var i = 0; i < value.length; i++) {
             scheduler.num = (i+1)+(currentPage*10);
             n=i+1;
@@ -224,8 +224,8 @@ var scheduler = {
         }
         self.num++;
         result.draw = self.num;
-        result.recordsTotal = result.data.totalResult;
-        result.recordsFiltered = result.data.totalResult;
+        result.recordsTotal = result.data.total;
+        result.recordsFiltered = result.data.total;
         result.data = arr;
     },
     addSure: function () {

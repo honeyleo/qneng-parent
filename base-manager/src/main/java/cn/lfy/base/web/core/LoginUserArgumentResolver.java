@@ -7,7 +7,7 @@ import org.springframework.web.bind.support.WebArgumentResolver;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import cn.lfy.base.Constants;
-import cn.lfy.base.model.LoginUser;
+import cn.lfy.base.vo.LoginUser;
 
 public class LoginUserArgumentResolver implements WebArgumentResolver {
 

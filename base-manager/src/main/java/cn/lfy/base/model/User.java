@@ -1,15 +1,14 @@
 package cn.lfy.base.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class User implements Serializable {
-    private static final long serialVersionUID = 1L;
+import com.baomidou.mybatisplus.annotations.TableName;
 
-    /**
-     * 主键
-     */
-    private Long id;
+import cn.lfy.common.mybatis.SuperEntity;
+@TableName("user")
+public class User extends SuperEntity {
+	
+    private static final long serialVersionUID = 1L;
 
     /**
      * 登录名
@@ -50,25 +49,6 @@ public class User implements Serializable {
      */
     private Date createTime;
     
-    private Integer pageIndex;
-    
-    private Integer pageSize;
-    
-    /**
-     * @return 主键
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param id 
-	 *            主键
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     /**
      * @return 登录名
      */
@@ -181,21 +161,5 @@ public class User implements Serializable {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-
-	public Integer getPageIndex() {
-		return pageIndex;
-	}
-
-	public void setPageIndex(Integer pageIndex) {
-		this.pageIndex = pageIndex;
-	}
-
-	public Integer getPageSize() {
-		return pageSize;
-	}
-
-	public void setPageSize(Integer pageSize) {
-		this.pageSize = pageSize;
-	}
 
 }

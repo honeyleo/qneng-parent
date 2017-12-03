@@ -5,15 +5,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.lfy.base.dao.ScheduleJobDAO;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+
+import cn.lfy.base.mapper.ScheduleJobMapper;
 import cn.lfy.base.service.ScheduleJobService;
 import cn.lfy.common.job.model.ScheduleJob;
 
 @Service
-public class ScheduleJobServiceImpl implements ScheduleJobService {
+public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobMapper, ScheduleJob> implements ScheduleJobService {
 
 	@Autowired
-	private ScheduleJobDAO scheduleJobDAO;
+	private ScheduleJobMapper scheduleJobDAO;
 
 	@Override
 	public List<ScheduleJob> findAllEnabled(String idc) {

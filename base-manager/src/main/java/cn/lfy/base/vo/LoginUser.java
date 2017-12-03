@@ -1,12 +1,15 @@
-package cn.lfy.base.model;
+package cn.lfy.base.vo;
 
 import java.util.Set;
 import java.util.TreeSet;
 
-public class LoginUser extends BaseEntity {
-	
-	private static final long serialVersionUID = 4049274926799482032L;
+import cn.lfy.base.model.Role;
+import cn.lfy.base.model.User;
 
+public class LoginUser {
+	
+	private Long id;
+	
 	private User user;
 	
 	private Set<Role> roles = new TreeSet<Role>();
@@ -15,6 +18,15 @@ public class LoginUser extends BaseEntity {
 	
 	private Set<String> uriSet;
 	
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	/**
 	 * 登录账号信息关联的用户
 	 * @return

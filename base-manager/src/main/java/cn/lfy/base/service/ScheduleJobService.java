@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.baomidou.mybatisplus.service.IService;
+
 import cn.lfy.common.job.model.ScheduleJob;
 
-public interface ScheduleJobService {
+public interface ScheduleJobService extends IService<ScheduleJob> {
 
 	/**
 	 * 根据IDC机房查询可用定时任务列表

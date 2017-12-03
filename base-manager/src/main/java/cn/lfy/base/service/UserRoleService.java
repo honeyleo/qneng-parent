@@ -3,9 +3,12 @@ package cn.lfy.base.service;
 import java.util.List;
 import java.util.Set;
 
-import cn.lfy.base.model.Role;
+import com.baomidou.mybatisplus.service.IService;
 
-public interface UserRoleService
+import cn.lfy.base.model.Role;
+import cn.lfy.base.model.UserRole;
+
+public interface UserRoleService extends IService<UserRole>
 {
     /**
      * 根据内勤人员id获取菜单列表

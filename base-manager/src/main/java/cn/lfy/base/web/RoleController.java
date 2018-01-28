@@ -33,7 +33,6 @@ import cn.lfy.common.framework.exception.ApplicationException;
 import cn.lfy.common.framework.exception.ErrorCode;
 import cn.lfy.common.model.ResultDTO;
 import cn.lfy.common.utils.RequestUtil;
-import cn.lfy.common.validator.Validators;
 
 @Controller
 @RequestMapping("/manager/role")
@@ -110,9 +109,6 @@ public class RoleController {
     @ApiOperation(value = "添加角色", httpMethod = "POST", notes = "添加角色")
     public ResultDTO<Void> add(Role role) throws ApplicationException {
     	ResultDTO<Void> resultDTO = new ResultDTO<>();
-        Role parent = roleService.selectById(role.getParentId());
-        Validators.notNull(parent, ErrorCode.PARAM_ILLEGAL, "parentId");
-        role.setLevel(parent.getLevel() + 1);
     	roleService.insert(role);
         return resultDTO;
     }

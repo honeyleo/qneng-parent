@@ -56,9 +56,7 @@ public class LoginController extends BaseController {
     	ResultDTO<Map<String, Object>> resultDTO = new ResultDTO<>();
     	List<Menu> menus = roleMenuService.selectMenuListByRoleIds(Lists.newArrayList(currentUser.getRoleIds()));
         List<Menu> menuList = Lists.newArrayList();
-        Set<String> uriSet = Sets.newTreeSet();
         for(Menu menu : menus) {
-        	uriSet.add(menu.getUrl());
         	if(menu.getParentId() == -1) {
         		continue;
         	}
@@ -81,7 +79,6 @@ public class LoginController extends BaseController {
         		}
         	}
         }
-        currentUser.setUriSet(uriSet);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("menus", menuList);
         data.put("user", currentUser.getUser());
@@ -113,6 +110,12 @@ public class LoginController extends BaseController {
         	throw ApplicationException.newInstance(ErrorCode.ERROR, "用户名或密码错误");
         }
         account.setId(user.getId());
+        List<Menu> menus = roleMenuService.selectMenuListByRoleIds(Lists.newArrayList(account.getRoleIds()));
+        Set<String> uriSet = Sets.newTreeSet();
+        for(Menu menu : menus) {
+        	uriSet.add(menu.getUrl());
+        }
+        account.setUriSet(uriSet);
         HttpServletRequest request = getRequest();
         request.getSession().setAttribute(Constants.SESSION_LOGIN_USER, account);
         ResultDTO<Void> resultDTO = new ResultDTO<>();

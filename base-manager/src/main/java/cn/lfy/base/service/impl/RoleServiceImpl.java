@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import cn.lfy.base.mapper.RoleMapper;
 import cn.lfy.base.model.Role;
 import cn.lfy.base.service.RoleService;
+import cn.lfy.common.framework.exception.ErrorCode;
+import cn.lfy.common.validator.Validators;
 
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
@@ -19,6 +21,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     @Override
     public boolean insert(Role record) {
     	Role parent = getByIdInCache(record.getParentId());
+        Validators.notNull(parent, ErrorCode.PARAM_ILLEGAL, "parentId");
+        record.setLevel(parent.getLevel() + 1);
     	record.setParentIdPath(parent.getParentIdPath() + record.getParentId() + "$");
         return roleDAO.insert(record) > 0;
     }
